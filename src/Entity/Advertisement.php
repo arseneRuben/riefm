@@ -4,13 +4,16 @@ namespace App\Entity;
 
 use App\Repository\AdvertisementRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Traits\TimeStampable;
 
 /**
  * @ORM\Entity(repositoryClass=AdvertisementRepository::class)
  * @ORM\Table(name="advertisements")
+ * @ORM\HasLifecycleCallbacks
  */
 class Advertisement
 {
+    use TimeStampable;
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

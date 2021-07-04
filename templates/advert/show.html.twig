@@ -1,0 +1,33 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title advert.title %}
+
+{% block body %}
+	<div class="row mb-5">
+			
+			<div  class=" col-md-6 mx-auto">
+
+	<article  class=" p-3  bg-white rounded shadow" >
+					<div  class="mw-100  rounded-top overflow-hidden" >
+						
+							
+					</div>
+						<h1  class="h5  pt-1">  <a href="{{path('app_adverts_show', {id: advert.id})}}" class=" text-muted text-decoration-none text-secondary" >  {{advert.title}} </a> </h1> 
+						
+						<p  class="pd-2 pb-2 text-muted" >  Submitted at <time datetime= "{{advert.createdAt|date('Y-m-d H:m:s')}}">{{advert.createdAt}} </time> by user </p>
+			
+						
+
+				
+				<p  class=" text-break "> {{advert.content}} </p>
+				 <a href="{{path('app_home')}}" class=" text-muted text-decoration-none text-secondary" >  Go back!</a> 
+			<div class=" ">			
+				
+				
+				
+			</div>
+			</article>
+ </div>
+ </div>
+{% endblock %}
