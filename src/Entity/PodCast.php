@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=PodCastRepository::class)
+ * @ORM\Table(name="podcasts")
  */
 class PodCast
 {
@@ -22,6 +23,18 @@ class PodCast
      */
     private $description;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Program::class, inversedBy="podCasts")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $program;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=TimeSpace::class, inversedBy="podCasts")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $timeSpace;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -35,6 +48,30 @@ class PodCast
     public function setDescription(string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getProgram(): ?Program
+    {
+        return $this->program;
+    }
+
+    public function setProgram(?Program $program): self
+    {
+        $this->program = $program;
+
+        return $this;
+    }
+
+    public function getTimeSpace(): ?TimeSpace
+    {
+        return $this->timeSpace;
+    }
+
+    public function setTimeSpace(?TimeSpace $timeSpace): self
+    {
+        $this->timeSpace = $timeSpace;
 
         return $this;
     }
