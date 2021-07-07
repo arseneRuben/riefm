@@ -22,6 +22,12 @@
 				
 				<p  class=" text-break "> {{advert.content}} </p>
 					<a class="btn btn-light" href="{{path('app_adverts_edit', {id: advert.id})}}"> Edit </a> |
+					<a class="btn btn-light" href="#"  onclick= "event.preventDefault() ; confirm('Are you sure ?') && document.getElementById('js-pin-delete-form').submit();"> Delete</a>
+				<form id="js-pin-delete-form" action="{{path('app_adverts_delete', {id: advert.id})}}" method="post" style="display: none;">
+					<input type="hidden" name="{{ csrf_token('adverts_deletion' ~ advert.id ) }}" id="">
+					<input type="hidden" name="_method" value="DELETE">
+
+				</form> |
 				 <a href="{{path('app_home')}}" class=" text-muted text-decoration-none text-secondary" >  Go back!</a> 
 			<div class=" ">			
 				

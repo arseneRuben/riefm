@@ -78,4 +78,18 @@ class RadioController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/adverts/{id}", name="app_adverts_delete", requirements={"id"="\d+"}, methods={"DELETE"})
+     */
+    public function delete(Request $request,Advertisement $advert): Response
+    {
+        if($this->isCsrfTokenValid('pins_deletion'.$advert->getId(), $request->request->get('crsf_token') )){
+            $this->em->remove($advert);
+            $this->em->flush();
+
+        }
+         $this->addFlash('info', 'Advertisement succesfully deleted');
+        return $this->redirectToRoute('app_home');
+    }
+
 }
