@@ -20,7 +20,7 @@ class RadioController extends AbstractController
         $this->em = $em;
     }
 
-    #[Route('/radio', name: 'app_home')]
+    #[Route('/radio', name: 'app_home',  methods:'GET')]
     public function index(AdvertisementRepository $advertRepo): Response
     {
         $adverts = $advertRepo->findAll([], ['createdAt' => 'DESC']);

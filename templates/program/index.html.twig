@@ -11,14 +11,11 @@
 
 <div class="example-wrapper">
     <h1> {{ pluralize(programs|length, 'program', 'programs') }}✅</h1>
-
      {% for prog in programs %}
          <article>
-        <h1>   {{prog.name}}</h1>
-       <p  class=" text-break "> {{prog.description}} </p>
-
-    </article>
+                <h1>  <a href="{{path('app_programs_show', {id: prog.id})}}" class=" text-muted text-decoration-none text-secondary" >  {{prog.name}} </a> </h1>
+                <p  class=" text-break "> {{prog.description}} </p>
+         </article>
       {% endfor %}
-   
 </div>
 {% endblock %}
