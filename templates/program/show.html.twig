@@ -1,0 +1,38 @@
+
+{% extends 'layout/base.html.twig' %}
+
+{% block title program.name %}
+
+{% block body %}
+	<div class="row mb-5">
+			
+			<div  class=" col-md-6 mx-auto">
+
+	<article  class=" p-3  bg-white rounded shadow" >
+					<div  class="mw-100  rounded-top overflow-hidden" >
+						
+							
+					</div>
+						<h1  class="h5  pt-1">  {{program.name}} </a> </h1> 
+						
+						
+
+				
+				<p  class=" text-break "> {{program.description}} </p>
+					<a class="btn btn-light" href="{{path('app_programs_edit', {id: program.id})}}"> Edit </a> |
+					<a class="btn btn-light" href="#"  onclick= "event.preventDefault() ; confirm('Are you sure ?') && document.getElementById('js-pin-delete-form').submit();"> Delete</a>
+				<form id="js-pin-delete-form" action="{{path('app_programs_delete', {id: program.id})}}" method="post" style="display: none;">
+					<input type="hidden" name="{{ csrf_token('programs_deletion' ~ program.id ) }}" id="">
+					<input type="hidden" name="_method" value="DELETE">
+
+				</form> |
+				 <a href="{{path('app_programs')}}" class=" text-muted text-decoration-none text-secondary" >  Go back!</a> 
+			<div class=" ">			
+				
+				
+				
+			</div>
+			</article>
+ </div>
+ </div>
+{% endblock %}
