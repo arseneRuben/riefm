@@ -78,11 +78,13 @@ class ProgramController extends AbstractController
     }
 
     /**
-     * @Route("/programs/edit/{id}", name="app_programs_edit", requirements={"id"="\d+"}, methods={"GET","POST"})
+     * @Route("/programs/edit/{id}", name="app_programs_edit", requirements={"id"="\d+"}, methods={"GET","PUT"})
      */
     public function edit(Request $request,Program $pin): Response
     {
-        $form = $this->createForm(ProgramType::class, $pin);
+        $form = $this->createForm(ProgramType::class, $pin, [
+            'method' => 'PUT',
+        ]);
 
         $form->handleRequest($request);
 
