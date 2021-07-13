@@ -1,0 +1,34 @@
+hwi_oauth:
+    # Define which firewalls will be used for oauth
+    # Usually, its only the main, but you can add it if you have a custom one
+    firewall_names: ["main"]
+    
+    # Define the resource_owners that your user can use to login into your app
+    # Note that the client_id and client_secret and key values are symfony parameters
+    # stored too in the config.yml from the previous step !
+    resource_owners:
+        github:
+            type:           github
+            client_id:      "%env(github_client_id)%"
+            client_secret:  "%env(github_secret)%"
+            scope: 'user:email,public_repo'
+        facebook:
+            type:           facebook
+            client_id:      "%env(facebook_client_id)%"
+            client_secret:  "%env(facebook_secret)%"
+            infos_url:     "https://graph.facebook.com/me?fields=id,name,email"
+            scope :   "email"
+            options:
+                display: popup
+                csrf: true
+        googleplus:
+            type:           google
+            client_id:      "%env(googleplus_client_id)%"
+            client_secret:  "%env(googleplus_secret)%"
+            scope:  "email profile"
+        stackexchange:
+            type:           stack_exchange
+            client_id:      "%env(stackexchange_client_id)%"
+            client_secret:  "%env(stackexchange_secret)%"
+            options:
+                key: "%env(stackexchange_key)%"

@@ -1,14 +1,23 @@
 <?php
 
 namespace App\Controller;
-
+use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class SecurityController extends AbstractController
 {
+    private $em;
+
+    public function __construct(EntityManagerInterface $em)
+    {
+        $this->em = $em;
+    }
+
     /**
      * @Route("/login", name="app_login")
      */
@@ -17,6 +26,16 @@ class SecurityController extends AbstractController
         // if ($this->getUser()) {
         //     return $this->redirectToRoute('target_path');
         // }
+        
+        
+
+        /*$plainPassword = 'root';
+        $encoded = $encoder->encodePassword($user, $plainPassword);
+        $roles[] = 'ROLE_USER';
+        $user->setRoles($roles);
+        $user->setPassword($encoded);
+        $this->em->persist($user);
+        $this->em->flush();*/
 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();

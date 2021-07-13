@@ -11,6 +11,11 @@ use App\Form\ProgramType;
 use App\Entity\Program;
 use Doctrine\ORM\EntityManagerInterface;
 
+/**
+ * Program controller.
+ *
+ * @Route("/programs")
+ */
 class ProgramController extends AbstractController
 {
     private $em;
@@ -20,7 +25,7 @@ class ProgramController extends AbstractController
         $this->em = $em;
     }
 
-    #[Route('/programs', name: 'app_programs',  methods:'GET')]
+    #[Route('/', name: 'app_programs',  methods:'GET')]
     public function index(ProgramRepository $repo): Response
     {
 
@@ -29,7 +34,7 @@ class ProgramController extends AbstractController
     }
 
        /**
-     * @Route("/programs/{id}", name="app_programs_show", requirements={"id"="\d+"}, methods={"GET"})
+     * @Route("/{id}", name="app_programs_show", requirements={"id"="\d+"}, methods={"GET"})
      */
     public function show(Program $program): Response
     {
@@ -37,14 +42,14 @@ class ProgramController extends AbstractController
     }
 
     /**
-     * @Route("/programs/{id}", name="app_programs_delete", requirements={"id"="\d+"}, methods={"DELETE"})
+     * @Route("/delete/{id}", name="app_programs_delete", requirements={"id"="\d+"}, methods={"DELETE"})
      */
     public function delete(Request $request,Program $program): Response
     {
+        dd(1);
         if($this->isCsrfTokenValid('programs_deletion'.$program->getId(), $request->request->get('crsf_token') )){
             $this->em->remove($program);
             $this->em->flush();
-
         }
          $this->addFlash('info', 'Program succesfully deleted');
         return $this->redirectToRoute('app_home');
@@ -55,7 +60,7 @@ class ProgramController extends AbstractController
 
 
     /**
-     * @Route("/programs/new",name= "app_programs_create", methods={"GET","POST"})
+     * @Route("/new",name= "app_programs_create", methods={"GET","POST"})
      */
     public function create(Request $request): Response
     {
@@ -70,7 +75,7 @@ class ProgramController extends AbstractController
             $this->em->persist($pin);
             $this->em->flush();
             $this->addFlash('success', 'Program succesfully created');
-            return $this->redirectToRoute('app_home'); // Apres une requete de type post, il est interessant de rediriger l̀utilisateur
+            return $this->redirectToRoute('app_programs'); // Apres une requete de type post, il est interessant de rediriger l̀utilisateur
     	}
 
     	 return $this->render('program/create.html.twig'
@@ -78,7 +83,7 @@ class ProgramController extends AbstractController
     }
 
     /**
-     * @Route("/programs/edit/{id}", name="app_programs_edit", requirements={"id"="\d+"}, methods={"GET","PUT"})
+     * @Route("/edit/{id}", name="app_programs_edit", requirements={"id"="\d+"}, methods={"GET","PUT"})
      */
     public function edit(Request $request,Program $pin): Response
     {

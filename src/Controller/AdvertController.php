@@ -11,7 +11,12 @@ use App\Entity\Advertisement;
 use App\Form\AdvertType;
 use Doctrine\ORM\EntityManagerInterface;
 
-class RadioController extends AbstractController
+/**
+ * Program controller.
+ *
+ * @Route("/adverts")
+ */
+class AdvertController extends AbstractController
 {
     private $em;
 
@@ -20,7 +25,7 @@ class RadioController extends AbstractController
         $this->em = $em;
     }
 
-    #[Route('/radio', name: 'app_home',  methods:'GET')]
+    #[Route('/', name: 'app_home',  methods:'GET')]
     public function index(AdvertisementRepository $advertRepo): Response
     {
         $adverts = $advertRepo->findAll([], ['createdAt' => 'DESC']);
@@ -29,7 +34,7 @@ class RadioController extends AbstractController
 
 
      /**
-     * @Route("/adverts/{id}", name="app_adverts_show", requirements={"id"="\d+"}, methods={"GET"})
+     * @Route("/{id}", name="app_adverts_show", requirements={"id"="\d+"}, methods={"GET"})
      */
     public function show(Advertisement $advert): Response
     {
@@ -37,7 +42,7 @@ class RadioController extends AbstractController
     }
 
     /**
-     * @Route("/adverts/create",name= "app_adverts_create", methods={"GET","POST"})
+     * @Route("/create",name= "app_adverts_create", methods={"GET","POST"})
      */
     public function create(Request $request): Response
     {
@@ -58,7 +63,7 @@ class RadioController extends AbstractController
 
 
      /**
-     * @Route("/adverts/edit/{id}", name="app_adverts_edit", requirements={"id"="\d+"}, methods={"GET","POST"})
+     * @Route("/edit/{id}", name="app_adverts_edit", requirements={"id"="\d+"}, methods={"GET","POST"})
      */
     public function edit(Request $request,Advertisement $advert): Response
     {
@@ -79,7 +84,7 @@ class RadioController extends AbstractController
     }
 
     /**
-     * @Route("/adverts/{id}", name="app_adverts_delete", requirements={"id"="\d+"}, methods={"DELETE"})
+     * @Route("/delete/{id}", name="app_adverts_delete", requirements={"id"="\d+"}, methods={"DELETE"})
      */
     public function delete(Request $request,Advertisement $advert): Response
     {
