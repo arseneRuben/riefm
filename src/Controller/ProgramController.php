@@ -42,17 +42,17 @@ class ProgramController extends AbstractController
     }
 
     /**
-     * @Route("/delete/{id}", name="app_programs_delete", requirements={"id"="\d+"}, methods={"DELETE"})
+     * @Route("/delete/{id}", name="app_programs_delete", requirements={"id"="\d+"})
      */
     public function delete(Request $request,Program $program): Response
     {
-        dd(1);
+        
         if($this->isCsrfTokenValid('programs_deletion'.$program->getId(), $request->request->get('crsf_token') )){
             $this->em->remove($program);
             $this->em->flush();
         }
          $this->addFlash('info', 'Program succesfully deleted');
-        return $this->redirectToRoute('app_home');
+        return $this->redirectToRoute('app_programs');
     }
 
    
@@ -83,20 +83,16 @@ class ProgramController extends AbstractController
     }
 
     /**
-     * @Route("/edit/{id}", name="app_programs_edit", requirements={"id"="\d+"}, methods={"GET","PUT"})
+     * @Route("/edit/{id}", name="app_programs_edit", requirements={"id"="\d+"})
      */
     public function edit(Request $request,Program $pin): Response
     {
-        $form = $this->createForm(ProgramType::class, $pin, [
-            'method' => 'PUT',
-        ]);
-
+        $form = $this->createForm(ProgramType::class, $pin);
         $form->handleRequest($request);
-
+       
         if($form->isSubmitted() && $form->isValid())
         {
-
-
+           
             $this->em->flush();
             $this->addFlash('success', 'Program succesfully updated');
 

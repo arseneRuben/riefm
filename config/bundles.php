@@ -14,6 +14,6 @@ return [
     Twig\Extra\TwigExtraBundle\TwigExtraBundle::class => ['all' => true],
     Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle::class => ['dev' => true, 'test' => true],
     KnpU\OAuth2ClientBundle\KnpUOAuth2ClientBundle::class => ['all' => true],
-    Http\HttplugBundle\HttplugBundle::class => ['all' => true], // add this
-    HWI\Bundle\OAuthBundle\HWIOAuthBundle::class => ['all' => true],// add this
+    Http\HttplugBundle\HttplugBundle::class => ['all' => true],
+    HWI\Bundle\OAuthBundle\HWIOAuthBundle::class => ['all' => true],
 ];

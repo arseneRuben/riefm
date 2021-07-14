@@ -75,7 +75,7 @@ class AdvertController extends AbstractController
         {
             $this->em->flush();
             $this->addFlash('success', 'Pin succesfully updated');
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('app_adverts');
         }
         return $this->render('advert/edit.html.twig'	, [
             'advert'=>$advert,
@@ -84,7 +84,7 @@ class AdvertController extends AbstractController
     }
 
     /**
-     * @Route("/delete/{id}", name="app_adverts_delete", requirements={"id"="\d+"}, methods={"DELETE"})
+     * @Route("/delete/{id}", name="app_adverts_delete", requirements={"id"="\d+"})
      */
     public function delete(Request $request,Advertisement $advert): Response
     {
@@ -94,7 +94,7 @@ class AdvertController extends AbstractController
 
         }
          $this->addFlash('info', 'Advertisement succesfully deleted');
-        return $this->redirectToRoute('app_home');
+        return $this->redirectToRoute('app_adverts');
     }
 
 }
