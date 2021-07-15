@@ -124,6 +124,9 @@
             "ref": "20cacc9b2da49d96ea55c8a8dd31324c5be88bc9"
         }
     },
+    "knplabs/knp-time-bundle": {
+        "version": "v1.16.1"
+    },
     "knpuniversity/oauth2-client-bundle": {
         "version": "1.20",
         "recipe": {
@@ -704,6 +707,9 @@
         "version": "1.2.0"
     },
     "twig/extra-bundle": {
+        "version": "v3.3.1"
+    },
+    "twig/string-extra": {
         "version": "v3.3.1"
     },
     "twig/twig": {

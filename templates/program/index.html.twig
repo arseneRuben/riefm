@@ -14,7 +14,9 @@
      {% for prog in programs %}
          <article>
                 <h1>  <a href="{{path('app_programs_show', {id: prog.id})}}" class=" text-muted text-decoration-none text-secondary" >  {{prog.name}} </a> </h1>
-                <p  class=" text-break "> {{prog.description}} </p>
+                <p  class=" text-break "> {{prog.description|u.truncate(55, '...', false) }} </p>
+              
+
          </article>
       {% endfor %}
 </div>

@@ -25,7 +25,7 @@ class AdvertController extends AbstractController
         $this->em = $em;
     }
 
-    #[Route('/', name: 'app_home',  methods:'GET')]
+    #[Route('/', name: 'app_adverts',  methods:'GET')]
     public function index(AdvertisementRepository $advertRepo): Response
     {
         $adverts = $advertRepo->findAll([], ['createdAt' => 'DESC']);
@@ -54,7 +54,7 @@ class AdvertController extends AbstractController
             $this->em->persist($advert);
             $this->em->flush();
             $this->addFlash('success', 'Advertisement succesfully created');
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('app_adverts');
     	}
 
     	 return $this->render('advert/create.html.twig'

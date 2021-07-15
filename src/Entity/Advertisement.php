@@ -5,6 +5,9 @@ namespace App\Entity;
 use App\Repository\AdvertisementRepository;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Traits\TimeStampable;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass=AdvertisementRepository::class)
@@ -23,11 +26,15 @@ class Advertisement
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Assert\Length(min=3)
      */
     private $title;
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\NotBlank
+     * @Assert\Length(min=10)
      */
     private $content;
 
