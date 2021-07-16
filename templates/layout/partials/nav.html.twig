@@ -1,41 +1,38 @@
- <nav class="navbar navbar-expand-sm navbar-light bg-light mb4" aria-label="Third navbar example">
-        <div class="container">
-            <a class="navbar-brand" href="{{ path('app_home') }}">Panterest</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample03" aria-controls="navbarsExample03" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
+<div id="header-wrapper" class="mb-4" >
+					<header id="header" class="container">
 
-          <div class="collapse navbar-collapse" id="navbarsExample03">
-            <ul class="navbar-nav ml-auto ">
-             {% if app.user %}
-              
-              <li class="nav-item {% if app.request.attributes.get('_route') == "app_pins_create" %}active{% endif %}" >
-                <a class="nav-link" href="{{ path('app_pins_create') }}">New pin</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link " aria-current="page" href="#">Acount</a>
+						<!-- Logo -->
+							<div id="logo">
+								<h1><a href="{{ path('app_home') }}">Radio Il Est Ecrit</a></h1>
+							
+							</div>
 
-              </li>
-               <li class="nav-item">
-                <a class="nav-link " aria-current="page" href="#">Logout</a>
-              </li>
+						<!-- Nav -->
+							<nav id="nav">
+								<ul>
+									<li class="current"><a href="{{ path('app_home') }}">Welcome</a></li>
+									<li>
+										<a href="#">Dropdown</a>
+										<ul>
+											<li><a href="#">Lorem ipsum dolor</a></li>
+											<li><a href="#">Magna phasellus</a></li>
+											<li>
+												<a href="#">Phasellus consequat</a>
+												<ul>
+													<li><a href="#">Lorem ipsum dolor</a></li>
+													<li><a href="#">Phasellus consequat</a></li>
+													<li><a href="#">Magna phasellus</a></li>
+													<li><a href="#">Etiam dolore nisl</a></li>
+												</ul>
+											</li>
+											<li><a href="#">Veroeros feugiat</a></li>
+										</ul>
+									</li>
+								<li><a href="{{ path('app_adverts') }}">Adverts</a></li>
+									<li><a href="{{ path('app_programs') }}">Programs</a></li>
+									<li><a href="{{ path('app_login') }}">login</a></li>
+								</ul>
+							</nav>
 
-              {% else %}
-
-               <li class="nav-item">
-                <a class="nav-link " aria-current="page" href="{{ path('app_register') }}">Register</a>
-
-              </li>
-               <li class="nav-item">
-                <a class="nav-link " aria-current="page" href="{{ path('app_login') }}">Login</a>
-              </li>
-              
-              {% endif %}
-            </ul>
-            
-          </div>
-        </div>
-      </nav>
-
-
-        
+					</header>
+</div>

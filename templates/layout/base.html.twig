@@ -5,19 +5,36 @@
         <title>
             {% block title 'RIE FM'  %}
         </title>
-        {# Run `composer require symfony/webpack-encore-bundle`
-           and uncomment the following Encore helpers to start using Symfony UX #}
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		
         {% block stylesheets %}
-            <link rel="stylesheet" type="text/css" href=" {{asset('build/app.css')}}">
+            <link rel="stylesheet" type="text/css" href=" {{asset('assets/css/main.css')}}">
+            <link href="{{asset('https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css')}}" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         {% endblock %}
 
         {% block javascripts %}
             {#{{ encore_entry_script_tags('app') }}#}
+            <script src="{{asset('https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js')}}" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
         {% endblock %}
     </head>
-    <body>
+
+    <body class="is-preload homepage">
          {{ include('layout/partials/flash_messages.html.twig') }}
-       
-        {% block body %}{% endblock %}
+        <div id="page-wrapper">
+          {% block header %}
+             <!-- Header -->
+				  {% include 'layout/partials/nav.html.twig' %}
+           {% endblock %}
+             <main role="main"  class="container">
+             {% block body %}
+                <!-- Banner -->
+                   {% include 'layout/partials/banner.html.twig' %}
+            {% endblock %}
+            </main>
+         {% block footer %}
+             <!-- Header -->
+				  {% include 'layout/partials/footer.html.twig' %}
+           {% endblock %}
+        </div>
     </body>
 </html>

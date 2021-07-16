@@ -29,7 +29,7 @@ class AdvertController extends AbstractController
     public function index(AdvertisementRepository $advertRepo): Response
     {
         $adverts = $advertRepo->findAll([], ['createdAt' => 'DESC']);
-        return $this->render('radio/index.html.twig', compact('adverts'));
+        return $this->render('advert/index.html.twig', compact('adverts'));
     }
 
 
