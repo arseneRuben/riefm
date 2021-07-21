@@ -1,4 +1,11 @@
 {{form_start(form)}}
 	  {{form_widget(form)}}
+<div class="row">
+<div class="col-md-6 mx-auto">
 <input type="submit" value="{{submitButtonText}}" class="btn btn-primary btn-block" formnovalidate >
+</div>
+<div class="col-md-6 mx-auto">
+<a  class="btn btn-secondary btn-block" href="{{path('app_home')}}"> Go back </a>
+</div>
+</div>
 {{form_end(form)}}
