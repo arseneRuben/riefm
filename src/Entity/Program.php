@@ -26,7 +26,7 @@ class Program
      /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      * 
-     * @Vich\UploadableField(mapping="pin_image", fileNameProperty="imageName")
+     * @Vich\UploadableField(mapping="program_image", fileNameProperty="imageName")
      * @Assert\Image(maxSize="8M")
      * 
      * @var File|null
