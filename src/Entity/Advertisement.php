@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\AdvertisementRepository;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Traits\TimeStampable;
+use App\Entity\Traits\HasUploadableField;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
@@ -13,10 +14,12 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  * @ORM\Entity(repositoryClass=AdvertisementRepository::class)
  * @ORM\Table(name="advertisements")
  * @ORM\HasLifecycleCallbacks
+ * @Vich\Uploadable
  */
 class Advertisement
 {
     use TimeStampable;
+    use HasUploadableField;
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
