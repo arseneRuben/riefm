@@ -6,6 +6,7 @@ use App\Repository\ProgramRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Traits\TimeStampable;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
@@ -13,9 +14,12 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 /**
  * @ORM\Entity(repositoryClass=ProgramRepository::class)
  * @ORM\Table(name="programs")
+ * @Vich\Uploadable
+ * @ORM\HasLifecycleCallbacks
  */
 class Program
 {
+    use TimeStampable;
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

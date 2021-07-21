@@ -6,6 +6,7 @@ use App\Entity\Program;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class ProgramType extends AbstractType
 {
@@ -13,8 +14,21 @@ class ProgramType extends AbstractType
     {
         $builder
             ->add('name')
+            
+           
+            ->add('imageFile', VichImageType::class, [
+                 'label' => 'Image(JPG or PNG)', 
+                'required' => false,
+                'allow_delete' => true,
+                
+              //   'imagine_pattern' => 'squared_thumbnail_small',
+                'download_uri' => false,
+                
+            ])
+
             ->add('description')
             ->add('interactive')
+            ->add('description')
         ;
     }
 
