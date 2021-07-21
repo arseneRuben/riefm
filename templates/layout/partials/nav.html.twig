@@ -3,34 +3,40 @@
 
 						<!-- Logo -->
 							<div id="logo">
-								<h1><a href="{{ path('app_home') }}">Radio Il Est Ecrit</a></h1>
+								<h1><a href="{{ path('app_home') }}">RIE</a></h1>
 							
 							</div>
 
 						<!-- Nav -->
 							<nav id="nav">
 								<ul>
-									<li class="current"><a href="{{ path('app_home') }}">Welcome</a></li>
+									<li class="{% if app.request.attributes.get('_route') == "app_home" %}current{% endif %}" ><a href="{{ path('app_home') }}"><a href="{{ path('app_home') }}">Welcome</a></li>
 									<li>
 										<a href="#">Dropdown</a>
 										<ul>
 											<li><a href="#">Lorem ipsum dolor</a></li>
 											<li><a href="#">Magna phasellus</a></li>
 											<li>
-												<a href="#">Phasellus consequat</a>
+												<a href="{{ path('app_adverts') }}">Adverts</a>
 												<ul>
-													<li><a href="#">Lorem ipsum dolor</a></li>
-													<li><a href="#">Phasellus consequat</a></li>
-													<li><a href="#">Magna phasellus</a></li>
-													<li><a href="#">Etiam dolore nisl</a></li>
+													<li ><a  href="{{ path('app_adverts_create') }}">new</a></li>
+													
+													
 												</ul>
 											</li>
-											<li><a href="#">Veroeros feugiat</a></li>
+											<li>
+												<a href="{{ path('app_programs') }}">Programs</a>
+												<ul>
+													<li><a href="{{ path('app_programs_create') }}">New</a></li>
+													
+													
+												</ul>
+											</li>
 										</ul>
 									</li>
-								<li><a href="{{ path('app_adverts') }}">Adverts</a></li>
-									<li><a href="{{ path('app_programs') }}">Programs</a></li>
-									<li><a href="{{ path('app_login') }}">login</a></li>
+								
+									<li class="{% if app.request.attributes.get('_route') == "app_login" %}current{% endif %}" ><a href="{{ path('app_login') }}">login</a></li>
+									<li class="{% if app.request.attributes.get('_route') == "app_login" %}current{% endif %}"><a href="{{ path('app_login') }}">Register</a></li>
 								</ul>
 							</nav>
 
