@@ -121,6 +121,15 @@ input, select, textarea {
 		line-height: 2.25em;
 	}
 
+	.advert img {
+		transition: transform 0.3s ease-in-out;
+	}
+	.advert img:hover  {
+			transform: scale(1.075);
+		}
+	
+
+
 	a {
 		color: #0090c5;
 		text-decoration: underline;
