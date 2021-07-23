@@ -21,7 +21,7 @@ class ProgramType extends AbstractType
                 'required' => false,
                 'allow_delete' => true,
                 
-              //   'imagine_pattern' => 'squared_thumbnail_small',
+               'imagine_pattern' => 'program_filter_square_small',
                 'download_uri' => false,
                 
             ])

@@ -29,7 +29,16 @@ class Program
      */
     private $id;
 
-     
+    /**
+     * NOTE: This is not a mapped field of entity metadata, just a simple property.
+     * 
+     * @Vich\UploadableField(mapping="program_image", fileNameProperty="imageName")
+     * @Assert\Image(maxSize="8M")
+     * 
+     * @var File|null
+     */
+    private $imageFile;
+
 
     /**
      * @ORM\Column(type="string", length=255)

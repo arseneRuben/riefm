@@ -10,3 +10,12 @@ vich_uploader:
             inject_on_load: false
             delete_on_update: true
             delete_on_remove: true 
+        advert_image:
+            uri_prefix: /uploads/adverts/
+            upload_destination: '%kernel.project_dir%/public/uploads/adverts'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+
+            inject_on_load: false
+            delete_on_update: true
+            delete_on_remove: true 
+

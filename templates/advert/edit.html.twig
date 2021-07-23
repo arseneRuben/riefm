@@ -8,10 +8,10 @@
     <div class="col-md-6 mx-auto">
     <article>
         <h1>  Edit advertisement #  {{advert.id}}</h1>
-        {{include('partials/_form.html.twig',{'submitButtonText':'Update advertisement'})}}
+       	{{include('partials/_form.html.twig',{'submitButtonText':'Update', 'returnRoute':'app_adverts'} )}}
 
     </article>
     </div>
     </div>
-    <a href="{{path('app_adverts')}}"> Go back </a>
+    
 {% endblock %}

@@ -15,6 +15,15 @@ class AdvertType extends AbstractType
         $builder
             ->add('title')
             ->add('content')
+            ->add('imageFile', VichImageType::class, [
+                'label' => 'Image(JPG or PNG)', 
+               'required' => false,
+               'allow_delete' => true,
+               
+               'imagine_pattern' => 'program_filter_square_small',
+               'download_uri' => false,
+               
+           ])
            
         ;
     }

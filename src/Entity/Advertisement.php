@@ -28,6 +28,17 @@ class Advertisement
     private $id;
 
     /**
+     * NOTE: This is not a mapped field of entity metadata, just a simple property.
+     * 
+     * @Vich\UploadableField(mapping="advert_image", fileNameProperty="imageName")
+     * @Assert\Image(maxSize="8M")
+     * 
+     * @var File|null
+     */
+    private $imageFile;
+
+
+    /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
      * @Assert\Length(min=3)
