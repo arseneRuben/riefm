@@ -8,9 +8,9 @@
 			
 			<div  class=" col-md-6 mx-auto">
 
-	<article  class=" p-3  bg-white rounded shadow" >
+	<article  class="advert p-3  bg-white rounded shadow" >
 					<div  class="mw-100  rounded-top overflow-hidden" >
-						
+						<img src="{{ (advert.imageName ? vich_uploader_asset(advert) : asset('uploads/adverts/placeholder.jpg'))| imagine_filter('advert_filter_square_medium') }}" alt="{{ advert.title }}" class="w-100 ">
 							
 					</div>
 						<h1  class="h5  pt-1">  <a href="{{path('app_adverts_show', {id: advert.id})}}" class=" text-muted text-decoration-none text-secondary" >  {{advert.title}} </a> </h1> 
