@@ -1,22 +1,30 @@
 
 {% extends 'layout/base.html.twig' %}
 
-{% block title program.name %}
+{% block name program.name %}
 
 {% block body %}
 	<div class="row mb-5">
 			
 			<div  class=" col-md-6 mx-auto">
 
-	<article  class=" p-3  bg-white rounded shadow" >
+	<article  class="program p-3  bg-white rounded shadow" >
 					<div  class="mw-100  rounded-top overflow-hidden" >
-						
+						<img src="{{ (program.imageName ? vich_uploader_asset(program) : asset('uploads/programs/program_default.PNG'))| imagine_filter('advert_filter_square_medium') }}" alt="{{ program.name }}" class="w-100 ">
+							
 					</div>
-						<h1  class="h5  pt-1">  {{program.name}}  </h1> 
-				
+						<h1  class="h5  pt-1">  <a href="{{path('app_programs_show', {id: program.id})}}" class=" text-muted text-decoration-none text-secondary" >  {{program.name}} </a> </h1> 
+						
+						<p  class="pd-2 pb-2 text-muted" >  Submitted at <time datetime= "{{program.createdAt|date('Y-m-d H:m:s')}}">{{program.createdAt|date('d-m-Y')}} </time> by user </p>
+						  <p  class="pd-2 pb-2 text-muted" >  or  {{program.createdAt|ago}} by  AUTHOR NAME</p>
+						  <p  class="pd-2 pb-2 text-muted" > 
+								{% if  program.interactive  %} 
+									<label><input type=checkbox checked name=cheese > Intectactif</label>
+								{% endif  %}
+							</p>
 				<p  class=" text-break "> {{program.description}} </p>
 					<a class="btn btn-light" href="{{path('app_programs_edit', {id: program.id})}}"> Edit </a> |
-					<a class="btn btn-light" href="#"  onclick= "event.preventDefault() ; confirm('Are you sure ?') && document.getElementById('js-programs-delete-form').submit();"> Delete</a>
+					<a class="btn btn-light" href="del"  onclick= "event.preventDefault() ; confirm('Are you sure ?') && document.getElementById('js-programs-delete-form').submit();"> Delete</a>
 				<form id="js-programs-delete-form" action="{{path('app_programs_delete', {id: program.id})}}" method="post" style="display: none;">
 					<input type="hidden" name="{{ csrf_token('programs_deletion' ~ program.id ) }}" id="">
 					<input type="hidden" name="_method" value="DELETE">

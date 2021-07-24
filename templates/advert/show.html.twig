@@ -19,7 +19,6 @@
 						  <p  class="pd-2 pb-2 text-muted" >  or  {{advert.createdAt|ago}} by  AUTHOR NAME{</p>
 						
 
-				
 				<p  class=" text-break "> {{advert.content}} </p>
 					<a class="btn btn-light" href="{{path('app_adverts_edit', {id: advert.id})}}"> Edit </a> |
 					<a class="btn btn-light" href="del"  onclick= "event.preventDefault() ; confirm('Are you sure ?') && document.getElementById('js-adverts-delete-form').submit();"> Delete</a>

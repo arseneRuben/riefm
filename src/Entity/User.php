@@ -3,15 +3,26 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use App\Entity\Traits\HasUploadableField;
+use App\Entity\Traits\TimeStampable;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @Vich\Uploadable
+ * @ORM\HasLifecycleCallbacks
+ * @ORM\Table(name="users")
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+
+    use TimeStampable;
+    use HasUploadableField;
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -64,6 +75,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /** @ORM\Column(name="stackexchange_access_token", type="string", length=255, nullable=true) */
     private $stackexchange_access_token;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Advertisement::class, mappedBy="author")
+     */
+    private $advertisements;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $firstName;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $lastName;
+
+    public function __construct()
+    {
+        $this->advertisements = new ArrayCollection();
+    }
 
     public function setGithubId($githubId) {
         $this->github_id = $githubId;
@@ -233,6 +264,60 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    /**
+     * @return Collection|Advertisement[]
+     */
+    public function getAdvertisements(): Collection
+    {
+        return $this->advertisements;
+    }
+
+    public function addAdvertisement(Advertisement $advertisement): self
+    {
+        if (!$this->advertisements->contains($advertisement)) {
+            $this->advertisements[] = $advertisement;
+            $advertisement->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAdvertisement(Advertisement $advertisement): self
+    {
+        if ($this->advertisements->removeElement($advertisement)) {
+            // set the owning side to null (unless already changed)
+            if ($advertisement->getAuthor() === $this) {
+                $advertisement->setAuthor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+
+    public function setFirstName(?string $firstName): self
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
+    public function setLastName(string $lastName): self
+    {
+        $this->lastName = $lastName;
+
+        return $this;
     }
 
   

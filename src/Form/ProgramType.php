@@ -28,7 +28,7 @@ class ProgramType extends AbstractType
 
             ->add('description')
             ->add('interactive')
-            ->add('description')
+           
         ;
     }
 
