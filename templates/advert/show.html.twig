@@ -15,8 +15,8 @@
 					</div>
 						<h1  class="h5  pt-1">  <a href="{{path('app_adverts_show', {id: advert.id})}}" class=" text-muted text-decoration-none text-secondary" >  {{advert.title}} </a> </h1> 
 						
-						<p  class="pd-2 pb-2 text-muted" >  Submitted at <time datetime= "{{advert.createdAt|date('Y-m-d H:m:s')}}">{{advert.createdAt|date('d-m-Y')}} </time> by user </p>
-						  <p  class="pd-2 pb-2 text-muted" >  or  {{advert.createdAt|ago}} by  AUTHOR NAME{</p>
+						<p  class="pd-2 pb-2 text-muted" >  Submitted at <time datetime= "{{advert.createdAt|date('Y-m-d H:m:s')}}">{{advert.createdAt|date('d-m-Y')}} </time> </p>
+						  <p  class="pd-2 pb-2 text-muted" >  or  {{advert.createdAt|ago}} by  {{advert.author.fullName}}</p>
 						
 
 				<p  class=" text-break "> {{advert.content}} </p>
