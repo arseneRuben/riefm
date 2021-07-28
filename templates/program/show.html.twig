@@ -4,11 +4,14 @@
 {% block name program.name %}
 
 {% block body %}
+	<div  class="row ">
+		<h2  class=" text-break "> Toutes les editions </h2>
+		 </div>
 	<div class="row mb-5">
 			
-			<div  class=" col-md-6 mx-auto">
+		<div  class=" col-md-3 ">
 
-	<article  class="program p-3  bg-white rounded shadow" >
+			<article  class="program p-3  bg-white rounded shadow" >
 					<div  class="mw-100  rounded-top overflow-hidden" >
 						<img src="{{ (program.imageName ? vich_uploader_asset(program) : asset('uploads/programs/program_default.PNG'))| imagine_filter('advert_filter_square_medium') }}" alt="{{ program.name }}" class="w-100 ">
 							
@@ -31,12 +34,14 @@
 
 				</form> |
 				 <a href="{{path('app_programs')}}" class=" text-muted text-decoration-none text-secondary" >  Go back!</a> 
-			<div class=" ">			
-				
-				
-				
-			</div>
+				<div class=" ">			
+				</div>
 			</article>
- </div>
+ 		</div>
+		 <div  class="col-md-9 ">
+		 </div>
+		 
+		 
+
  </div>
 {% endblock %}

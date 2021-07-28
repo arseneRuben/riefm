@@ -15,7 +15,7 @@
 	<h1 class="mb-4 text-center text-muted" > {{ pluralize(adverts|length, 'Annonce' , 'Annonces')  }}  </h1>
 	<div class="container">
 		
-		<div class="slideshow-container block">
+		<div class="slideshow-container mx-auto">
 					{% for advert in adverts %}
 						<div class="mySlides fade">    
 							<div class="numbertext">  {{ loop.index }} /{{ loop.length }}    </div>
