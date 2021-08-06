@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\PodCast;
+use App\Entity\Program;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -18,6 +19,19 @@ class PodCastRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, PodCast::class);
     }
+
+    /*public function findByProgram(Program $prog)
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->leftJoin('p.program', 'prog')
+            ->where('p.e')
+            ->andWhere('eval.course=:course')
+            ->orderBy('std.lastname')
+            ->setParameter('sequence', $sequence->getId())
+            ->setParameter('course', $course->getId());
+        return $qb->getQuery()->getResult();
+    }*/
+
 
     // /**
     //  * @return PodCast[] Returns an array of PodCast objects

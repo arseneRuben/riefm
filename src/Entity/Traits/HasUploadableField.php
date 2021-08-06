@@ -9,6 +9,7 @@ trait HasUploadableField
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $imageName;
+    
 
     public function getImageName(): ?string
     {

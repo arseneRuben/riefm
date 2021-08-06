@@ -1,4 +1,4 @@
-<div id="header-wrapper" class="mb-4" >
+<div id="header-wrapper" class="mb-2" >
 					<header id="header" class="container">
 
 						<!-- Logo -->
@@ -16,7 +16,7 @@
 										<a href="#">Dropdown</a>
 										<ul>
 											<li><a href="#">Lorem ipsum dolor</a></li>
-											<li><a href="#">Magna phasellus</a></li>
+											<li><a href="{{ path('app_podcasts_create') }}">Podcast</a></li>
 											<li>
 												<a href="{{ path('app_adverts') }}">Adverts</a>
 												<ul>
@@ -37,7 +37,7 @@
 									</li>
 								{% if  app.user %} 
 									<li class="{% if app.request.attributes.get('_route') == "app_login" %}current{% endif %}" ><a href="{{ path('app_login') }}">Account</a></li>
-									<li class="{% if app.request.attributes.get('_route') == "app_login" %}current{% endif %}"><a href="{{ path('app_login') }}">Logout</a></li>
+									<li class="{% if app.request.attributes.get('_route') == "app_login" %}current{% endif %}"><a href="{{ path('app_logout') }}">Logout</a></li>
 								{% else  %}
 									<li class="{% if app.request.attributes.get('_route') == "app_login" %}current{% endif %}" ><a href="{{ path('app_login') }}">login</a></li>
 									<li class="{% if app.request.attributes.get('_route') == "app_login" %}current{% endif %}"><a href="{{ path('app_login') }}">Register</a></li>

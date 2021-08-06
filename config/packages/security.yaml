@@ -1,9 +1,8 @@
 security:
     # https://symfony.com/doc/current/security/experimental_authenticators.html
-    enable_authenticator_manager: false
-    password_hashers:
-        App\Entity\User:
-            algorithm: auto
+    enable_authenticator_manager: true
+    encoders:
+        App\Entity\User: auto
 
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
@@ -23,12 +22,16 @@ security:
             logout:
                 path: app_logout
                 # where to redirect after logout
-                # target: app_any_route
-            guard:
-                authenticators:
-                    - App\Security\AppAuthenticator
+                target: app_programs
+            remember_me:
+                secret:   '%kernel.secret%'
+                lifetime: 604800 # 1 week in seconds
+                path:     /
+            
+            custom_authenticator: App\Security\AppAuthenticator
+            
         
-            anonymous: ~
+            #anonymous: ~
             oauth:
                 resource_owners:
                     facebook:           "/login/check-facebook"
@@ -41,6 +44,7 @@ security:
 
                 oauth_user_provider:
                     service: oauth_aware_user_provider
+            
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
@@ -52,5 +56,5 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        # - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }

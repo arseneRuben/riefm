@@ -39,6 +39,40 @@
 			</article>
  		</div>
 		 <div  class="col-md-9 ">
+		 	<table>
+				<tr>
+					{# sorting of properties based on query components #}
+					
+					<th{% if pagination.isSorted('p.createdAt') %} class="sorted"{% endif %}>
+						{{ knp_pagination_sortable(pagination, 'createdAt', 'p.createdAt') }}
+					</th>
+					<th{% if pagination.isSorted(['p.title']) %} class="sorted"{% endif %}>
+						{{ knp_pagination_sortable(pagination, 'Release', ['p.title']) }}
+					</th>
+					<th>
+						File
+					</th>
+				</tr>
+
+				{# table body #}
+				{% for article in pagination %}
+					<tr {% if loop.index is odd %}class="color"{% endif %}>
+						<td>{{ article.title}}</td>
+						
+						<td>{{ article.createdAt | date('Y-m-d') }}</td>
+						<td>
+							<audio controls autoplay muted  src="{{asset('uploads/podcasts/'~article.fileName)}}" type="audio/mp3" controls="controls">
+								Your browser does not support the audio element.
+							</audio>
+
+						</td>
+					</tr>
+				{% endfor %}
+			</table>
+{# display navigation #}
+<div class="navigation">
+    {{ knp_pagination_render(pagination) }}
+</div>
 		 </div>
 		 
 		 

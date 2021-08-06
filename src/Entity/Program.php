@@ -63,13 +63,14 @@ class Program
   
     public function __construct()
     {
-       
         
     }
 
     
-
-
+    public function __tostring()
+    {
+        return $this->name;
+    }
 
     
 

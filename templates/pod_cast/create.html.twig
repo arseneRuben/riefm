@@ -1,0 +1,18 @@
+
+{% extends 'layout/base.html.twig' %}
+
+{% block title 'new podcast'  %}
+
+{% block body %}
+<div class="row">
+ 	<div class="col-md-6 mx-auto">
+ 		<article>
+			<h1>  Create Podcast</h1>
+			{{include('partials/_form.html.twig',{'submitButtonText':'Create podcast', 'returnRoute':'app_programs'} )}}
+
+		</article>
+		
+	</div>
+</div>
+
+{% endblock %}

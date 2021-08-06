@@ -7,8 +7,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\ProgramRepository;
+use App\Repository\PodCastRepository;
 use App\Form\ProgramType;
 use App\Entity\Program;
+use App\Entity\Podcast; 
+use Knp\Component\Pager\PaginatorInterface;
+
+
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
@@ -28,7 +33,7 @@ class ProgramController extends AbstractController
     #[Route('/', name: 'app_programs',  methods:'GET')]
     public function index(ProgramRepository $repo): Response
     {
-
+      //  phpinfo();
         $programs  = $repo->findAll([], ['id' => 'DESC']);
         return $this->render('program/index.html.twig', compact('programs'));
     }
@@ -36,9 +41,23 @@ class ProgramController extends AbstractController
        /**
      * @Route("/{id}", name="app_programs_show", requirements={"id"="\d+"}, methods={"GET"})
      */
-    public function show(Program $program): Response
+    public function show(PodcastRepository $podcastRepository, PaginatorInterface $paginator, Request $request,Program $program): Response
     {
-    	  return $this->render('program/show.html.twig', compact("program"));
+        $em = $this->getDoctrine()->getManager();
+     
+
+        $allPodCasts = $podcastRepository->findBy( ['program' => $program],);
+        $podCasts = $paginator->paginate($allPodCasts,$request->query->get('page', 1),4);
+       // $paginator->set('AppBundle:pagination:twitter_bootstrap_v3_pagination.html.twig');
+      //  $paginator->setSortableTemplate('AppBundle:pagination:twitter_bootstrap_v3_sortable_link.html.twig');
+        $podCasts->setCustomParameters([
+            'position' => 'centered',
+            'size' => 'large',
+            'rounded' => true,
+        ]);
+
+
+    	  return $this->render('program/show.html.twig', ['pagination' => $podCasts,  'program'=> $program ]);
     }
 
     /**
