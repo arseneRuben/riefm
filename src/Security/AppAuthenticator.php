@@ -4,6 +4,7 @@ namespace App\Security;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -20,14 +21,16 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
-
+use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
 use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
 use Symfony\Component\Security\Guard\PasswordAuthenticatedInterface;
+use Symfony\Component\Security\Core\User\UserProviderInterface ;
+use Symfony\Component\Security\Core\User\UserInterface;
+use App\Entity\User;
 
 
 
-
-class AppAuthenticator extends AbstractLoginFormAuthenticator implements PasswordAuthenticatedInterface
+class AppAuthenticator extends AbstractFormLoginAuthenticator implements PasswordAuthenticatedInterface
 {
     use TargetPathTrait;
 
@@ -73,11 +76,12 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator implements Passwor
         return new RedirectResponse($this->urlGenerator->generate('app_adverts'));
     }
 
-    protected function getLoginUrl(Request $request): string
+    protected function getLoginUrl(): string
     {
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);
     }
 
+    
     public function supports(Request $request): bool
     {
         return $request->attributes->get('_route') === self::LOGIN_ROUTE && $request->isMethod('POST')  ;
@@ -86,10 +90,11 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator implements Passwor
     public function getCredentials(Request $request)
     {
        
+       
         $credentials =  [
             'email'=>$request->request->get('email'),
-            'pasword'=>$request->request->get('password'),
-            'crsf_token'=>$request->request->get('_crsf_token'),
+            'password'=>$request->request->get('password'),
+            'csrf_token'=>$request->request->get('_csrf_token'),
         ];
        
         $request->getSession()->set(
@@ -103,12 +108,10 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator implements Passwor
      public function getUser($credentials, UserProviderInterface $userProvider)
     {
         $token = new CsrfToken('authenticate', $credentials['csrf_token']);
-        if (!$this->csrfTokenManager->isTokenValid($token)) {
+        if (!$this->crsfTokenManager->isTokenValid($token)) {
             throw new InvalidCsrfTokenException();
         }
-
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $credentials['email']]);
-
         if (!$user) {
             // fail authentication with a custom error
             throw new CustomUserMessageAuthenticationException('Email could not be found.');
@@ -119,7 +122,7 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator implements Passwor
 
     public function checkCredentials($credentials, UserInterface $user)
     {
-        dd($this->passwordEncoder);
+      
         return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
     }
 

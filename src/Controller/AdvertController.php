@@ -88,7 +88,7 @@ class AdvertController extends AbstractController
      */
     public function delete(Request $request,Advertisement $advert): Response
     {
-        if($this->isCsrfTokenValid('pins_deletion'.$advert->getId(), $request->request->get('crsf_token') )){
+        if($this->isCsrfTokenValid('adverts_deletion'.$advert->getId(), $request->request->get('crsf_token') )){
             $this->em->remove($advert);
             $this->em->flush();
 

@@ -24,19 +24,12 @@ class SecurityController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
          if ($this->getUser()) {
-            $this->addFlash('error', 'Already logged in');
+            $this->addFlash('warning', 'Already logged in');
              return $this->redirectToRoute('app_adverts');
          }
         
         
 
-        /*$plainPassword = 'root';
-        $encoded = $encoder->encodePassword($user, $plainPassword);
-        $roles[] = 'ROLE_USER';
-        $user->setRoles($roles);
-        $user->setPassword($encoded);
-        $this->em->persist($user);
-        $this->em->flush();*/
 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();

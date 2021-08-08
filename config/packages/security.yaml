@@ -17,7 +17,11 @@ security:
             security: false
         main:
             lazy: true
+            #anonymous: true
             provider: app_user_provider
+            guard:
+                authenticators:
+                    - App\Security\AppAuthenticator
             #custom_authenticator: App\Security\AppAuthenticator
             logout:
                 path: app_logout
@@ -28,7 +32,8 @@ security:
                 lifetime: 604800 # 1 week in seconds
                 path:     /
             
-            custom_authenticator: App\Security\AppAuthenticator
+            
+            #custom_authenticator: App\Security\AppAuthenticator
             
         
             #anonymous: ~

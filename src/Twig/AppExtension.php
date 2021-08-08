@@ -5,9 +5,17 @@ namespace App\Twig;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
+use Symfony\Component\Security\Core\Security;
 
 class AppExtension extends AbstractExtension
 {
+    private $security;
+
+    public function __construct(Security $security) {
+       $this->security = $security;
+    }
+
+
     public function getFilters(): array
     {
         return [

@@ -74,4 +74,18 @@ class PodCastController extends AbstractController
     	 return $this->render('pod_cast/create.html.twig'
     	 	, ['form'=>$form->createView()]);
     }
+
+     /**
+     * @Route("/delete/{id}", name="app_podcasts_delete", requirements={"id"="\d+"})
+     */
+    public function delete(Request $request,PodCast $pod): Response
+    {
+        if($this->isCsrfTokenValid('podcasts_deletion'.$pod->getId(), $request->request->get('crsf_token') )){
+            $this->em->remove($pod);
+            $this->em->flush();
+
+        }
+         $this->addFlash('info', 'Podcast succesfully deleted');
+        return $this->redirectToRoute('app_programs');
+    }
 }

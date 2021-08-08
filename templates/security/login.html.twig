@@ -9,13 +9,14 @@
         {% endblock %}
 
 {% block body %}
-<form method="post">
+
     {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        <div class=" alert alert-danger rounded">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
 
+     
     {% if app.user %}
-        <div class="mb-3">
+        <div class="mb-3 alert alert-info">
             You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
         </div>
     {% endif %}
@@ -31,7 +32,7 @@
                     </div>
                     <div class="card-body p-4 p-sm-5">
                         <h5 class="card-title text-center mb-5 fw-light fs-5">Please Sign In</h5>
-                        <form>
+                        <form method="post">
 
                         
                         <div class="form-floating mb-3">
@@ -45,7 +46,9 @@
                             <input type="password" name="password"  id="password"  class="form-control" id="floatingPassword" required >
                             <label for="password">Password</label>
                         </div>
-                         <input type="hidden" name="_csrf_token"   value="{{csrf_token('authenticate')}}" class="form-control" id="floatingPassword" >
+
+                         <input type="hidden" name="_csrf_token"   value="{{csrf_token('authenticate')}}">
+                       
                         <div class="form-check checkbox mb-2 d-flex justify-content-between">
                             <label class="form-check-label" for="flexCheckDefault">
                             <input type="checkbox" class="form-check-input" name="_remember_me"> 
@@ -57,7 +60,7 @@
                             <button class="btn btn-lg btn-primary btn-login fw-bold text-uppercase" type="submit">login</button>
                         </div>
 
-                        <a class="d-block text-center mt-2 small" href="#">No account? Sign Up</a>
+                        <a class="d-block text-center mt-2 small" href="{{ path('app_register') }}">No account? Sign Up</a>
 
                         <hr class="my-2">
 
