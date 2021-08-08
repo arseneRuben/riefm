@@ -25,6 +25,9 @@ security:
             #custom_authenticator: App\Security\AppAuthenticator
             logout:
                 path: app_logout
+                csrf_parameter: csrf_token
+                csrf_token_id: signout
+                csrf_token_generator: Symfony\Component\Security\Csrf\CsrfTokenManagerInterface
                 # where to redirect after logout
                 target: app_programs
             remember_me:

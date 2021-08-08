@@ -51,6 +51,7 @@ class AdvertController extends AbstractController
     	$form->handleRequest($request);
     	if($form->isSubmitted() && $form->isValid())
     	{
+            $advert->setAuthor($this->getUser());
             $this->em->persist($advert);
             $this->em->flush();
             $this->addFlash('success', 'Advertisement succesfully created');

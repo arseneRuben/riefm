@@ -12,6 +12,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use App\Entity\Traits\HasUploadableField;
 use App\Entity\Traits\TimeStampable;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 /**
@@ -45,7 +46,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @var string The hashed password
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="string", nullable=false)
+     * @Assert\NotBlank
      */
     private $password;
 
@@ -85,12 +87,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $advertisements;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\NotBlank
      */
     private $firstName;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $lastName;
 
