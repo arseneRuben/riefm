@@ -26,12 +26,17 @@ class RegistrationController extends AbstractController
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
+        if ($this->getUser()) {
+            $this->addFlash('primary', 'Already logged in');
+             return $this->redirectToRoute('app_adverts');
+         }
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
        
+        
         if ($form->isSubmitted() && $form->isValid()) {
-            dd($user);
+           
             // encode the plain password
             $user->setPassword(
                 $passwordEncoder->encodePassword(

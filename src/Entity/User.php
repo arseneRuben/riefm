@@ -85,12 +85,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $advertisements;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255)
      */
     private $firstName;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255)
      */
     private $lastName;
 

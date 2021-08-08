@@ -18,8 +18,10 @@ class RegistrationFormType extends AbstractType
     {
         $builder
             ->add('email')
-          
+            ->add('firstName')
+            ->add('lastName')
             ->add('agreeTerms', CheckboxType::class, [
+                'label' => 'I consent to the privacy and terms of service',
                 'mapped' => false,
                 'constraints' => [
                     new IsTrue([
@@ -51,6 +53,7 @@ class RegistrationFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'csrf_protection' => false,
         ]);
     }
 }

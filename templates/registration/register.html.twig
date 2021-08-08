@@ -10,7 +10,7 @@
 
 {% block body %}
     {% for flashError in app.flashes('verify_email_error') %}
-        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+        <div class="alert alert-danger m-3" role="alert">{{ flashError }}</div>
     {% endfor %}
 
   <div class="container-fluid px-1 px-md-5 px-lg-1 px-xl-5 py-5 mx-auto">
@@ -28,16 +28,29 @@
                         
                         
                         {{ form_start(registrationForm) }}
+                        <div class="form-floating mb-3 ">
+                                  {{ form_widget(registrationForm.firstName) }}
+                                {{ form_errors(registrationForm.firstName) }}
+                                <label for="email">Prenom</label>
+                        </div>
+                         <div class="form-floating mb-3 ">
+                                  {{ form_widget(registrationForm.lastName) }}
+                                {{ form_errors(registrationForm.lastName) }}
+                                <label for="email">Nom</label>
+                        </div>
+                        
 
                         <div class="form-floating mb-3">
 
                            {{ form_widget(registrationForm.email) }}
-                            {{ form_errors(registrationForm.email) }}
+                            <div class="form-floating mb-3">
+                                {{ form_errors(registrationForm.email) }}
+                             </div>
                             <label for="email">Email address</label>
                            
                         </div>
 
-                        <hr>
+                       
 
                          <div class="form-floating mb-3">
                            {{ form_widget(registrationForm.plainPassword) }}
@@ -54,6 +67,7 @@
                              <a class="" href="#">Terms</a>
                             
                         </div>
+                      
                          <div class="d-grid mb-2">
                             <button class="btn btn-lg btn-primary btn-login fw-bold text-uppercase" type="submit">Register</button>
                         </div>
@@ -63,13 +77,13 @@
                         <hr class="my-2">
 
                         <div class="d-grid mb-2">
-                            <button class="btn btn-lg btn-google btn-login fw-bold text-uppercase" type="submit">
+                            <button class="btn btn-lg btn-google btn-login fw-bold text-uppercase">
                             <i class="fab fa-google me-2"></i> Sign up with Google
                             </button>
                         </div>
 
                         <div class="d-grid">
-                            <button class="btn btn-lg btn-facebook btn-login fw-bold text-uppercase" type="submit">
+                            <button class="btn btn-lg btn-facebook btn-login fw-bold text-uppercase">
                             <i class="fab fa-facebook-f me-2"></i> Sign up with Facebook
                             </button>
                         </div>
@@ -79,7 +93,7 @@
                     </div>
 
                   
-
+         {{ form_rest(registrationForm) }}
       
        
 
