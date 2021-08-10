@@ -1,0 +1,30 @@
+{% extends 'layout/base.html.twig' %}
+
+{% block title %}Reset your password{% endblock %}
+
+{% block body %}
+
+     <div class="container">
+          
+            <div class="row">
+                <div class="col-lg-6 col-xl-6 mx-auto">
+                    <div class="card flex-row my-5 border-0 shadow rounded-3 overflow-hidden">
+                    <div class="card-img-left d-none d-md-flex">
+                        <!-- Background image for card set in CSS! -->
+                    </div>
+                    <div class="card-body p-4 p-sm-5">
+                        <h5 class="card-title text-center mb-5 fw-light fs-5">Reset your password</h5>
+    
+
+                        {{ form_start(resetForm) }}
+                            {{ form_row(resetForm.plainPassword) }}
+                             <hr class="my-2">
+                            <div class="d-grid mb-2">
+                                   <button class="btn btn-lg btn-primary btn-login fw-bold text-uppercase">Reset password</button>
+                             </div>
+                        {{ form_end(resetForm) }}
+                     </div>
+                  </div>
+            </div>
+    </div>
+{% endblock %}
