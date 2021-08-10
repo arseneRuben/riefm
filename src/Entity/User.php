@@ -21,6 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\HasLifecycleCallbacks
  * @ORM\Table(name="users")
  * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
+ * @UniqueEntity(fields={"firstName", "lastName"}, message="There is already an account with this firstname and lastname")
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -46,7 +47,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @var string The hashed password
-     * @ORM\Column(type="string", nullable=false)
+     * @ORM\Column(type="string", nullable=true)
      * @Assert\NotBlank
      */
     private $password;
