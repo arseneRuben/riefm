@@ -332,7 +332,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getFullName(): ?string
+    public function getAvatar(int $size = 50): ?string
+    {
+        return "https://www.gravatar.com/avatar/". md5(strtolower(trim($this->getEmail())))."/?s=".$size;
+    }
+
+    public function getFullName (): ?string
     {
         return $this->firstName . ' ' . $this->lastName ;
     }

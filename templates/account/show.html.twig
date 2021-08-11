@@ -1,0 +1,22 @@
+{% extends 'layout/base.html.twig' %}
+
+{% block title 'Profile'  %}
+
+{% block body %}
+<div class="row">
+ 	<div class="col-md-6 mx-auto text-center">
+ 		<p>
+			<h1 class="my-5">  Profile</h1>
+            	<img src="{{ app.user.avatar(75) }}" class="shadow rounded-circle" alt=" {{app.user.fullName}}̀ avatar " />
+                  <p  class="pd-2 pb-2 text-muted lead" >   {{app.user.email}}</p>
+                 <p  class="pd-2 pb-2 text-muted" > <h2>  {{app.user.fullName}} </h2></p>
+                 
+                  <p>
+                  <a class="btn btn-light" href="">Edit account </a> |<a class="btn btn-light" href=""> Change password </a>
+                </p>
+		</p>
+		
+	</div>
+</div>
+
+{% endblock %}

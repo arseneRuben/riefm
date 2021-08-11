@@ -36,7 +36,7 @@
 										</ul>
 									</li>
 								{% if  app.user %} 
-									<li class="{% if app.request.attributes.get('_route') == "app_login" %}current{% endif %}" ><a href="{{ path('app_login') }}">Account</a></li>
+									<li class="{% if app.request.attributes.get('_route') == "app_account" %}current{% endif %}" ><a href="{{ path('app_account') }}">Account</a></li>
 									<li class="{% if app.request.attributes.get('_route') == "app_logout" %}current{% endif %}"><a href="#" onclick="event.preventDefault(); document.getElementById('js-logout-form').submit()">Logout</a></li>
 									<form id="js-logout-form" action="{{ path('app_logout') }}" method="POST" style="display:none;">
 										<input type="hidden" name="csrf_token" value="{{ csrf_token('signout') }}">

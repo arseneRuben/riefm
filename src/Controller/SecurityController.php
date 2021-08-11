@@ -25,7 +25,7 @@ class SecurityController extends AbstractController
     {
          if ($this->getUser()) {
             $this->addFlash('primary', 'Already logged in');
-             return $this->redirectToRoute('app_adverts');
+             return $this->redirectToRoute('app_account');
          }
         
         
