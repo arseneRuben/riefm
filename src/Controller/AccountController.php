@@ -7,7 +7,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\UserFormType;
+use App\Form\ChangePasswordFormType;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 
 class AccountController extends AbstractController
@@ -46,6 +48,38 @@ class AccountController extends AbstractController
 
 
         return $this->render('account/edit.html.twig'	, [
+            'form'=>$form->createView()
+        ]);
+    }
+
+
+     /**
+     * @Route("/account/changepwd", name="app_account_changepwd", methods={"GET","POST"})
+     */
+    public function changePwd(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
+    {
+        $form = $this->createForm(ChangePasswordFormType::class);
+        $form->handleRequest($request);
+        $user = $this->getUser();
+
+        //$form = $this->createForm(UserFormType::class, $user);
+      
+
+        if($form->isSubmitted() && $form->isValid())
+    	{
+            $user->setPassword(
+                $passwordEncoder->encodePassword(
+                    $user,
+                    $form->get('plainPassword')->getData()
+                )
+            );
+            $this->em->flush();
+            $this->addFlash('success', 'Account successfully modified');
+            return $this->redirectToRoute('app_account');
+        }
+
+
+        return $this->render('account/changepwd.html.twig'	, [
             'form'=>$form->createView()
         ]);
     }
