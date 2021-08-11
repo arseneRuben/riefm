@@ -1,0 +1,38 @@
+
+{% extends 'layout/base.html.twig' %}
+
+{% block title 'edit user #' ~ app.user.id  %}
+
+{% block body %}
+<article>
+      <h1>  Edit user #  {{app.user.fullName}}</h1>
+  <div class="col-lg-6 col-xl-6 mx-auto">
+      {{form_start(form)}}
+      <div class="row">
+        <div class="col-md-6 ">
+            {{form_row(form.firstName)}}
+        </div>
+
+        <div class="col-md-6 ">
+        {{form_row(form.lastName)}}
+        </div>
+ 	 </div>
+       <div class="row">
+        <div class="col-md-6 ">
+            {{form_row(form.email)}}
+        </div>
+
+        
+        
+ 	 </div>
+      <br/>
+
+        <button class="btn btn-lg btn-primary  btn-block" type="submit">Apply changes</button>
+        {{form_end(form)}}
+    </div>
+
+    
+ </article>
+   
+  
+{% endblock %}
