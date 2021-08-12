@@ -58,7 +58,9 @@ class AccountController extends AbstractController
      */
     public function changePwd(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
-        $form = $this->createForm(ChangePasswordFormType::class);
+        $form = $this->createForm(ChangePasswordFormType::class, null, [
+            'current_password_required' => true,
+        ]);
         $form->handleRequest($request);
         $user = $this->getUser();
 
