@@ -10,7 +10,7 @@
 
 {% block body %}
     {% for flashError in app.flashes('verify_email_error') %}
-        <div class="alert alert-danger m-3" role="alert">{{ flashError }}</div>
+        <div class="alert alert-danger text-center m-3" role="alert">{{ flashError }}</div>
     {% endfor %}
 
   <div class="container-fluid px-1 px-md-5 px-lg-1 px-xl-5 py-5 mx-auto">
@@ -43,9 +43,9 @@
                         <div class="form-floating mb-3">
 
                            {{ form_widget(registrationForm.email) }}
-                            <div class="form-floating mb-3">
+                            
                                 {{ form_errors(registrationForm.email) }}
-                             </div>
+                            
                             <label for="email">Email address</label>
                            
                         </div>
@@ -62,14 +62,14 @@
                          <div class="form-check checkbox mb-2 d-flex justify-content-between">
                             <label class="form-check-label" for="flexCheckDefault">
                              {{ form_widget(registrationForm.agreeTerms) }}
-                              {{ form_errors(registrationForm.agreeTerms) }}
+                             
                              </label>
                              <a class="" href="#">Terms</a>
                             
                         </div>
                       
                          <div class="d-grid mb-2">
-                            <button class="btn btn-lg btn-primary btn-login fw-bold text-uppercase" type="submit">Register</button>
+                            <button class="btn btn-lg btn-primary btn-login fw-bold text-uppercase" type="submit" formnovalidate>Register</button>
                         </div>
 
                         <a class="d-block text-center mt-2 small" href="{{ path('app_login') }}">An account? Sign In</a>

@@ -42,10 +42,11 @@ class AdvertController extends AbstractController
     }
 
     /**
-     * @Route("/create",name= "app_adverts_create", methods={"GET","POST"})
+     * @Route("/create",name= "admin_adverts_create", methods={"GET","POST"})
      */
     public function create(Request $request): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $advert = new Advertisement();
     	$form = $this->createForm(AdvertType::class, $advert);
     	$form->handleRequest($request);
@@ -68,6 +69,21 @@ class AdvertController extends AbstractController
      */
     public function edit(Request $request,Advertisement $advert): Response
     {
+        if(!$this->getUser()){
+            $this->addFlash('danger', 'You need to log in first!');
+            return $this->redirectToRoute('app_login');
+        }
+        if(!$this->getUser()->isVerified()){
+            $this->addFlash('danger', 'You need to have a verified account!');
+            return $this->redirectToRoute('app_home');
+        }
+
+        if($advert->getAuthor() != $this->getUser()){
+            $this->addFlash('danger', 'Access Forbidden!');
+            return $this->redirectToRoute('app_adverts');
+        }
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $form = $this->createForm(AdvertType::class, $advert);
 
         $form->handleRequest($request);
@@ -85,10 +101,26 @@ class AdvertController extends AbstractController
     }
 
     /**
-     * @Route("/delete/{id}", name="app_adverts_delete", requirements={"id"="\d+"})
+     * @Route("/delete/{id}", name="admin_adverts_delete", requirements={"id"="\d+"})
      */
     public function delete(Request $request,Advertisement $advert): Response
     {
+        if(!$this->getUser()){
+            $this->addFlash('danger', 'You need to log in first!');
+            return $this->redirectToRoute('app_login');
+        }
+        if(!$this->getUser()->isVerified()){
+            $this->addFlash('danger', 'You need to have a verified account!');
+            return $this->redirectToRoute('app_home');
+        }
+
+        
+        if($advert->getAuthor() != $this->getUser()){
+            $this->addFlash('danger', 'Access Forbidden!');
+            return $this->redirectToRoute('app_adverts');
+        }
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         if($this->isCsrfTokenValid('adverts_deletion'.$advert->getId(), $request->request->get('crsf_token') )){
             $this->em->remove($advert);
             $this->em->flush();

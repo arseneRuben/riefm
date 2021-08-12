@@ -5,7 +5,7 @@
 
 {% block body %}
 	<div  class="row ">
-		<h2  class=" text-break "> Toutes les editions </h2>
+		<h2  class=" text-break text-center"> Toutes les editions </h2>
 		 </div>
 	<div class="row mb-5">
 			
@@ -26,9 +26,9 @@
 								{% endif  %}
 							</p>
 				<p  class=" text-break "> {{program.description}} </p>
-					<a class="btn btn-light" href="{{path('app_programs_edit', {id: program.id})}}"> Edit </a> |
+					<a class="btn btn-light" href="{{path('admin_programs_edit', {id: program.id})}}"> Edit </a> |
 					<a class="btn btn-light" href="del"  onclick= "event.preventDefault() ; confirm('Are you sure ?') && document.getElementById('js-programs-delete-form').submit();"> Delete</a>
-				<form id="js-programs-delete-form" action="{{path('app_programs_delete', {id: program.id})}}" method="post" style="display: none;">
+				<form id="js-programs-delete-form" action="{{path('admin_programs_delete', {id: program.id})}}" method="post" style="display: none;">
 					<input type="hidden" name="{{ csrf_token('programs_deletion' ~ program.id ) }}" id="">
 					<input type="hidden" name="_method" value="DELETE">
 
@@ -43,11 +43,12 @@
 				<tr>
 					{# sorting of properties based on query components #}
 					
-					<th{% if pagination.isSorted('p.createdAt') %} class="sorted"{% endif %}>
-						{{ knp_pagination_sortable(pagination, 'createdAt', 'p.createdAt') }}
-					</th>
+					
 					<th{% if pagination.isSorted(['p.title']) %} class="sorted"{% endif %}>
 						{{ knp_pagination_sortable(pagination, 'Release', ['p.title']) }}
+					</th>
+					<th{% if pagination.isSorted('p.createdAt') %} class="sorted"{% endif %}>
+						{{ knp_pagination_sortable(pagination, 'createdAt', 'p.createdAt') }}
 					</th>
 					<th>
 						File
@@ -57,7 +58,7 @@
 				{# table body #}
 				{% for article in pagination %}
 					<tr {% if loop.index is odd %}class="color"{% endif %}>
-						<td>{{ article.title}}</td>
+						<td><a href="{{path('app_podcasts_show', {id: article.id})}}">{{ article.title}}</a></td>
 						
 						<td>{{ article.createdAt | date('Y-m-d') }}</td>
 						<td>

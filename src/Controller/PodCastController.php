@@ -17,6 +17,7 @@ use App\Repository\UserRepository;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 
+
 class PodCastController extends AbstractController
 {
     private $em;
@@ -25,20 +26,33 @@ class PodCastController extends AbstractController
     {
         $this->em = $em;
     }
+
+    /**
+     * @Route("podcast/{id}", name="app_podcasts_show", requirements={"id"="\d+"}, methods={"GET"})
+     */
+    public function show(Podcast $podcast): Response
+    {
+    	  return $this->render('pod_cast/show.html.twig', compact("podcast"));
+    }
+
      /**
-     * @Route("/new",name= "app_podcasts_create", methods={"GET","POST"})
+     * @Route("admin/podcast/new",name= "admin_podcasts_create", methods={"GET","POST"})
      */
     public function create(Request $request , SluggerInterface $slugger, UserRepository $userRepository): Response
     {
+        if(!$this->getUser()){
+            $this->addFlash('danger', 'You need to log in first!');
+            return $this->redirectToRoute('app_login');
+        }
+        if(!$this->getUser()->isVerified()){
+            $this->addFlash('danger', 'You need to have a verified account!');
+            return $this->redirectToRoute('app_home');
+        }
         $post= new PodCast();
     	$form = $this->createForm(PodCastType::class, $post);
-        
-        
     	$form->handleRequest($request);
-    	
     	if($form->isSubmitted() && $form->isValid())
     	{
-
              /** @var UploadedFile $audioFile */
             $audioFile = $form->get('audioFile')->getData();
              // this condition is needed because the 'audioFile' field is not required
@@ -76,10 +90,18 @@ class PodCastController extends AbstractController
     }
 
      /**
-     * @Route("/delete/{id}", name="app_podcasts_delete", requirements={"id"="\d+"})
+     * @Route("admin/podcast/delete/{id}", name="admin_podcasts_delete", requirements={"id"="\d+"})
      */
     public function delete(Request $request,PodCast $pod): Response
     {
+        if(!$this->getUser()){
+            $this->addFlash('danger', 'You need to log in first!');
+            return $this->redirectToRoute('app_login');
+        }
+        if(!$this->getUser()->isVerified()){
+            $this->addFlash('danger', 'You need to have a verified account!');
+            return $this->redirectToRoute('app_home');
+        }
         if($this->isCsrfTokenValid('podcasts_deletion'.$pod->getId(), $request->request->get('crsf_token') )){
             $this->em->remove($pod);
             $this->em->flush();

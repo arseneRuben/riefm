@@ -10,7 +10,7 @@
 
 	<article  class="advert p-3  bg-white rounded shadow" >
 					<div  class="mw-100  rounded-top overflow-hidden" >
-						<img src="{{ (podcast.imageName ? vich_uploader_asset(podcast) : asset('{podcast.program.imageName}'))| imagine_filter('podcast_filter_square_medium') }}" alt="{{ podcast.title }}" class="w-100 ">
+						<img src="{{ (podcast.imageName ? vich_uploader_asset(podcast) : asset('{podcast.program.imageName}'))| imagine_filter('podcast_filter_square_small') }}" alt="{{ podcast.title }}" class="w-100 ">
 							
 					</div>
 						<h1  class="h5  pt-1">  <a href="{{path('app_podcasts_show', {id: podcast.id})}}" class=" text-muted text-decoration-none text-secondary" >  {{podcast.title}} </a> </h1> 
@@ -19,15 +19,19 @@
 						  <p  class="pd-2 pb-2 text-muted" >  or  {{podcast.createdAt|ago}} by  {{podcast.author.fullName}}</p>
 						
 
-				<p  class=" text-break "> {{podcast.content}} </p>
-					<a class="btn btn-light" href="{{path('app_podcasts_edit', {id: podcast.id})}}"> Edit </a> |
+				<p  class=" text-break "> 
+					<audio controls autoplay muted  src="{{asset('uploads/podcasts/'~podcast.fileName)}}" type="audio/mp3" controls="controls">
+								Your browser does not support the audio element.
+							</audio>	
+				 </p>
+					
 					<a class="btn btn-light" href="del"  onclick= "event.preventDefault() ; confirm('Are you sure ?') && document.getElementById('js-podcasts-delete-form').submit();"> Delete</a>
 				<form id="js-podcasts-delete-form" action="{{path('app_podcasts_delete', {id: podcast.id})}}" method="post" style="display: none;">
 					<input type="hidden" name="{{ csrf_token('podcasts_deletion' ~ podcast.id ) }}" id="">
 					<input type="hidden" name="_method" value="DELETE">
 
 				</form> |
-				 <a href="{{path('app_podcasts')}}" class=" text-muted text-decoration-none text-secondary" >  Go back!</a> 
+				 <a href="{{path('app_programs_show', {id: podcast.program.id})}}" class=" text-muted text-decoration-none text-secondary" >  Go back!</a> 
 			<div class=" ">			
 				
 				

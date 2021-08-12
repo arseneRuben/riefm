@@ -139,6 +139,11 @@ class AppAuthenticator extends AbstractFormLoginAuthenticator implements Passwor
     }
 
 
-   
+    public function start(Request $request, AuthenticationException $authException=null)
+    {
+        $request->getSession()->getFlashBag()->add('danger', 'You need to log in first!');
+        $url = $this->getLoginUrl();
+        return new RedirectResponse($url);
+    }
 
 }

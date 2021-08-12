@@ -6,35 +6,38 @@ use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Security\EmailVerifier;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use App\Security\AppAuthenticator;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
 class RegistrationController extends AbstractController
 {
-    private $emailVerifier;
+    private EmailVerifier $emailVerifier;
 
     public function __construct(EmailVerifier $emailVerifier)
     {
         $this->emailVerifier = $emailVerifier;
     }
 
-    #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
+    #[Route('/register', name: 'app_register', methods: ["GET", "POST"])]
+    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder , GuardAuthenticatorHandler $guardHandler, AppAuthenticator $authenticator, EntityManagerInterface $em): Response
     {
         if ($this->getUser()) {
             $this->addFlash('primary', 'Already logged in');
-             return $this->redirectToRoute('app_home');
+             return $this->redirectToRoute('app_account');
          }
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         
         $form->handleRequest($request);
-      //  dd($user);
+       
         
         if ($form->isSubmitted() && $form->isValid()) {
             
@@ -42,13 +45,13 @@ class RegistrationController extends AbstractController
             $user->setPassword(
                 $passwordEncoder->encodePassword(
                     $user,
-                    $form->get('plainPassword')->getData()
+                    $form['plainPassword']->getData()
                 )
             );
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
-            $entityManager->flush();
+            
+            $em->persist($user);
+            $em->flush();
     
             // generate a signed url and email it to the user
             $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
@@ -59,6 +62,12 @@ class RegistrationController extends AbstractController
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
             // do anything else you need here, like send an email
+           /* return $guardHandler->authenticateUserAndHandleSuccess(
+                $user,
+                $request,
+                $authenticator,
+                'main' // firewall name in security.yaml
+            );*/
 
             return $this->redirectToRoute('app_login');
         }

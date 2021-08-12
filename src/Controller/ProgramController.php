@@ -16,11 +16,7 @@ use Knp\Component\Pager\PaginatorInterface;
 
 use Doctrine\ORM\EntityManagerInterface;
 
-/**
- * Program controller.
- *
- * @Route("/programs")
- */
+
 class ProgramController extends AbstractController
 {
     private $em;
@@ -30,7 +26,7 @@ class ProgramController extends AbstractController
         $this->em = $em;
     }
 
-    #[Route('/', name: 'app_programs',  methods:'GET')]
+    #[Route('/programs/', name: 'app_programs',  methods:'GET')]
     public function index(ProgramRepository $repo): Response
     {
       //  phpinfo();
@@ -39,7 +35,7 @@ class ProgramController extends AbstractController
     }
 
        /**
-     * @Route("/{id}", name="app_programs_show", requirements={"id"="\d+"}, methods={"GET"})
+     * @Route("/admin/programs/{id}", name="app_programs_show", requirements={"id"="\d+"}, methods={"GET"})
      */
     public function show(PodcastRepository $podcastRepository, PaginatorInterface $paginator, Request $request,Program $program): Response
     {
@@ -61,10 +57,11 @@ class ProgramController extends AbstractController
     }
 
     /**
-     * @Route("/delete/{id}", name="app_programs_delete", requirements={"id"="\d+"})
+     * @Route("/admin/programs/delete/{id}", name="admin_programs_delete", requirements={"id"="\d+"})
      */
     public function delete(Request $request,Program $program): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         
         if($this->isCsrfTokenValid('programs_deletion'.$program->getId(), $request->request->get('crsf_token') )){
             $this->em->remove($program);
@@ -79,10 +76,11 @@ class ProgramController extends AbstractController
 
 
     /**
-     * @Route("/new",name= "app_programs_create", methods={"GET","POST"})
+     * @Route("/admin/programs/new",name= "admin_programs_create", methods={"GET","POST"})
      */
     public function create(Request $request): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $pin = new Program();
     	$form = $this->createForm(ProgramType::class, $pin);
         
@@ -102,10 +100,11 @@ class ProgramController extends AbstractController
     }
 
     /**
-     * @Route("/edit/{id}", name="app_programs_edit", requirements={"id"="\d+"})
+     * @Route("/admin/programs/edit/{id}", name="admin_programs_edit", requirements={"id"="\d+"})
      */
     public function edit(Request $request,Program $pin): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $form = $this->createForm(ProgramType::class, $pin);
         $form->handleRequest($request);
        
