@@ -10,8 +10,13 @@ use App\Form\UserFormType;
 use App\Form\ChangePasswordFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 
+/**
+ * @IsGranted("ROLE_USER")
+ * @Route("/account")
+ */
 class AccountController extends AbstractController
 {
 
@@ -21,20 +26,22 @@ class AccountController extends AbstractController
     {
         $this->em = $em;
     }
-    #[Route('/account', name: 'app_account')]
+    #[Route('/', name: 'app_account')]
     public function show(): Response
     {
+        
         return $this->render('account/show.html.twig', [
            
         ]);
     }
 
      /**
-     * @Route("/account/edit", name="app_account_edit", methods={"GET","POST"})
+     * @Route("/edit", name="app_account_edit", methods={"GET","POST"})
      */
     public function edit(Request $request): Response
     {
       
+       
         $user = $this->getUser();
 
         $form = $this->createForm(UserFormType::class, $user);
@@ -54,10 +61,11 @@ class AccountController extends AbstractController
 
 
      /**
-     * @Route("/account/changepwd", name="app_account_changepwd", methods={"GET","POST"})
+     * @Route("/changepwd", name="app_account_changepwd", methods={"GET","POST"})
      */
     public function changePwd(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
+      
         $form = $this->createForm(ChangePasswordFormType::class, null, [
             'current_password_required' => true,
         ]);
