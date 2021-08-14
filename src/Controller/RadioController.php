@@ -5,14 +5,33 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\UserRepository;
 
 class RadioController extends AbstractController
 {
-    #[Route('/radio', name: 'app_home')]
-    public function index(): Response
+    private $em;
+
+    public function __construct(EntityManagerInterface $em)
     {
-        return $this->render('radio/index.html.twig', [
-           
-        ]);
+        $this->em = $em;
+    }
+    #[Route('/radio', name: 'app_home')]
+    public function index(UserRepository $repo): Response
+    {
+        /*$users  = $repo->findAll();
+        foreach( $users as $user ) {
+            if($user->getFirstName()=='alain2') $user->addRole('ROLE_ADMIN');
+             if($user->getFirstName()=='Maurice') $user->addRole('ROLE_ADMIN');
+             $this->em->persist($user);
+        }
+       
+        
+        $this->em->flush();*/
+        
+        
+     
+        $users  = $repo->findAdminUsers();
+        return $this->render('radio/index.html.twig', compact('users'));
     }
 }

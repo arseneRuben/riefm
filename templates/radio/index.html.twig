@@ -3,6 +3,35 @@
 {% block title %}Hello RadioController!{% endblock %}
 
 {% block body %}
+{% if  users|length > 0  %} 
+	<h1 class="mb-2 text-center text-muted" > Team  </h1>
+	 {% for row in users|batch(4) %}
+		<div class="row m-3 p-3">
+			{% for user in row %}
+			<div  class="col-md-3" >
+				<article  class="bg-white  shadow  text-center" >
 
+					<div  class="mw-10 rounded-top overflow-hidden" >
+						{% if user.avatar is not null and user.avatar is defined  %}
+                           
+							<img src="{{ user.avatar(120) }}" class="shadow rounded-circle" alt=" {{user.fullName}} " />
+                        {%  else  %}
+                            <img src="{{asset('uploads/team.png')}}" class="shadow rounded-circle" alt=" " />
+                      
+                        {% endif %}
+                       
+                                    
+                                    <h4 class="capitale">{{ user.fullName }}  </h4>
+
+                    </div>
+				
+
+				</article>
+			</div>
+			{% endfor %}
+		</div>
+	{% endfor %}
+
+{% endif  %}
 
 {% endblock %}

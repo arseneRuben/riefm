@@ -15,7 +15,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\UserRepository;
 use Symfony\Component\String\Slugger\SluggerInterface;
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 
 class PodCastController extends AbstractController
@@ -37,6 +38,7 @@ class PodCastController extends AbstractController
 
      /**
      * @Route("admin/podcast/new",name= "admin_podcasts_create", methods={"GET","POST"})
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function create(Request $request , SluggerInterface $slugger, UserRepository $userRepository): Response
     {
@@ -91,6 +93,7 @@ class PodCastController extends AbstractController
 
      /**
      * @Route("admin/podcast/delete/{id}", name="admin_podcasts_delete", requirements={"id"="\d+"})
+     * @Security("is_granted('MANAGE_PODCAST', pod)")
      */
     public function delete(Request $request,PodCast $pod): Response
     {

@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Controller;
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,10 +44,11 @@ class AdvertController extends AbstractController
 
     /**
      * @Route("/create",name= "admin_adverts_create", methods={"GET","POST"})
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function create(Request $request): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        
         $advert = new Advertisement();
     	$form = $this->createForm(AdvertType::class, $advert);
     	$form->handleRequest($request);
@@ -65,7 +67,8 @@ class AdvertController extends AbstractController
 
 
      /**
-     * @Route("/edit/{id}", name="app_adverts_edit", requirements={"id"="\d+"}, methods={"GET","POST"})
+     * @Route("/edit/{id}", name="admin_adverts_edit", requirements={"id"="\d+"}, methods={"GET","POST"})
+     * @Security("is_granted('MANAGE_ADVERT', advert)")
      */
     public function edit(Request $request,Advertisement $advert): Response
     {
@@ -82,7 +85,7 @@ class AdvertController extends AbstractController
             $this->addFlash('danger', 'Access Forbidden!');
             return $this->redirectToRoute('app_adverts');
         }
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+       
 
         $form = $this->createForm(AdvertType::class, $advert);
 
@@ -102,6 +105,7 @@ class AdvertController extends AbstractController
 
     /**
      * @Route("/delete/{id}", name="admin_adverts_delete", requirements={"id"="\d+"})
+     * @Security("is_granted('MANAGE_ADVERT', advert)")
      */
     public function delete(Request $request,Advertisement $advert): Response
     {

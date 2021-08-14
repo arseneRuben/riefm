@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -58,11 +60,10 @@ class ProgramController extends AbstractController
 
     /**
      * @Route("/admin/programs/delete/{id}", name="admin_programs_delete", requirements={"id"="\d+"})
+     * @Security("is_granted('MANAGE_PROGRAM', program)")
      */
     public function delete(Request $request,Program $program): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
-        
         if($this->isCsrfTokenValid('programs_deletion'.$program->getId(), $request->request->get('crsf_token') )){
             $this->em->remove($program);
             $this->em->flush();
@@ -77,10 +78,11 @@ class ProgramController extends AbstractController
 
     /**
      * @Route("/admin/programs/new",name= "admin_programs_create", methods={"GET","POST"})
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function create(Request $request): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+       
         $pin = new Program();
     	$form = $this->createForm(ProgramType::class, $pin);
         
@@ -101,11 +103,12 @@ class ProgramController extends AbstractController
 
     /**
      * @Route("/admin/programs/edit/{id}", name="admin_programs_edit", requirements={"id"="\d+"})
+     * @Security("is_granted('MANAGE_PROGRAM', program)")
      */
-    public function edit(Request $request,Program $pin): Response
+    public function edit(Request $request,Program $program): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
-        $form = $this->createForm(ProgramType::class, $pin);
+        $form = $this->createForm(ProgramType::class, $program);
         $form->handleRequest($request);
        
         if($form->isSubmitted() && $form->isValid())
@@ -117,7 +120,7 @@ class ProgramController extends AbstractController
             return $this->redirectToRoute('app_programs');
         }
         return $this->render('program/edit.html.twig'	, [
-            'program'=>$pin,
+            'program'=>$program,
             'form'=>$form->createView()
         ]);
     }

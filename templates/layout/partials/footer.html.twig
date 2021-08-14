@@ -1,5 +1,6 @@
 <div id="footer-wrapper">
 					<footer id="footer" class="container">
+					 {% if app.user %}
 						<div class="row">
 							<div class="col-3 col-6-medium col-12-small">
 
@@ -65,8 +66,9 @@
 
 							</div>
 						</div>
+					{% endif %}
 						<div class="row">
-							<div class="col-12">
+							<div class="col-12 text-center mx-auto">
 								<div id="copyright">
 									<ul class="menu">
 										<li class="text-muted"> 
