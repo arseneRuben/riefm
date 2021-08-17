@@ -62,17 +62,26 @@
 
                         <hr class="my-2">
 
+                        
+                        <div class="d-grid">
+                            <a   class="btn btn-lg btn-facebook btn-login fw-bold text-uppercase" href="{{ path('hwi_oauth_service_redirect', {'service': 'facebook' }) }}">
+                           
+                            <i class="fab fa-facebook-f me-2"></i> Sign in with Facebook
+                            </a>
+                        </div>
+                        <div class="d-grid">
+                            <a   class="btn btn-lg  btn-secondary btn-login fw-bold text-uppercase" href="{{ path('hwi_oauth_service_redirect', {'service': 'github' }) }}">
+                           
+                            <i class="fab fa-github  me-2" aria-hidden="true"></i> Sign in with Github
+                            </a>
+                        </div>
+
                         <div class="d-grid mb-2">
                             <button class="btn btn-lg btn-google btn-login fw-bold text-uppercase" type="submit">
                             <i class="fab fa-google me-2"></i> Sign in with Google
                             </button>
                         </div>
 
-                        <div class="d-grid">
-                            <button class="btn btn-lg btn-facebook btn-login fw-bold text-uppercase" type="submit">
-                            <i class="fab fa-facebook-f me-2"></i> Sign in with Facebook
-                            </button>
-                        </div>
 
                         </form>
                     </div>

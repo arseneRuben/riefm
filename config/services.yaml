@@ -7,6 +7,8 @@ parameters:
     audio_directory: '%kernel.project_dir%/public/uploads/podcasts'
     app.mail_from_name:  'RIE'
     app.mail_from_address:  'noreply@rie.fm'
+    app.github_id: '%env(github_client_id)%'
+    app.github_secret: '%env(github_client_secret)%'
 
 services:
     # default configuration for services in *this* file
@@ -16,6 +18,7 @@ services:
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
+    
     App\:
         resource: '../src/'
         exclude:
@@ -24,7 +27,11 @@ services:
             - '../src/Kernel.php'
             - '../src/Tests/'
     oauth_aware_user_provider:
-        class: HWI\Bundle\OAuthBundle\Security\Core\User\OAuthUserProvider
+        class: App\Security\RieUserProvider
+        arguments:
+            - '@doctrine'
+            - 'App/Entity/User'
+            - {facebook: facebook_id}, {github: github_id}
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 # app/config/services.yml

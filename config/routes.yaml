@@ -1,6 +1,12 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+facebook_login:
+    path: /login/check-facebook
+
+github_login:
+    path: /login/check-github
+    
 hwi_oauth_redirect:
   resource: "@HWIOAuthBundle/Resources/config/routing/redirect.xml"
   prefix: /connect

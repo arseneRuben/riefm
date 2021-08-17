@@ -37,6 +37,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\Email()
      */
     private $email;
 
@@ -47,7 +48,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @var string The hashed password
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="string",length=255, nullable=true)
      
      */
     private $password;
@@ -106,6 +107,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->advertisements = new ArrayCollection();
+        $this->getRoles();
     }
 
     public function setGithubId($githubId) {
@@ -246,7 +248,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function addRole($role): self
     {
         array_push($this->roles, $role);
-        
+        $this->setRoles(array_unique($this->roles));
         return $this;
     }
 

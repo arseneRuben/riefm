@@ -27,14 +27,14 @@
              <!-- Header -->
 				  {% include 'layout/partials/nav.html.twig' %}
            {% endblock %}
-             <main class="container">
-             {% block body %}
              
+             {% block body %}
+             <main class="container">
                 <!-- Banner -->
                    {% include 'layout/partials/banner.html.twig' %}
-            
+            </main>
             {% endblock %}
-           </main>
+           
          {% block footer %}
              <!-- Header -->
 				  {% include 'layout/partials/footer.html.twig' %}

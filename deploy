@@ -1,0 +1,2 @@
+#/bin/sh
+rsync -av ./ 134cc_arsene@134cc.ftp.infomaniak.com:~/riefm --include=public/build  --include=vendor  --include=.htaccess  --exclude-from=.gitignore --exclude=".*"

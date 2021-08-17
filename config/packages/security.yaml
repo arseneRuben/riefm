@@ -29,7 +29,7 @@ security:
                 csrf_token_id: signout
                 csrf_token_generator: Symfony\Component\Security\Csrf\CsrfTokenManagerInterface
                 # where to redirect after logout
-                target: app_programs
+                target: app_home
             remember_me:
                 secret:   '%kernel.secret%'
                 lifetime: 604800 # 1 week in seconds
@@ -44,8 +44,7 @@ security:
                 resource_owners:
                     facebook:           "/login/check-facebook"
                     google:             "/login/check-google"
-                    my_custom_provider: "/login/check-custom"
-                    my_github:          "/login/check-github"
+                    github:             "/login/check-github"
                 login_path:        /login
                 use_forward:       false
                 failure_path:      /login
@@ -64,6 +63,7 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/connect, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/account, roles: ROLE_USER }
         - { path: ^/admin, roles: ROLE_ADMIN }
         

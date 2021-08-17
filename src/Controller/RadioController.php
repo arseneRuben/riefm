@@ -16,22 +16,27 @@ class RadioController extends AbstractController
     {
         $this->em = $em;
     }
-    #[Route('/radio', name: 'app_home')]
+    #[Route('/', name: 'app_home')]
     public function index(UserRepository $repo): Response
     {
-        /*$users  = $repo->findAll();
+        $users  = $repo->findAll();
         foreach( $users as $user ) {
-            if($user->getFirstName()=='alain2') $user->addRole('ROLE_ADMIN');
-             if($user->getFirstName()=='Maurice') $user->addRole('ROLE_ADMIN');
+            if($user->getFirstName()=='emmanuel') $user->addRole('ROLE_ADMIN');
+             if($user->getFirstName()=='arsene') $user->addRole('ROLE_ADMIN');
              $this->em->persist($user);
         }
-       
         
-        $this->em->flush();*/
+        
+        $this->em->flush();
         
         
      
         $users  = $repo->findAdminUsers();
         return $this->render('radio/index.html.twig', compact('users'));
+    }
+    #[Route('/policy', name: 'app_policy')]
+    public function policy( ): Response
+    {
+        return $this->render('radio/policy.html.twig');
     }
 }

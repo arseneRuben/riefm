@@ -4,6 +4,8 @@ namespace App\Controller;
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Doctrine\ORM\EntityManagerInterface;
@@ -12,6 +14,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class SecurityController extends AbstractController
 {
     private $em;
+
 
     public function __construct(EntityManagerInterface $em)
     {
@@ -37,6 +40,14 @@ class SecurityController extends AbstractController
         $lastUsername = $authenticationUtils->getLastUsername();
 
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+    }
+
+     /**
+     * @Route("/login/github", name="app_login_github")
+     */
+    public function loginGithub(AuthenticationUtils $authenticationUtils): RedirectResponse
+    {
+         new RedirectResponse('https://github.com/login/oauth/authorise?client_id=&'.$this->getParameter('app.github_id'));
     }
 
     /**
