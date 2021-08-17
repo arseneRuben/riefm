@@ -24,7 +24,7 @@ class RieUserProvider extends EntityUserProvider implements AccountConnectorInte
         $setterAccessToken =  'set'.ucfirst($serviveName).'AccessToken';
 
         $username = $response->getEmail();
-        dd($resourceOwnerName, $this->properties, $username);
+       // dd($resourceOwnerName, $this->properties, $username);
         if (null === $user = $this->findUser(array($this->properties[$resourceOwnerName] => $username))) {
 
             $user = new User();
