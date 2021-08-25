@@ -30,9 +30,11 @@ class EmailVerifier
             $user->getId(),
             $user->getEmail()
         );
-
+      
         $context = $email->getContext();
+        
         $context['signedUrl'] = $signatureComponents->getSignedUrl();
+       // $context['signedUrl'] =substr_replace($context['signedUrl'],'rie.fm', 7,14 );
         $context['expiresAtMessageKey'] = $signatureComponents->getExpirationMessageKey();
         $context['expiresAtMessageData'] = $signatureComponents->getExpirationMessageData();
 

@@ -6,7 +6,7 @@
 parameters:
     audio_directory: '%kernel.project_dir%/public/uploads/podcasts'
     app.mail_from_name:  'RIE'
-    app.mail_from_address:  'noreply@rie.fm'
+    app.mail_from_address:  'fopoar@gmail.com'
     app.github_id: '%env(github_client_id)%'
     app.github_secret: '%env(github_client_secret)%'
 
@@ -31,7 +31,7 @@ services:
         arguments:
             - '@doctrine'
             - 'App/Entity/User'
-            - {facebook: facebook_id}, {github: github_id}
+            - {facebook: email}
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 # app/config/services.yml

@@ -84,6 +84,8 @@ class AppAuthenticator extends AbstractFormLoginAuthenticator implements Passwor
     
     public function supports(Request $request): bool
     {
+        
+
         return $request->attributes->get('_route') === self::LOGIN_ROUTE && $request->isMethod('POST')  ;
     }
 

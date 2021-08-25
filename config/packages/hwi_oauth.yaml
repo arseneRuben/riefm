@@ -1,7 +1,9 @@
 hwi_oauth:
     # Define which firewalls will be used for oauth
     # Usually, its only the main, but you can add it if you have a custom one
-    firewall_names: ["main"]
+    
+    
+    firewall_names: [main]  #  ["main"]
     
     # Define the resource_owners that your user can use to login into your app
     # Note that the client_id and client_secret and key values are symfony parameters

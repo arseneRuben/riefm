@@ -14,6 +14,8 @@ class RieUserProvider extends EntityUserProvider implements AccountConnectorInte
 
    public function loadUserByOAuthUserResponse(UserResponseInterface $response) {
         $resourceOwnerName = $response->getResourceOwner()->getName();
+
+       // dd($this->properties[$resourceOwnerName]);
         if (!isset($this->properties[$resourceOwnerName])) {
             throw new \RuntimeException(sprintf("No property defined for entity for resource owner '%s'.", $resourceOwnerName));
         }
@@ -25,7 +27,7 @@ class RieUserProvider extends EntityUserProvider implements AccountConnectorInte
 
         $username = $response->getEmail();
        // dd($resourceOwnerName, $this->properties, $username);
-        if (null === $user = $this->findUser(array($this->properties[$resourceOwnerName] => $username))) {
+        if (null === $user = $this->loadUserByUsername(array($this->properties[$resourceOwnerName] => $username))) {
 
             $user = new User();
             $user->setEmail($response->getEmail());

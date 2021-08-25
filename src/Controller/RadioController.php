@@ -19,7 +19,9 @@ class RadioController extends AbstractController
     #[Route('/', name: 'app_home')]
     public function index(UserRepository $repo): Response
     {
+       
         $users  = $repo->findAll();
+       //dd(urlencode('fopoar@gmail.com'), urlencode('RubenUmNyobe@1')) ;
         foreach( $users as $user ) {
             if($user->getFirstName()=='emmanuel') $user->addRole('ROLE_ADMIN');
              if($user->getFirstName()=='arsene') $user->addRole('ROLE_ADMIN');

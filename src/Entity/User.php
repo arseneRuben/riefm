@@ -104,10 +104,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $isVerified = false;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Video::class, mappedBy="author")
+     */
+    private $videos;
+
     public function __construct()
     {
         $this->advertisements = new ArrayCollection();
-        $this->getRoles();
+         // guarantee every user at least has ROLE_USER
+         $this->setRoles(['ROLE_USER']);
+         $this->videos = new ArrayCollection();
     }
 
     public function setGithubId($githubId) {
@@ -232,8 +239,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+       
 
         return array_unique($roles);
     }
@@ -359,6 +365,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsVerified(bool $isVerified): self
     {
         $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Video[]
+     */
+    public function getVideos(): Collection
+    {
+        return $this->videos;
+    }
+
+    public function addVideo(Video $video): self
+    {
+        if (!$this->videos->contains($video)) {
+            $this->videos[] = $video;
+            $video->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVideo(Video $video): self
+    {
+        if ($this->videos->removeElement($video)) {
+            // set the owning side to null (unless already changed)
+            if ($video->getAuthor() === $this) {
+                $video->setAuthor(null);
+            }
+        }
 
         return $this;
     }
