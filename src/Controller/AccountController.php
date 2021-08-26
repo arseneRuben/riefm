@@ -32,7 +32,7 @@ class AccountController extends AbstractController
     {
         if(! $this->getUser()->isVerified())
         {
-            $this->addFlash('error', 'You need to have a verified account');
+            $this->addFlash('warning', 'You need to have a verified account');
             return $this->redirectToRoute('app_home');
         }
         return $this->render('account/show.html.twig', [

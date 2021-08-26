@@ -17,25 +17,34 @@
 									<li>
 										<a href="#">Menu</a>
 										<ul>
-											
-											<li>
+											<li>		
 												<a href="{{ path('app_adverts') }}">Adverts</a>
+												{% if is_granted('ROLE_ADMIN') %}
 												<ul>
 													<li ><a  href="{{ path('admin_adverts_create') }}">new</a></li>
-													
-													
 												</ul>
+												{% endif  %}
 											</li>
 											<li>
 												<a href="{{ path('app_programs') }}">Programs</a>
+												{% if is_granted('ROLE_ADMIN') %}
 												<ul>
 													<li><a href="{{ path('admin_programs_create') }}">New</a></li>
-													
-													
 												</ul>
+												{% endif  %}
 											</li>
 											<li><a href="{{ path('app_policy') }}">Policy</a></li>
+											{% if is_granted('ROLE_ADMIN') %}
 											<li><a href="{{ path('admin_podcasts_create') }}">Podcast</a></li>
+											{% endif  %}
+											<li>
+												<a href="{{ path('app_videos') }}">Meditations</a>
+												{% if is_granted('ROLE_ADMIN') %}
+												<ul>
+													<li><a href="{{ path('admin_videos_create') }}">New</a></li>				
+												</ul>
+												{% endif  %}
+											</li>
 										</ul>
 									</li>
 								{% if  app.user %} 

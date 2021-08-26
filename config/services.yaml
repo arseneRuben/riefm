@@ -15,7 +15,8 @@ services:
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
-
+    hwi_oauth.user.provider.entity:
+        class: HWI\Bundle\OAuthBundle\Security\Core\User\OAuthUserProvider
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     
@@ -29,9 +30,9 @@ services:
     oauth_aware_user_provider:
         class: App\Security\RieUserProvider
         arguments:
-            - '@doctrine'
+            -  '[@session, @doctrine, @service_container]'
             - 'App/Entity/User'
-            - {facebook: email}
+            - [{facebook: facebook_id} ,{google: google_id},{github: github_id}]
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 # app/config/services.yml

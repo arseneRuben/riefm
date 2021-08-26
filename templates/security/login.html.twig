@@ -62,7 +62,7 @@
 
                         <hr class="my-2">
 
-                        
+                      {#
                         <div class="d-grid">
                             <a   class="btn btn-lg btn-facebook btn-login fw-bold text-uppercase" href="{{ path('hwi_oauth_service_redirect', {'service': 'facebook' }) }}">
                            
@@ -77,11 +77,14 @@
                         </div>
 
                         <div class="d-grid mb-2">
-                            <button class="btn btn-lg btn-google btn-login fw-bold text-uppercase" type="submit">
-                            <i class="fab fa-google me-2"></i> Sign in with Google
-                            </button>
+                            <a   class="btn btn-lg btn-google btn-login fw-bold text-uppercase" href="{{ path('hwi_oauth_service_redirect', {'service': 'google' }) }}">
+    
+                            
+                                 <i class="fab fa-google me-2"></i> Sign in with Google
+                         
+                             </a>
                         </div>
-
+                        #}
 
                         </form>
                     </div>

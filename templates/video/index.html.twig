@@ -6,7 +6,7 @@
 
 
 {% if  videos|length > 0  %} 
-	<h1 class="mb-4 text-center text-muted" > {{ pluralize(videos|length, 'Pin' , 'Pins')  }}  </h1>
+	<h1 class="mb-4 text-center text-muted" > {{ pluralize(videos|length, 'Video' , 'Videos')  }}  </h1>
 	{% for row in videos|batch(3) %}
 		<div class="row mb-5">
 			{% for video in row %}
@@ -30,7 +30,7 @@
 	{% endfor  %}
 
 {% else   %}
-	<p class="mt-5 h1 text-center"> No pin yet.    <a href="{{path('app_videos_create')}}"> Be the first! </a> </p>
+	<p class="mt-5 h1 text-center"> No video yet.   {% if is_granted('ROLE_ADMIN') %}  <a href="{{path('app_videos_create')}}"> Be the first! </a>  {% endif %} </p>
 {% endif  %}
 
 {% endblock %}

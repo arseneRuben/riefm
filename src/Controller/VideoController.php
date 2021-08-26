@@ -18,10 +18,19 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class VideoController extends AbstractController
 {
-    #[Route('/video', name: 'app_videos')]
-    public function index(): Response
+    private $em;
+
+    public function __construct(EntityManagerInterface $em)
     {
-        return $this->render('video/index.html.twig');
+        $this->em = $em;
+    }
+
+    #[Route('/video', name: 'app_videos')]
+    public function index(VideoRepository $videoRepo): Response
+    {
+        $videos = $videoRepo->findAll([], ['createdAt' => 'DESC']);
+        return $this->render('video/index.html.twig', compact('videos'));
+      
     }
 
       /**
@@ -33,7 +42,7 @@ class VideoController extends AbstractController
     }
 
     /**
-     * @Route("/videos/edit/{id}", name="app_video_edit", requirements={"id"="\d+"}, methods={"GET","PUT"})
+     * @Route("/videos/edit/{id}", name="app_videos_edit", requirements={"id"="\d+"}, methods={"GET","PUT"})
      */
     public function edit(Request $request,Pin $pin): Response
     {
@@ -59,7 +68,7 @@ class VideoController extends AbstractController
     }
 
      /**
-     * @Route("/pins/create",name= "app_pins_create", methods={"GET","POST"})
+     * @Route("/pins/create",name= "app_videos_create", methods={"GET","POST"})
      */
     public function create(Request $request, UserRepository $rep): Response
     {
@@ -83,7 +92,7 @@ class VideoController extends AbstractController
     }
 
     /**
-     * @Route("/pins/{id}", name="app_pins_delete", requirements={"id"="\d+"}, methods={"DELETE"})
+     * @Route("/pins/{id}", name="app_videos_delete", requirements={"id"="\d+"}, methods={"DELETE"})
      */
     public function delete(Request $request, Pin $pin): Response
     {

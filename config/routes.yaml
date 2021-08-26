@@ -6,7 +6,10 @@ facebook_login:
 
 github_login:
     path: /login/check-github
-    
+
+google_login:
+    path: /login/check-google
+
 hwi_oauth_redirect:
   resource: "@HWIOAuthBundle/Resources/config/routing/redirect.xml"
   prefix: /connect
@@ -24,3 +27,4 @@ auth0_login:
 
 auth0_logout:
   path: /auth0/logout
+
