@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-
+use App\Entity\Video;
 use App\Form\VideoType;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -68,26 +68,26 @@ class VideoController extends AbstractController
     }
 
      /**
-     * @Route("/pins/create",name= "app_videos_create", methods={"GET","POST"})
+     * @Route("/pins/create",name= "admin_videos_create", methods={"GET","POST"})
      */
     public function create(Request $request, UserRepository $rep): Response
     {
-        $pin = new Pin();
-    	$form = $this->createForm(PinType::class, $pin);
+        $v = new Video();
+    	$form = $this->createForm(VideoType::class, $v);
         
-        $pin->setUser($this->getUser());
+        $v->setAuthor($this->getUser());
     	$form->handleRequest($request);
     	
     	if($form->isSubmitted() && $form->isValid())
     	{
 
-            $this->em->persist($pin);
+            $this->em->persist($v);
             $this->em->flush();
-            $this->addFlash('success', 'Pin succesfully created');
-            return $this->redirectToRoute('app_home');
+            $this->addFlash('success', 'Mideo succesfully created');
+            return $this->redirectToRoute('app_videos');
     	}
 
-    	 return $this->render('pins/create.html.twig'
+    	 return $this->render('video/create.html.twig'
     	 	, ['form'=>$form->createView()]);
     }
 

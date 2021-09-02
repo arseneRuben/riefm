@@ -74,11 +74,12 @@ class PodCastController extends AbstractController
                 } catch (FileException $e) {
                     // ... handle exception if something happens during file upload
                 }
-                $author  = $userRepository->findOneBy(['id' => 1]);
+                //$author  = $userRepository->findOneBy(['id' => 1]);
                 // updates the 'brochureFilename' property to store the PDF file name
                 // instead of its contents
                 $post->setFileName($newFilename);
-                $post->setAuthor($author);
+                $post->setAuthor($this->getUser());
+                //dd($post);
             }
 
             $this->em->persist($post);

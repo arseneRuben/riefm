@@ -8,7 +8,8 @@
 		<h2  class=" text-break text-center"> Toutes les editions </h2>
 		 </div>
 	<div class="row mb-5">
-			
+		<div  class=" col-md-2 ">
+		</div>
 		<div  class=" col-md-3 ">
 
 			<article  class="program p-3  bg-white rounded shadow" >
@@ -17,31 +18,34 @@
 							
 					</div>
 						<h1  class="h5  pt-1">  <a href="{{path('app_programs_show', {id: program.id})}}" class=" text-muted text-decoration-none text-secondary" >  {{program.name}} </a> </h1> 
-						
+						 {#
 						<p  class="pd-2 pb-2 text-muted" >  Submitted at <time datetime= "{{program.createdAt|date('Y-m-d H:m:s')}}">{{program.createdAt|date('d-m-Y')}} </time> by user </p>
-						  <p  class="pd-2 pb-2 text-muted" >  or  {{program.createdAt|ago}} by  AUTHOR NAME</p>
+						 <p  class="pd-2 pb-2 text-muted" >  or  {{program.createdAt|ago}} by  AUTHOR NAME</p>
 						  <p  class="pd-2 pb-2 text-muted" > 
 								{% if  program.interactive  %} 
 									<label><input type=checkbox checked name=cheese > Intectactif</label>
 								{% endif  %}
-							</p>
-				<p  class=" text-break "> {{program.description}} </p>
+							</p> #}
+				{% if is_granted('ROLE_ADMIN') %}
+				<p  class="m-5 text-break  "> {{program.description}} </p>
 					<a class="btn btn-light" href="{{path('admin_programs_edit', {id: program.id})}}"> Edit </a> |
 					<a class="btn btn-light" href="del"  onclick= "event.preventDefault() ; confirm('Are you sure ?') && document.getElementById('js-programs-delete-form').submit();"> Delete</a>
+				
 				<form id="js-programs-delete-form" action="{{path('admin_programs_delete', {id: program.id})}}" method="post" style="display: none;">
 					<input type="hidden" name="{{ csrf_token('programs_deletion' ~ program.id ) }}" id="">
 					<input type="hidden" name="_method" value="DELETE">
 
 				</form> |
+				{% endif %}
 				 <a href="{{path('app_programs')}}" class=" text-muted text-decoration-none text-secondary" >  Go back!</a> 
 				<div class=" ">			
 				</div>
 			</article>
  		</div>
-		 <div  class="col-md-9 ">
+		 <div  class="col-md-5 ">
 		 	<table>
-				<tr>
-					{# sorting of properties based on query components #}
+				{#<tr>
+					 sorting of properties based on query components 
 					
 					
 					<th{% if pagination.isSorted(['p.title']) %} class="sorted"{% endif %}>
@@ -53,7 +57,7 @@
 					<th>
 						File
 					</th>
-				</tr>
+				</tr>#}
 
 				{# table body #}
 				{% for article in pagination %}
@@ -70,6 +74,9 @@
 					</tr>
 				{% endfor %}
 			</table>
+		</div>
+		<div  class=" col-md-2 ">
+		</div>
 {# display navigation #}
 <div class="navigation">
     {{ knp_pagination_render(pagination) }}

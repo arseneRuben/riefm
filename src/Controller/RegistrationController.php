@@ -65,10 +65,11 @@ class RegistrationController extends AbstractController
                         ->htmlTemplate('registration/confirmation_email.html.twig')
                 );
             } catch (TransportExceptionInterface $e) {
-             
+             dd($e);
             }
           
-            // do anything else you need here, like send an email
+          
+            // Radio "Il est écrit" Rue De Nachtigal, Yaounde, Cameroundo anything else you need here, like send an email
           /* return $guardHandler->authenticateUserAndHandleSuccess(
                 $user,
                 $request,

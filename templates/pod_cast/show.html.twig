@@ -6,7 +6,7 @@
 {% block body %}
 	<div class="row mb-5">
 			
-			<div  class=" col-md-6 mx-auto">
+			<div  class=" col-md-4 mx-auto">
 
 	<article  class="advert p-3  bg-white rounded shadow" >
 					<div  class="mw-100  rounded-top overflow-hidden" >
@@ -24,13 +24,15 @@
 								Your browser does not support the audio element.
 							</audio>	
 				 </p>
-					
+					{% if is_granted('ROLE_ADMIN') %}
 					<a class="btn btn-light" href="del"  onclick= "event.preventDefault() ; confirm('Are you sure ?') && document.getElementById('js-podcasts-delete-form').submit();"> Delete</a>
-				<form id="js-podcasts-delete-form" action="{{path('app_podcasts_delete', {id: podcast.id})}}" method="post" style="display: none;">
+				<form id="js-podcasts-delete-form" action="{{path('admin_podcasts_delete', {id: podcast.id})}}" method="post" style="display: none;">
+				
 					<input type="hidden" name="{{ csrf_token('podcasts_deletion' ~ podcast.id ) }}" id="">
 					<input type="hidden" name="_method" value="DELETE">
-
+				
 				</form> |
+				{% endif %}
 				 <a href="{{path('app_programs_show', {id: podcast.program.id})}}" class=" text-muted text-decoration-none text-secondary" >  Go back!</a> 
 			<div class=" ">			
 				

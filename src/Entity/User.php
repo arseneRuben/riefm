@@ -357,6 +357,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->firstName . ' ' . $this->lastName ;
     }
 
+    public function __toString() {
+        $username = ( is_null($this->getFullName())) ? "" : $this->getFullName();
+        return $username;
+    }
+
+
+
     public function isVerified(): bool
     {
         return $this->isVerified;

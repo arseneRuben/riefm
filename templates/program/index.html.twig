@@ -1,34 +1,49 @@
 {% extends 'layout/base.html.twig' %}
 
-{% block name %}Hello RadioController!{% endblock %}
+{% block name %}Adverts{% endblock %}
 
 {% block body %}
 
 
 
-{% if  programs|length > 0  %} 
-	<h1 class="mb-4 text-center text-muted" > {{ pluralize(programs|length, 'Annonce' , 'Annonces')  }}  </h1>
-	 {% for row in programs|batch(4) %}
-		<div class="row mb-5">
-			{% for program in row %}
-			<div  class="col-md-3" >
-				<article  class="advert bg-white rounded shadow" >
-
-					<div  class="mw-100 rounded-top overflow-hidden" >
-						<a href="{{path('app_programs_show', {id: program.id})}}"> 
-							<img src="{{ (program.imageName ? vich_uploader_asset(program) : asset('uploads/programs/program_default.PNG'))| imagine_filter('advert_filter_square_medium') }}" alt="{{ program.name }}" class="w-100 ">
-						</a>
-					</div>
-						<h2  class="h5 pl-3 pt-1">  <a href="{{path('app_programs_show', {id: program.id})}}" class=" text-muted text-decoration-none text-secondary" >  {{program.name}} </a> </h2> 
+		{% if  pagination|length > 0  %} 
+			<div class="">
+					<h1 class="mb-4 text-center text-muted" > {{ pluralize(pagination|length, 'Emission' , 'Emissions')  }}  </h1>
 				
-						<p  class="pd-2 pb-2 text-muted" >  Submitted at {{program.createdAt|ago}} by AUTHOR_NAME</p>
+					<div class="row">
+						<div  class=" col-md-2 ">
+						</div>
+								{% for program in pagination %}
+									<div  class="col-md-2" >
+										<article  class="advert bg-white rounded shadow" >
+												<a href="{{path('app_programs_show', {id: program.id})}}"> 
+														<img src="{{ (program.imageName ? vich_uploader_asset(program) : asset('uploads/programs/program_default.PNG'))| imagine_filter('advert_filter_square_medium') }}" alt="{{ program.name }}" class="w-100 ">
+													</a>													<div class="details">
+														<h2  class="h5 pl-3 pt-1">  <a href="{{path('app_programs_show', {id: program.id})}}" class=" text-muted text-decoration-none text-secondary" >  {{program.name}} </a> </h2> 
+										</article>
+									</div>
+								{% endfor %}
+                		
+						 
+						<div  class=" col-md-2 ">
+						</div>
+						
+					</div>
+					<br/>
+					 <div class=" row align-items-center">
+					 	<div  class=" col-md-4 ">
+						</div>
+							<div  class=" col-md-2 ">
+						
+								<h3><b>{{ knp_pagination_render(pagination) }}</b></h3>
+							</div>
+						<div  class=" col-md-6 ">
+						</div>
+					</div>
+					
+				</div>
+		{% endif  %}
 
 
-				</article>
-			</div>
-			{% endfor  %}
-		</div>
-	{% endfor  %}
-
-{% endif  %}
+		
 {% endblock %}

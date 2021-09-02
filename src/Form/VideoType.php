@@ -13,9 +13,7 @@ class VideoType extends AbstractType
     {
         $builder
             ->add('url')
-            ->add('createdAt')
-            ->add('updatedAt')
-            ->add('author')
+           
         ;
     }
 

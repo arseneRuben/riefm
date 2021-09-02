@@ -29,21 +29,28 @@ class ProgramController extends AbstractController
     }
 
     #[Route('/programs/', name: 'app_programs',  methods:'GET')]
-    public function index(ProgramRepository $repo): Response
+    public function index( PaginatorInterface $paginator,Request $request, ProgramRepository $repo): Response
     {
       //  phpinfo();
-        $programs  = $repo->findAll([], ['id' => 'DESC']);
-        return $this->render('program/index.html.twig', compact('programs'));
+        $allPrograms  = $repo->findAll([], ['id' => 'DESC']);
+        $programs = $paginator->paginate($allPrograms,$request->query->get('page', 1),4);
+        $programs->setCustomParameters([
+            'position' => 'centered',
+            'size' => 'large',
+            'rounded' => true,
+        ]);
+
+        return $this->render('program/index.html.twig', ['pagination' => $programs]);
     }
 
        /**
-     * @Route("/admin/programs/{id}", name="app_programs_show", requirements={"id"="\d+"}, methods={"GET"})
+     * @Route("/programs/{id}", name="app_programs_show", requirements={"id"="\d+"}, methods={"GET"})
      */
     public function show(PodcastRepository $podcastRepository, PaginatorInterface $paginator, Request $request,Program $program): Response
     {
         $em = $this->getDoctrine()->getManager();
      
-
+        
         $allPodCasts = $podcastRepository->findBy( ['program' => $program],);
         $podCasts = $paginator->paginate($allPodCasts,$request->query->get('page', 1),4);
        // $paginator->set('AppBundle:pagination:twitter_bootstrap_v3_pagination.html.twig');
