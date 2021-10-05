@@ -3,35 +3,128 @@
 {% block title %}Bienvenu(e) a la 92.4 rie.fm {% endblock %}
 
 {% block body %}
-{% if  users|length > 0  %} 
-	<h1 class="mb-2 text-center text-muted" > Team  </h1>
-	 {% for row in users|batch(4) %}
-		<div class="row m-3 p-3">
-			{% for user in row %}
-			<div  class="col-md-4" >
-				<article  class="bg-white  shadow  text-center" >
 
-					<div  class="mw-10 rounded-top overflow-hidden" >
-						{% if user.avatar is not null and user.avatar is defined  %}
-                           
-							<img src="{{ user.avatar(120) }}" class="shadow rounded-circle" alt=" {{user.fullName}} " />
-                        {%  else  %}
-                            <img src="{{asset('uploads/team.png')}}" class="shadow rounded-circle" alt=" " />
-                      
-                        {% endif %}
-                       
-                                    
-                                    <h4 class="capitale">{{ user.fullName }}  </h4>
+			<div class="row m-3 p-3">
+			    <div  class="col-md-1" >
+				</div>
+				<div  class="col-md-7" >
+					<section id="about">
+						<div class="container wow fadeInUp">
+							<div class="row">
+								<div class="col-md-12  text-center">
+									<h2 class="section-title  text-muted">{{'about.title'|trans}}</h2>
+									<div class="section-title-divider"></div>
+									<p class="section-description"></p>
+								</div>
+							</div>
+						</div>
+						<div class="container about-container wow fadeInUp">
+							<div class="row">
+								<div class="about-content">
+									<h2 class="about-title">{{'about.part1'|trans}}</h2>
+									<p class="about-text">
+										{{'about.part2'|trans}}
+									</p>
+								
+									<p class="about-text">
+										{{'about.part3'|trans}}
+									</p>
+									<p class="about-text">
+										{{'about.part4'|trans}}
+									</p>
+									<p class="about-text">
+										{{'about.part5'|trans}}
+									</p>
+									<p class="about-text">
+										{{'about.part6'|trans}}
+									</p>
+									<p class="about-text">
+										<b>
+										{{'about.part7'|trans}}
+										</b>
+										<hr/>
+										<b>
+										{{'about.part8'|trans}}
+										</b>
+									</p>
+								</div>
+							</div>
+						</div>
+					</section>
 
-                    </div>
+					<section>
+
+							{% if  users|length > 0  %} 
+								<h1 class="mb-2 text-center text-muted" > Our Team  </h1>
+								<div class="row m-3 p-3">
+								{% for row in users|batch(4) %}
+										{% for user in row %}
+										<div  class="col-md-3" >
+											<article  class="bg-white  shadow  text-center" >
+												<div  class="mw-10 rounded-top overflow-hidden" >
+													{% if user.avatar is not null and user.avatar is defined  %}
+														<img src="{{ user.avatar(120) }}" class="shadow rounded-circle" alt=" {{user.fullName}} " />
+													{%  else  %}
+														<img src="{{asset('uploads/team.png')}}" class="shadow rounded-circle" alt=" " />
+													{% endif %}
+													<h4 class="capitale">{{ user.fullName }}  </h4>
+												</div>
+											</article>
+										</div>
+										{% endfor %}
+								{% endfor %}
+								</div>
+							{% endif  %}
+	
+					</section>
+				</div>
+				<div  class="col-md-3" >
+					<div class="clearfix content">
+							<div class="text-muted"><h2>Latest Podcasts/Meditations</h2></div>
+							{% for pd in podCasts %}
+								<div class="clearfix single_content">
+
+									<div class="clearfix post_detail">
+										<h3><a href="{{path('app_podcasts_show', {id: pd.id})}}">{{pd.title}} </a></h3>
+										<div class="clearfix post_excerpt mw-100  rounded-top overflow-hidden">
+											<a href="{{path('app_podcasts_show', {id: pd.id})}}">
+												<img src="{{ (pd.imageName ? vich_uploader_asset(pd) : asset('{pd.program.imageName}'))| imagine_filter('podcast_filter_square_small') }}" alt="{{ pd.title }}" class="img-fluid img-thumbnail">
+											 </a>
+										</div>
+										<div class="clearfix post-meta">
+											<p><span><i class="fa fa-user"></i> {{pd.author}}</span> 
+												<span><i class="fa fa-clock-o"></i> 
+													<time datetime= "{{pd.createdAt|date('Y-m-d H:m:s')}}">{{pd.createdAt|date('d-m-Y')}} </time>
+												</span> {# <span><i class="fa fa-comment"></i> 4 comments</span> #} 
+												<span><i class="fa fa-folder"></i> {{pd.program}}</span> 
+											</p>
+										</div>
+										<div class="clearfix post-meta">
+										</div>
+										
+									
+									</div>
+								</div>
+							{% endfor %}	
+							{% for video in videos %}
+								<div class="clearfix single_content">
+									<div class="clearfix post_detail">	
+										<article  class="advert bg-white rounded" >
+													<iframe class="text-center" width="90%"  src="{{video.url}}" title="{{video.title}}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+													</iframe>
+													
+											</article>	
+									</div>
+								</div>
+							{% endfor %}		
+					</div>
+				</div>
 				
-
-				</article>
+				<div  class="col-md-1">
+				</div>
 			</div>
-			{% endfor %}
-		</div>
-	{% endfor %}
-
-{% endif  %}
+	
+				
+		 
 
 {% endblock %}

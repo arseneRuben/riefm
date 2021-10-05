@@ -5,13 +5,16 @@ namespace App\Entity;
 use App\Repository\VideoRepository;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Traits\TimeStampable; 
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=VideoRepository::class)
+ * @ORM\HasLifecycleCallbacks
  */
 class Video
 {
     use TimeStampable;
+    
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -29,6 +32,11 @@ class Video
      * @ORM\JoinColumn(nullable=false)
      */
     private $author;
+
+    /** @ORM\Column(name="title", type="string", length=155, nullable=true) */
+    private $title;
+   
+
 
     public function getId(): ?int
     {
@@ -55,6 +63,18 @@ class Video
     public function setAuthor(?User $author): self
     {
         $this->author = $author;
+
+        return $this;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(string $title): self
+    {
+        $this->title = $title;
 
         return $this;
     }

@@ -42,35 +42,27 @@
         </div>
 
             {% block javascripts %}
-             <script src="{{asset('assets/js/jquery.min.js')}}"></script>
+              <script src="{{asset('assets/js/jquery.min.js')}}"></script>
               <script src="{{asset('assets/js/jquery.dropotron.min.js')}}"></script>
               <script src="{{asset('assets/js/browser.min.js')}}"></script>
-                <script src="{{asset('https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js')}}"></script>
+              <script src="{{asset('https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js')}}"></script>
               <script src="{{asset('assets/js/breakpoints.min')}}.js"></script>
-               <script src="{{asset('assets/js/util.js')}}"></script>
+              <script src="{{asset('assets/js/util.js')}}"></script>
               <script src="{{asset('assets/js/main.js')}}"></script>
 
+             <!-- Global site tag (gtag.js) - Google Analytics -->
+              <script async src="https://www.googletagmanager.com/gtag/js?id=UA-208211930-1"></script>
+              <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
 
-             
-             
-              
-             
-              
-              
+                gtag('config', 'UA-208211930-1');
+              </script>
 
-              
-            
-             
-                 <!-- Scripts -->
 
-			  
-			{# <script src="assets/js/jquery.dropotron.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script> #}
        
-        {% endblock %}
+           {% endblock %}
     </body>
 
 

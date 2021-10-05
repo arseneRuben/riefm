@@ -32,7 +32,7 @@ class ProgramController extends AbstractController
     public function index( PaginatorInterface $paginator,Request $request, ProgramRepository $repo): Response
     {
       //  phpinfo();
-        $allPrograms  = $repo->findAll([], ['id' => 'DESC']);
+        $allPrograms  = $repo->findAll([], ['name' => 'DESC']);
         $programs = $paginator->paginate($allPrograms,$request->query->get('page', 1),4);
         $programs->setCustomParameters([
             'position' => 'centered',

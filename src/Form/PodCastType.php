@@ -29,6 +29,7 @@ class PodCastType extends AbstractType
                'download_uri' => false,
                
            ])
+           ->add('author')
            ->add('audioFile', FileType::class, [
             'label' => ' file',
             'mapped' => false,
@@ -51,7 +52,7 @@ class PodCastType extends AbstractType
             'constraints' => new Assert\NotBlank(),
             'trim' => true])
             ->add('program')
-            ->add('timeSpace')
+            //->add('timeSpace')
         ;
     }
 

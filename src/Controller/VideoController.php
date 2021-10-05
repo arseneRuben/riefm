@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Video;
 use App\Form\VideoType;
 use Doctrine\ORM\EntityManagerInterface;
-
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\VideoRepository;
 use App\Repository\UserRepository;
@@ -26,17 +26,24 @@ class VideoController extends AbstractController
     }
 
     #[Route('/video', name: 'app_videos')]
-    public function index(VideoRepository $videoRepo): Response
+    public function index( PaginatorInterface $paginator,Request $request, VideoRepository $repo): Response
     {
-        $videos = $videoRepo->findAll([], ['createdAt' => 'DESC']);
-        return $this->render('video/index.html.twig', compact('videos'));
       
+        $allPrograms  = $repo->findAll();
+        $videos = $paginator->paginate($allPrograms,$request->query->get('page', 1),4);
+        $videos->setCustomParameters([
+            'position' => 'centered',
+            'size' => 'large',
+            'rounded' => true,
+        ]);
+
+        return $this->render('video/index.html.twig', ['pagination' => $videos]);
     }
 
       /**
      * @Route("/videos/{id}", name="app_videos_show", requirements={"id"="\d+"}, methods={"GET"})
      */
-    public function show(Pin $pin): Response
+    public function show(Video $pin): Response
     {
     	  return $this->render('video/show.html.twig', compact("pin"));
     }
@@ -44,9 +51,9 @@ class VideoController extends AbstractController
     /**
      * @Route("/videos/edit/{id}", name="app_videos_edit", requirements={"id"="\d+"}, methods={"GET","PUT"})
      */
-    public function edit(Request $request,Pin $pin): Response
+    public function edit(Request $request,Video $video): Response
     {
-        $form = $this->createForm(VideoType::class, $pin, [
+        $form = $this->createForm(VideoType::class, $video, [
             'method'=> 'PUT'
         ]);
 
@@ -61,14 +68,14 @@ class VideoController extends AbstractController
 
             return $this->redirectToRoute('app_home');
         }
-        return $this->render('pins/edit.html.twig'	, [
-            'pin'=>$pin,
+        return $this->render('video/edit.html.twig'	, [
+            'video'=>$video,
             'form'=>$form->createView()
         ]);
     }
 
      /**
-     * @Route("/pins/create",name= "admin_videos_create", methods={"GET","POST"})
+     * @Route("/videos/create",name= "admin_videos_create", methods={"GET","POST"})
      */
     public function create(Request $request, UserRepository $rep): Response
     {
@@ -92,16 +99,16 @@ class VideoController extends AbstractController
     }
 
     /**
-     * @Route("/pins/{id}", name="app_videos_delete", requirements={"id"="\d+"}, methods={"DELETE"})
+     * @Route("/videos/{id}", name="app_videos_delete", requirements={"id"="\d+"}, methods={"DELETE"})
      */
-    public function delete(Request $request, Pin $pin): Response
+    public function delete(Request $request, Video $video): Response
     {
-        if($this->isCsrfTokenValid('pins_deletion'.$pin->getId(), $request->request->get('crsf_token') )){
-            $this->em->remove($pin);
+        if($this->isCsrfTokenValid('videos_deletion'.$pin->getId(), $request->request->get('crsf_token') )){
+            $this->em->remove($video);
             $this->em->flush();
 
         }
-         $this->addFlash('info', 'Pin succesfully deleted');
+         $this->addFlash('info', 'Meditation succesfully deleted');
         return $this->redirectToRoute('app_home');
     }
 

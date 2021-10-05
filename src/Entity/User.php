@@ -109,12 +109,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $videos;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Enquiry::class, mappedBy="author")
+     */
+    private $enquiries;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Temoignage::class, mappedBy="author")
+     */
+    private $temoignages;
+
     public function __construct()
     {
         $this->advertisements = new ArrayCollection();
          // guarantee every user at least has ROLE_USER
          $this->setRoles(['ROLE_USER']);
          $this->videos = new ArrayCollection();
+         $this->enquiries = new ArrayCollection();
+         $this->temoignages = new ArrayCollection();
     }
 
     public function setGithubId($githubId) {
@@ -400,6 +412,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($video->getAuthor() === $this) {
                 $video->setAuthor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Enquiry[]
+     */
+    public function getEnquiries(): Collection
+    {
+        return $this->enquiries;
+    }
+
+    public function addEnquiry(Enquiry $enquiry): self
+    {
+        if (!$this->enquiries->contains($enquiry)) {
+            $this->enquiries[] = $enquiry;
+            $enquiry->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEnquiry(Enquiry $enquiry): self
+    {
+        if ($this->enquiries->removeElement($enquiry)) {
+            // set the owning side to null (unless already changed)
+            if ($enquiry->getAuthor() === $this) {
+                $enquiry->setAuthor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Temoignage[]
+     */
+    public function getTemoignages(): Collection
+    {
+        return $this->temoignages;
+    }
+
+    public function addTemoignage(Temoignage $temoignage): self
+    {
+        if (!$this->temoignages->contains($temoignage)) {
+            $this->temoignages[] = $temoignage;
+            $temoignage->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTemoignage(Temoignage $temoignage): self
+    {
+        if ($this->temoignages->removeElement($temoignage)) {
+            // set the owning side to null (unless already changed)
+            if ($temoignage->getAuthor() === $this) {
+                $temoignage->setAuthor(null);
             }
         }
 

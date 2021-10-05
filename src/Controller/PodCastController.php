@@ -78,7 +78,7 @@ class PodCastController extends AbstractController
                 // updates the 'brochureFilename' property to store the PDF file name
                 // instead of its contents
                 $post->setFileName($newFilename);
-                $post->setAuthor($this->getUser());
+               // $post->setAuthor($this->getUser());
                 //dd($post);
             }
 

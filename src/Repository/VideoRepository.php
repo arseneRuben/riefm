@@ -18,6 +18,24 @@ class VideoRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Video::class);
     }
+    public function findAll()
+    {
+        return $this->createQueryBuilder('v')
+            ->orderBy('v.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+    public function findNLatest($n)
+    {
+        return $this->createQueryBuilder('v')
+      
+            ->orderBy('v.createdAt', 'DESC')
+            ->setMaxResults($n)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
     // /**
     //  * @return Video[] Returns an array of Video objects

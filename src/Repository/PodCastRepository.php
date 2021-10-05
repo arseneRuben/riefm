@@ -61,4 +61,15 @@ class PodCastRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findNLatest($n)
+    {
+        return $this->createQueryBuilder('p')
+      
+            ->orderBy('p.createdAt', 'DESC')
+            ->setMaxResults($n)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

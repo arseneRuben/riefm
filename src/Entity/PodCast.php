@@ -46,7 +46,7 @@ class PodCast
     * 
     * @Vich\UploadableField(mapping="podcast_file", fileNameProperty="fileName")
     * @Assert\File(
-    *     maxSize = "80M",
+    *     maxSize = "120M",
     *     mimeTypesMessage = "Please upload a valid Audio File"
     * )
 
