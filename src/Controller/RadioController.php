@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Controller;
-use App̧\Form\AdvertType;
+
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -10,7 +10,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\UserRepository;
 use App\Repository\PodCastRepository;
 use App\Repository\VideoRepository;
-use App\Entity\Enquiry;
 
 
 class RadioController extends AbstractController
@@ -55,9 +54,9 @@ class RadioController extends AbstractController
      /**
      * @Route("/contact", name="app_contact")
      */
-   /* public function contactAction() {
+    public function contactAction() {
         $enquiry = new Enquiry();
-        $form = $this->createForm( EnquiryType::class, $enquiry);
+        $form = $this->createForm(EnquiryType::class, $enquiry);
         $request = $this->getRequest();
         if ($request->getMethod() == 'POST') {
             $form->bind($request);
@@ -98,5 +97,5 @@ class RadioController extends AbstractController
                         'form' => $form->createView()
             ));
         }
-    }*/
+    }
 }

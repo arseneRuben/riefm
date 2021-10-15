@@ -36,12 +36,9 @@ class RegistrationController extends AbstractController
              return $this->redirectToRoute('app_account');
          }
         $user = new User();
-       
         $form = $this->createForm(RegistrationFormType::class, $user);
-        
         $form->handleRequest($request);
        
-        
         if ($form->isSubmitted() && $form->isValid()) {
             
             // encode the plain password
@@ -51,8 +48,6 @@ class RegistrationController extends AbstractController
                     $form['plainPassword']->getData()
                 )
             );
-
-            
             $em->persist($user);
             $em->flush();
             try {
@@ -68,7 +63,6 @@ class RegistrationController extends AbstractController
              dd($e);
             }
           
-          
             // Radio "Il est écrit" Rue De Nachtigal, Yaounde, Cameroundo anything else you need here, like send an email
           /* return $guardHandler->authenticateUserAndHandleSuccess(
                 $user,
@@ -81,7 +75,6 @@ class RegistrationController extends AbstractController
             $em->persist($user);
             return $this->redirectToRoute('app_login');
         }
-
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
         ]);

@@ -27,12 +27,12 @@
 					<a class="btn btn-danger" href="del"  onclick= "event.preventDefault() ; confirm('Are you sure ?') && document.getElementById('js-podcasts-delete-form').submit();"> Delete</a>
 				<form id="js-podcasts-delete-form" action="{{path('admin_podcasts_delete', {id: podcast.id})}}" method="post" style="display: none;">
 				
-					<input type="hidden" name="{{ csrf_token('podcasts_deletion' ~ podcast.id ) }}" id="">
+					<input type="hidden" name="csrf_token" value="{{ csrf_token('podcasts_deletion' ~ podcast.id ) }}" id="">
 					<input type="hidden" name="_method" value="DELETE">
 				
 				</form> |
 				{% endif %}
-				 <a href="{{path('app_programs_show', {id: podcast.program.id})}}" class=" text-muted text-decoration-none text-secondary btn btn-secondary" >  Go back!</a> 
+				 <a href="{{path('app_programs_show', {id: podcast.program.id})}}" class=" text-muted text-decoration-none text-secondary btn btn-info" >  Go back!</a> 
 			<div class=" ">			
 				
 				

@@ -24,7 +24,7 @@ class EnquiryType extends AbstractType
                
             ),'label' => 'Objet'))
             ->add('body')
-          
+        
             ->add('author')
         ;
     }
