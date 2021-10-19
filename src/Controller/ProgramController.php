@@ -51,7 +51,7 @@ class ProgramController extends AbstractController
         $em = $this->getDoctrine()->getManager();
      
         
-        $allPodCasts = $podcastRepository->findBy( ['program' => $program],);
+        $allPodCasts = $podcastRepository->findBy( array('program' => $program), array('createdAt' => 'DESC'));
         $podCasts = $paginator->paginate($allPodCasts,$request->query->get('page', 1),4);
        // $paginator->set('AppBundle:pagination:twitter_bootstrap_v3_pagination.html.twig');
       //  $paginator->setSortableTemplate('AppBundle:pagination:twitter_bootstrap_v3_sortable_link.html.twig');

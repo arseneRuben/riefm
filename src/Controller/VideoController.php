@@ -90,7 +90,7 @@ class VideoController extends AbstractController
 
             $this->em->persist($v);
             $this->em->flush();
-            $this->addFlash('success', 'Mideo succesfully created');
+            $this->addFlash('success', 'Video succesfully created');
             return $this->redirectToRoute('app_videos');
     	}
 

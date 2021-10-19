@@ -1,0 +1,17 @@
+
+{% extends 'layout/base.html.twig' %}
+
+{% block title 'edit program #' ~ podcast.id  %}
+
+{% block body %}
+    <div class="row">
+    <div class="col-md-6 mx-auto">
+    <article>
+        <h1>  Edit program #  {{podcast.id}}</h1>
+          	{{include('partials/_form.html.twig',{'submitButtonText':'Update ', 'returnRoute':'app_programs'} )}}
+
+    </article>
+    </div>
+    </div>
+  
+{% endblock %}

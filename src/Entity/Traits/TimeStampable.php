@@ -51,7 +51,7 @@ trait TimeStampable
             $this->setCreatedAt(new \DateTimeImmutable);
         }
         
-        $this->setUpdatedAt(new \DateTimeImmutable);
+        $this->setUpdatedAt(new \DateTime);
 
     }
 }

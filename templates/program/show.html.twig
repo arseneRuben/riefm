@@ -73,6 +73,7 @@
 							</audio>
 
 						</td>
+						
 							{% if is_granted('ROLE_ADMIN') %}
 							<td>	
 									<a class="btn btn-danger" href="del"  onclick= "event.preventDefault() ; confirm('Are you sure ?') && document.getElementById('js-podcasts-delete-form-{{ article.id }}').submit();">  <i class="fa fa-trash m-3" aria-hidden="true"></i> </a>

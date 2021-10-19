@@ -24,6 +24,7 @@
 							</audio>	
 				 </p>
 					{% if is_granted('ROLE_ADMIN') %}
+					 <a href="{{path('admin_podcasts_edit', {id: podcast.id})}}" class=" text-muted text-decoration-none text-secondary btn btn-warning" > Edit</a> 
 					<a class="btn btn-danger" href="del"  onclick= "event.preventDefault() ; confirm('Are you sure ?') && document.getElementById('js-podcasts-delete-form').submit();"> Delete</a>
 				<form id="js-podcasts-delete-form" action="{{path('admin_podcasts_delete', {id: podcast.id})}}" method="post" style="display: none;">
 				

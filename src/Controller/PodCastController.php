@@ -106,7 +106,8 @@ class PodCastController extends AbstractController
             $this->addFlash('danger', 'You need to have a verified account!');
             return $this->redirectToRoute('app_home');
         }
-        if($this->isCsrfTokenValid('podcasts_deletion'.$pod->getId(), $request->request->get('crsf_token') )){
+       
+        if($this->isCsrfTokenValid('podcasts_deletion'.$pod->getId(), $request->request->get('csrf_token') )){
             $this->em->remove($pod);
             $this->em->flush();
 
@@ -114,4 +115,28 @@ class PodCastController extends AbstractController
          $this->addFlash('info', 'Podcast succesfully deleted');
         return $this->redirectToRoute('app_programs');
     }
+     /**
+    * @Route("/admin/podcasts/edit/{id}", name="admin_podcasts_edit", requirements={"id"="\d+"})
+    */
+   public function edit(Request $request,PodCast $p): Response
+   {
+      // $this->denyAccessUnlessGranted('ROLE_ADMIN');
+       $form = $this->createForm(PodCastType::class, $p);
+       $form->handleRequest($request);
+      
+       if($form->isSubmitted() && $form->isValid())
+       {
+          
+           $this->em->flush();
+           $this->addFlash('success', 'Podcast succesfully updated');
+
+           return $this->redirectToRoute('app_programs_show', ['id'=>$p->getProgram()->getId()]);
+       }
+       return $this->render('pod_cast/edit.html.twig'	, [
+           'podcast'=>$p,
+           'form'=>$form->createView()
+       ]);
+   }
+
+
 }
