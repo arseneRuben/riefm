@@ -3,13 +3,17 @@
 namespace App\Controller;
 
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\Enquiry;
+use App\Form\EnquiryType;
+use App\Repository\UserRepository;
+use App\Repository\VideoRepository;
+use App\Repository\PodCastRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
+
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Doctrine\ORM\EntityManagerInterface;
-use App\Repository\UserRepository;
-use App\Repository\PodCastRepository;
-use App\Repository\VideoRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
 class RadioController extends AbstractController
@@ -21,7 +25,7 @@ class RadioController extends AbstractController
         $this->em = $em;
     }
     #[Route('/', name: 'app_home')]
-    public function index(UserRepository $usRepo, PodcastRepository $pdRepo , VideoRepository $vdRepo): Response
+    public function index(UserRepository $usRepo, PodCastRepository $pdRepo , VideoRepository $vdRepo): Response
     {
        
       
@@ -54,48 +58,37 @@ class RadioController extends AbstractController
      /**
      * @Route("/contact", name="app_contact")
      */
-    public function contactAction() {
+    public function contactAction(Request $request, \Swift_Mailer $mailer) {
         $enquiry = new Enquiry();
+
+      
         $form = $this->createForm(EnquiryType::class, $enquiry);
-        $request = $this->getRequest();
-        if ($request->getMethod() == 'POST') {
-            $form->bind($request);
-            if ($form->isValid()) {
-                    if ($enquiry->getSubject() == "temoignage") {
-                        $em = $this->getDoctrine()->getManager();
-                        $temoignage = new Temoignage();
-                        // $auditeur = $em->getRepository('AppBundle:User')->findOneBy(array('id' => $_POST['userid']));
-                        $temoignage->setAuthor($this->getUser());
-                        $temoignage->setContent($enquiry->getBody());
-                        $temoignage->setVisibility(false);
-                        $em->persist($temoignage);
-                        $em->flush();
-                        $this->addFlash('primary', 'Temoignage enregistre avec success. Il sera traite et publie  dans les plus bref delais!');
-                    } else  {
-                        // Un email dans tous les autres cas
-                        $message = (new \Swift_Message($enquiry->getBody()))
-                                ->setFrom($enquiry->getAuditeur()->getEmail())
+        $form->handleRequest($request);
+
+   
+         //dd($form->getErrors());
+         if ($form->isSubmitted() && $form->isValid()) {
+                       $enquiry->setAuthor($this->getUser());
+                        $message = (new \Swift_Message($enquiry->getSubject()))
+                                ->setFrom($this->getUser()->getEmail())
                                 ->setTo('contactriefm@gmail.com')
-                                ->setBody(
-                                $this->renderView(
-                                        'radio/contact.html.twig', array('name' => $enquiry->getName(), 'form' => $form->createView())
-                                ), 'text/html'
-                        );
-                        $this->get('mailer')->send($message);
-                        $this->addFlash('primary', 'Correspondance bien. Nous vous repondrons dans les plus bref delais!');
-                     } 
-                     
-                     return $this->redirectToRoute('app_account');
+                                ->setSubject($enquiry->getSubject())
+                                ->setBody($enquiry->getBody());
+                        $mailer->send($message);
+                        $entityManager = $this->getDoctrine()->getManager();
+                        $entityManager->persist($enquiry);
+                        $entityManager->flush();
+                        $this->addFlash('primary', 'Correspondance bien transmis. Nous vous repondrons dans les plus bref delais!');
+         }
 
-              
-               
-              
-            
-            }
-
-            return $this->render('default/contact.html.twig', array(
+            return $this->render('radio/contact.html.twig', array(
                         'form' => $form->createView()
             ));
-        }
+        
+        
     }
+
+       
+
+    
 }

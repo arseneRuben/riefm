@@ -1,4 +1,4 @@
-{% extends 'layout/layout.html.twig' %}
+{% extends 'layout/base.html.twig' %}
 {% block body %} 
     {% block subscrbe %}
         <!--==========================
@@ -32,31 +32,25 @@
                         <ul>
                             <li><i class="fa fa-home fa-2x"></i> {{'contacts.localisation'|trans}} </li><hr>
                             <li><i class="fa fa-phone fa-2x"></i>+(237)242111313  +(237)698855353 +(237)673633323</li><hr>
-                            <li><i class="fa fa-envelope fa-2x"></i> ilestecritcameroun@gmail.com</li>
+                            <li><i class="fa fa-envelope fa-2x"></i> contactriefm@gmail.com</li>
                         </ul>
                     </div>
 
                     <div class="col-md-7 wow fadeInUp" data-wow-offset="0" data-wow-delay="0.6s">  	
                         <div id="sendmessage"></div>
                         <div id="errormessage"></div>
-                        <form  action="{{ path('enquiry_new') }}" method="post" {{ form_enctype(form) }}  class="blogger">
+                        <form  action="{{ path('app_contact') }}" method="post"   class="blogger">
                             {{ form_errors(form, { 'attr': {'class': 'form-control '} }) }}
                             <div class="row">
-                                <div class="form-group col-md-6">
-                                    {% if is_granted('ROLE_USER') %}
-                                         {{ form_row(form.nameEmetteur, { 'attr': {'class': 'form-control col-md-6', 'value' : app.user.username} }) }}
-                                    {% else %}
-                                         {{ form_row(form.nameEmetteur, { 'attr': {'class': 'form-control col-md-6'} }) }}
-                                    {% endif %}
-                                    <div class="validation"></div>
-                                </div>
+                               
                                 <div class="form-group col-md-6">
                                      {% if is_granted('ROLE_USER') %}
-                                          {{ form_row(form.emailEmetteur, { 'attr': {'class': 'form-control col-md-6','value' : app.user.email} }) }}
-                                         {% else %}
-                                    {{ form_row(form.emailEmetteur, { 'attr': {'class': 'form-control col-md-6'} }) }}
+                                        <div class="form-group">
+                                            <label for="usr">Nom/Email:</label>
+                                            <input type="label" class="form-control" value="{{ app.user.email }}({{ app.user.firstName }})">
+                                         </div>
                                     {% endif %}
-                                    <div class="validation"></div>
+                                  
                                 </div>
                             </div>
                             <div class="form-group  " >
@@ -70,13 +64,18 @@
                             <div class="form-group">
 
                                 {{ form_rest(form) }}
-                                <div class="validation"></div>
+                               
                             </div>
 
-
-
-
-                            <button type="submit" class="btn btn-theme pull-left">{{'contacts.send'|trans}}</button>
+                            {% if is_granted('ROLE_USER') %}
+                            <div class="form-group">
+                                <br/> 
+                            
+                            <button type="submit" class="btn btn-primary">SEND</button>
+                            </div>
+                             {% else %}
+                               <label for="info">You must connect to be able to communicate with the station by message!</label>
+                             {% endif %}
                         </form>
                     </div>	
                 </div>

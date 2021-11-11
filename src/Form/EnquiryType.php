@@ -7,6 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class EnquiryType extends AbstractType
 {
@@ -22,11 +23,15 @@ class EnquiryType extends AbstractType
                  'don' => 'FAIRE UN DON',
                 'autres' => 'AUTRES'
                
-            ),'label' => 'Objet'))
-            ->add('body')
+            ),'label' => 'Objet',
+            'attr' => array('style' => ' width: 500px')))
+            ->add('body', TextareaType::class, [
+                'label' => 'Message', 
+                'attr' => array('style' => 'width: 500px ; height: 200px')
+            ]);
         
-            ->add('author')
-        ;
+          
+        
     }
 
     public function configureOptions(OptionsResolver $resolver)

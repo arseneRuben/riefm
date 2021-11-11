@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Traits\TimeStampable;  
 /**
  * @ORM\Entity(repositoryClass=EnquiryRepository::class)
+ * @ORM\HasLifecycleCallbacks
  */
 class Enquiry
 {
