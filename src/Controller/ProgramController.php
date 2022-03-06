@@ -27,8 +27,9 @@ class ProgramController extends AbstractController
     {
         $this->em = $em;
     }
-
-    #[Route('/programs/', name: 'app_programs',  methods:'GET')]
+    /**
+     * @Route("/programs", name="app_programs", requirements={"id"="\d+"}, methods={"GET"})
+     */
     public function index( PaginatorInterface $paginator,Request $request, ProgramRepository $repo): Response
     {
       //  phpinfo();

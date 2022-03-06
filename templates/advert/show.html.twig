@@ -4,38 +4,165 @@
 {% block title advert.title %}
 
 {% block body %}
-	<div class="row mb-5">
-			
-			<div  class=" col-md-6 mx-auto">
 
-	<article  class="advert p-3  bg-white rounded shadow" >
-					<div  class="mw-100  rounded-top overflow-hidden" >
-						<img src="{{ (advert.imageName ? vich_uploader_asset(advert) : asset('uploads/adverts/placeholder.jpg'))| imagine_filter('advert_filter_square_medium') }}" alt="{{ advert.title }}" class="w-100">
-							
-					</div>
-						<h1  class="h5  pt-1">  <a href="{{path('app_adverts_show', {id: advert.id})}}" class=" text-muted text-decoration-none text-secondary" >  {{advert.title}} </a> </h1> 
-						
-						<p  class="pd-2 pb-2 text-muted" >  Submitted at <time datetime= "{{advert.createdAt|date('Y-m-d H:m:s')}}">{{advert.createdAt|date('d-m-Y')}} </time> </p>
-						  <p  class="pd-2 pb-2 text-muted" >  or  {{advert.createdAt|ago}} by  {{advert.author.fullName}}</p>
-						
-
-				<p  class=" text-break "> {{advert.content}} </p>
-				{% if is_granted('ROLE_ADMIN') %}
-					<a class="btn btn-warning" href="{{path('admin_adverts_edit', {id: advert.id})}}"> Edit </a> |
-					<a class="btn btn-danger" href="del"  onclick= "event.preventDefault() ; confirm('Are you sure ?') && document.getElementById('js-adverts-delete-form').submit();"> Delete</a>
-				
-					<form id="js-adverts-delete-form" action="{{path('admin_adverts_delete', {id: advert.id})}}" method="post" style="display: none;">
-						<input type="hidden" name="{{ csrf_token('adverts_deletion' ~ advert.id ) }}" id="">
-						<input type="hidden" name="_method" value="DELETE">
-					</form> |
-				{% endif %}
-				 <a href="{{path('app_adverts')}}" class="btn  btn-secondary" >  Go back!</a> 
-			<div class=" ">			
-				
-				
-				
+ 			<div  class="col-md-1 mt-4" >
 			</div>
-			</article>
- </div>
- </div>
+			<section class="row col-md-9  bg-light.bg-gradient mx-auto mt-4">
+				<article  class="advert p-3 col-md-8   rounded shadow mx-auto">
+				
+                 <!-- News Detail Start -->
+                     
+                        <div class="position-relative mb-3">
+                            <div class="bg-white border border-top-0 p-4">
+                        
+                                <div class="mb-3">
+                                    <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2"
+                                        href="">Actualite</a>
+                                    
+                                </div>
+                                
+                                <h3 class="text-uppercase font-weight-bold mb-3">{{advert.title}} </h3>
+                                
+                               	<img src="{{ (advert.imageName ? vich_uploader_asset(advert) : asset('uploads/adverts/placeholder.jpg'))| imagine_filter('advert_filter_square_medium') }}" alt="{{ advert.title }}" class="img-fluid w-50 float-left mr-4 mb-2">
+
+							    <p> {{advert.content|raw}}</p>
+                            
+                            
+                            </div>
+                            <div class="d-flex justify-content-between bg-white border border-top-0 p-4">
+                            <div class="d-flex align-items-center">
+                                    <img class="rounded-circle mr-2" src="{{asset('images/user.jpg')}}" width="25" height="25" alt="">
+                                    <span> {{advert.author.fullName}}</span> <span>&#8195;</span><span>&#8195;</span>
+                                    <span class="date"><span class="month">{{advert.createdAt|ago}}</span></span>
+                                </div>
+                            <div class="text-center">
+                                                 <ul class="stats   list-inline justify-content-evenly">
+                                                    <li><a class="btn btn-warning btn-sm " href="{{path('admin_adverts_edit', {id: advert.id})}}"> Edit </a> |</li>
+                                                    <li><a class="btn btn-danger btn-sm " href="del"  onclick= "event.preventDefault() ; confirm('Are you sure ?') && document.getElementById('js-adverts-delete-form').submit();"> Delete</a></li>
+                                                {% if is_granted('ROLE_ADMIN') %}
+                                                    <li>
+                                                    <form id="js-adverts-delete-form" action="{{path('admin_adverts_delete', {id: advert.id})}}" method="post" style="display: none;">
+                                                        <input type="hidden" name="{{ csrf_token('adverts_deletion' ~ advert.id ) }}" id="">
+                                                        <input type="hidden" name="_method" value="DELETE">
+                                                    </form> |</li>
+                                                {% endif %}
+                                                <li><a href="{{path('app_adverts')}}" class="btn btn-sm  btn-secondary" >  Go back!</a> </li>
+                                                <li><a href="#" class=" text-muted text-decoration-none text-secondary btn btn-sm btn-outline-primary" item-id="{{advert.id}}" data-reply> Comment</a> </li>
+                                                </ul>
+                                                
+                                              
+                                </div>
+                                
+                                
+                            </div>
+                              <ul class="stats   list-inline justify-content-evenly">
+                                                    <li><a href="#" class="icon fa-comment">{{advert.comments|length}}</a></li>
+                                                    <li><a href="#" class="icon fa-heart"></a></li>
+                                                    <li><a href="#" class="icon brands fa-twitter"></a></li>
+                                                    <li><a href="#" class="icon brands fa-facebook-f"></a></li>
+                                                </ul>
+								
+                        </div>	
+                         
+					<div class="card xs2 sm3">
+						<div class="col-xs2 col-sm3">
+							<h4 class="text-center m-0 text-uppercase font-weight-bold"> Leave your comments</h4>
+						</div>
+						<div class="col-xs2 row col-sm3 p-3">
+								<!-- Comment List Start -->
+							<div class="col-md-12">
+								<section class="justify-content-sm-evenly">
+										<div class="bg-white border border-top-0 p-4">
+										{% for comment in advert.comments %}
+											{% if comment.parent == null %}
+											<div class="media mb-4 row">
+												<div class=" col-2">
+													<img src="{{ comment.author ?   comment.author.avatar(75):asset('images/user.jpg') }}" alt=" {{comment.nickname}}" avatar style="width: 45px;" class="shadow rounded-circle img-fluid mr-3 mt-1" >
+													
+													<h6> {{comment.author ? comment.author.firstName:comment.nickname}}  </h6>
+												</div>
+												<div class="media-body col-8 col-sm-7">
+													<p> {{comment.content|raw}}|<small><i>{{comment.createdAt|date("d/m/Y H:i")}} </i></small></p>
+													{% for reply in comment.replies %}
+													<div  class="ml-10 row">
+														<div class=" col-3">
+															<img src="{{ reply.author ?   reply.author.avatar(75):asset('images/user.jpg') }}" alt=" {{reply.nickname}}" avatar style="width: 45px;" class="shadow rounded-circle img-fluid mr-3 mt-1" >
+														
+															<h6>{{reply.author ? reply.author.firstName:reply.nickname}}  </h6>
+														</div>
+														<div class="media-body  col-md-9 col-sm-9">
+															<p> {{reply.content|raw}}|	<small><i>{{reply.createdAt|date("d/m/Y H:i")}} </i></small></p>
+														</div>
+													</div>
+													{% endfor %}
+												</div>	
+												<div class="media-body  col-md-2 col-sm-3">
+													<button class="btn btn-sm btn-outline-primary"  item-id="{{advert.id}}"  data-id="{{comment.id}}" href="#add-comment"   data-reply>Reply</button>	
+												</div>		
+											</div>
+											{% endif %}
+										{% endfor %}
+										</div>
+								</section>
+							</div>
+							
+						</div>
+					</div>
+		
+					    
+				</article>
+             
+				<article  class=" p-3 col-md-4  rounded shadow mx-auto">
+					 <!-- Newsletter Start -->
+                    <div class="mb-3">
+                        <div class="section-title mb-0">
+                            <h4 class="m-0 text-uppercase font-weight-bold text-center">Newsletter</h4>
+                        </div>
+                        <div class="bg-white text-center border border-top-0 p-3">
+                            <p>Choisir les tags auquels vous desirez vous abonner !</p>
+                            <div class="input-group mb-2" style="width: 100%;">
+                                {% if(app.user) %}
+									 <input type="text" class="form-control form-control-lg" placeholder="Your Email" value="{{app.user.email}}">			
+									{% else %}
+									<input type="text" class="form-control form-control-lg" placeholder="Your Email" >			
+							    {% endif %}
+                               
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary font-weight-bold px-3">Sign Up</button>
+                                </div>
+                            </div>
+                             <div class="bg-white border border-top-0 p-3">
+                             <h4 class="m-0 text-uppercase font-weight-bold">Tags</h4>
+                            <div class=" m-4 flex-wrap m-n1">
+                                <ul class="list-group">
+                                {% for cat in categories %}
+                                    <li class="list-group-item  text-left">
+                                        <input class="form-check-input " type="checkbox" value="{{cat.id}}" aria-label="..." />
+                                        <label>{{cat.name}} </label>
+                                    </li>
+                                  {% endfor %}
+                                     
+                                </ul>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <!-- Newsletter End -->
+                      <!-- Ads Start -->
+                    <div class="mb-3">
+                        <div class="section-title mb-0">
+                            <h4 class="m-0 text-uppercase font-weight-bold">Advertisement</h4>
+                        </div>
+                        <div class="bg-white text-center border border-top-0 p-3">
+                            <a href=""><img class="img-fluid" src="{{asset('images/news-700x435-3.jpg')}}" alt=""></a>
+                        </div>
+                    </div>
+
+                  
+				</article> 
+			</section>
+			 <div  class="col-md-1 mt-4" >
+	        </div>
+           
+
 {% endblock %}

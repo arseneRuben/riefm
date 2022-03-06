@@ -1,0 +1,98 @@
+{% extends 'layout/base.html.twig' %}
+
+{% block title %}Sign up!{% endblock %}
+
+  {% block stylesheets %}
+        	 {{parent()}} 
+            <link href="{{ asset('assets/css/login.css') }}" rel="stylesheet">    
+            
+        {% endblock %}
+
+{% block body %}
+    {% for flashError in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger text-center m-3" role="alert">{{ flashError }}</div>
+    {% endfor %}
+
+   <div class="container-fluid px-1 px-lg-1  mx-auto">
+        <div class="container">
+          
+            <div class="row">
+                <div class="col-lg-6 col-xl-6 mx-auto">
+                    <div class="card flex-row my-5 border-0 shadow rounded-3 overflow-hidden">
+                  
+                    <div class="card-body p-4 p-sm-5">
+                        <h5 class="card-title text-center mb-5 fw-light fs-5">Please Sign Up</h5>
+                    
+                        
+                        
+                        {{ form_start(registrationForm, {'attr': { 'novalidate':  'novalidate'  }} ) }}
+                        <div class="form-floating mb-3 ">
+                                  {{ form_widget(registrationForm.firstName) }}
+                                {{ form_errors(registrationForm.firstName) }}
+                                <label for="firstName">Prenom</label>
+                        </div>
+                         <div class="form-floating mb-3 ">
+                                  {{ form_widget(registrationForm.lastName) }}
+                                {{ form_errors(registrationForm.lastName) }}
+                                <label for="lastName">Nom</label>
+                        </div>
+                        
+
+                        <div class="form-floating mb-3">
+
+                           {{ form_widget(registrationForm.email) }}
+                            
+                                {{ form_errors(registrationForm.email) }}
+                            
+                            <label for="email">Email address</label>
+                           
+                        </div>
+
+                       
+
+                         <div class="form-floating mb-3">
+                           {{ form_widget(registrationForm.plainPassword) }}
+                            {{ form_errors(registrationForm.plainPassword) }}
+                            <label for="plainPassword">Password</label>
+                             
+                        </div>
+
+                         <div class="form-check checkbox mb-2 d-flex justify-content-between">
+                            <label class="form-check-label" for="flexCheckDefault">
+                             {{ form_widget(registrationForm.agreeTerms) }}
+                             
+                             </label>
+                             <a class="" href="{{ path('app_policy') }}">Terms</a>
+                            
+                        </div>
+                      
+                         <div class="d-grid mb-2">
+                            <button class="btn btn-lg btn-primary btn-login fw-bold text-uppercase" type="submit" formnovalidate>Register</button>
+                        </div>
+
+                        <a class="d-block text-center mt-2 small" href="{{ path('app_login') }}">An account? Sign In</a>
+                    {#
+                        <hr class="my-2">
+
+                        <div class="d-grid mb-2">
+                            <button class="btn btn-lg btn-google btn-login fw-bold text-uppercase">
+                            <i class="fab fa-google me-2"></i> Sign up with Google
+                            </button>
+                        </div>
+
+                        <div class="d-grid">
+                            <button class="btn btn-lg btn-facebook btn-login fw-bold text-uppercase">
+                            <i class="fab fa-facebook-f me-2"></i> Sign up with Facebook
+                            </button>
+                        </div>
+                        #}
+
+                            {{ form_rest(registrationForm) }}
+      
+                        {{ form_end(registrationForm) }}
+                    </div>
+                </div>
+        </div>
+     </div>
+  
+{% endblock %}

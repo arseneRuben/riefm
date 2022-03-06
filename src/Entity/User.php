@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Entity\Item;
+use App\Entity\Category;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -84,9 +86,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $stackexchange_access_token;
 
     /**
-     * @ORM\OneToMany(targetEntity=Advertisement::class, mappedBy="author")
+     * @ORM\OneToMany(targetEntity=Item::class, mappedBy="author")
      */
-    private $advertisements;
+    private $items;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -119,14 +121,32 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $temoignages;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="Author", orphanRemoval=true)
+     */
+    private $comments;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Category::class, inversedBy="users")
+     */
+    private $categories;
+
+    
+
+ 
+
+
     public function __construct()
     {
         $this->advertisements = new ArrayCollection();
          // guarantee every user at least has ROLE_USER
-         $this->setRoles(['ROLE_USER']);
+         $this->setRoles(['ROLE_USER', 'ROLE_ADMIN']);
          $this->videos = new ArrayCollection();
          $this->enquiries = new ArrayCollection();
          $this->temoignages = new ArrayCollection();
+         $this->comments = new ArrayCollection();
+        
+         $this->categories = new ArrayCollection();
     }
 
     public function setGithubId($githubId) {
@@ -477,5 +497,95 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getAuthor() === $this) {
+                $comment->setAuthor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Category[]
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Category $category): self
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories[] = $category;
+            $category->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category): self
+    {
+        if ($this->categories->removeElement($category)) {
+            $category->removeUser($this);
+        }
+
+        return $this;
+    }
+
+    public function getLinkedinId(): ?string
+    {
+        return $this->linkedin_id;
+    }
+
+    public function setLinkedinId(?string $linkedin_id): self
+    {
+        $this->linkedin_id = $linkedin_id;
+
+        return $this;
+    }
+
+    public function getLinkedinAccessToken(): ?string
+    {
+        return $this->linkedin_access_token;
+    }
+
+    public function setLinkedinAccessToken(?string $linkedin_access_token): self
+    {
+        $this->linkedin_access_token = $linkedin_access_token;
+
+        return $this;
+    }
+
+    public function getIsVerified(): ?bool
+    {
+        return $this->isVerified;
+    }
+
+   
+
+   
   
 }

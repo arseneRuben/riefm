@@ -1,0 +1,48 @@
+<div class="mb-3">
+									<div class="bg-white border border-top-0 p-4" id="add-comment">
+										{{ form_start(commentForm) }}
+                                            <div class="my-custom-class-for-errors">
+                                                {{ form_errors(commentForm) }}
+                                            </div>
+											<div class="form-row row mx-auto">
+												<div class="col-sm-5 col-md-5">
+													<div class="form-group">
+													{% if(app.user) %}
+														 {{ form_row(commentForm.email, {'value': app.user.email}) }}	
+													{% else %}
+														 {{ form_row(commentForm.email) }}
+													{% endif %}
+														
+													</div>
+												</div>
+												<div class="col-sm-5 col-md-5">
+													<div class="form-group">
+														{% if(app.user) %}
+														 {{ form_row(commentForm.nickname, {'value': app.user.firstName}) }}	
+													{% else %}
+														 {{ form_row(commentForm.nickname) }}
+													{% endif %}
+													</div>
+												</div>
+											</div>
+
+											<div class="form-group">
+												 {{ form_row(commentForm.content) }}
+											</div>
+											<div class="form-group mb-0 row">
+												 <div class="col-sm-12 col-md-6">
+													<div class="form-group">
+														 {{ form_row(commentForm.rgpd) }}
+													</div>
+												</div>
+                                                <div class="col-sm-12 col-md-6">
+													<div class="form-group row">
+														 {{ form_row(commentForm.submit) }}
+													</div>
+												</div>
+											</div>
+											 {{ form_row(commentForm.parent) }}
+										{{ form_end(commentForm) }}
+									</div>
+							
+</div>

@@ -30,8 +30,8 @@
 				<p  class="m-5 text-break  "> {{program.description}} </p>
 				{% if is_granted('ROLE_ADMIN') %}
 				
-					<a class="btn btn-warning" href="{{path('admin_programs_edit', {id: program.id})}}"> Edit </a> |
-					<a class="btn btn-danger" href="del"  onclick= "event.preventDefault() ; confirm('Are you sure ?') && document.getElementById('js-programs-delete-form').submit();"> Delete</a>
+					<a class="btn btn-warning btn-sm" href="{{path('admin_programs_edit', {id: program.id})}}"> Edit </a> |
+					<a class="btn btn-danger btn-sm" href="del"  onclick= "event.preventDefault() ; confirm('Are you sure ?') && document.getElementById('js-programs-delete-form').submit();"> Delete</a>
 				
 				<form id="js-programs-delete-form" action="{{path('admin_programs_delete', {id: program.id})}}" method="post" style="display: none;">
 					<input type="hidden" name="{{ csrf_token('programs_deletion' ~ program.id ) }}" id="">
@@ -39,7 +39,7 @@
 
 				</form> |
 				{% endif %}
-				 <a href="{{path('app_programs')}}" class=" text-muted text-decoration-none text-secondary btn btn-primary" >  Go back!</a> 
+				 <a href="{{path('app_programs')}}" class=" text-muted text-decoration-none text-secondary btn-sm btn btn-primary" >  Go back!</a> 
 				<div class=" ">			
 				</div>
 			</article>
@@ -76,7 +76,7 @@
 						
 							{% if is_granted('ROLE_ADMIN') %}
 							<td>	
-									<a class="btn btn-danger" href="del"  onclick= "event.preventDefault() ; confirm('Are you sure ?') && document.getElementById('js-podcasts-delete-form-{{ article.id }}').submit();">  <i class="fa fa-trash m-3" aria-hidden="true"></i> </a>
+									<a class="btn btn-danger btn-sm" href="del"  onclick= "event.preventDefault() ; confirm('Are you sure ?') && document.getElementById('js-podcasts-delete-form-{{ article.id }}').submit();">  <i class="fa fa-trash m-1" aria-hidden="true"></i> </a>
 										<form id="js-podcasts-delete-form-{{article.id}}" action="{{path('admin_podcasts_delete', {id: article.id})}}" method="post" style="display: none;">
 										
 											<input type="hidden" name="csrf_token" value ="{{ csrf_token('podcasts_deletion' ~ article.id ) }}" id="">

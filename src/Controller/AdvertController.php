@@ -8,15 +8,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\AdvertisementRepository;
+use App\Repository\CategoryRepository;
 use App\Entity\Advertisement;
 use App\Form\AdvertType;
 use Doctrine\ORM\EntityManagerInterface;
 
-/**
- * Program controller.
- *
- * @Route("/adverts")
- */
+
 class AdvertController extends AbstractController
 {
     private $em;
@@ -26,24 +23,28 @@ class AdvertController extends AbstractController
         $this->em = $em;
     }
 
-    #[Route('/', name: 'app_adverts',  methods:'GET')]
-    public function index(AdvertisementRepository $advertRepo): Response
+    /**
+     * @Route("adverts", name="app_adverts", requirements={"id"="\d+"}, methods={"GET"})
+     */
+    public function index( AdvertisementRepository $advertRepo): Response
     {
+       
         $adverts = $advertRepo->findAll([], ['createdAt' => 'DESC']);
         return $this->render('advert/index.html.twig', compact('adverts'));
     }
 
 
      /**
-     * @Route("/{id}", name="app_adverts_show", requirements={"id"="\d+"}, methods={"GET"})
+     * @Route("adverts/{id}", name="app_adverts_show", requirements={"id"="\d+"}, methods={"GET"})
      */
-    public function show(Advertisement $advert): Response
+    public function show(CategoryRepository $repo,Advertisement $advert): Response
     {
-    	  return $this->render('advert/show.html.twig', compact("advert"));
+          $categories = $repo->findAll([], ['name' => 'DESC']);
+    	  return $this->render('advert/show.html.twig', compact('categories',"advert"));
     }
 
     /**
-     * @Route("/create",name= "admin_adverts_create", methods={"GET","POST"})
+     * @Route("admin/adverts/create",name= "admin_adverts_create", methods={"GET","POST"})
      * @Security("is_granted('ROLE_ADMIN')")
      */
     public function create(Request $request): Response
@@ -52,13 +53,14 @@ class AdvertController extends AbstractController
         $advert = new Advertisement();
     	$form = $this->createForm(AdvertType::class, $advert);
     	$form->handleRequest($request);
+       
     	if($form->isSubmitted() && $form->isValid())
     	{
             $advert->setAuthor($this->getUser());
             $this->em->persist($advert);
             $this->em->flush();
             $this->addFlash('success', 'Advertisement succesfully created');
-            return $this->redirectToRoute('app_adverts');
+            return $this->redirectToRoute('app_news_letter');
     	}
 
     	 return $this->render('advert/create.html.twig'
@@ -67,7 +69,7 @@ class AdvertController extends AbstractController
 
 
      /**
-     * @Route("/edit/{id}", name="admin_adverts_edit", requirements={"id"="\d+"}, methods={"GET","POST"})
+     * @Route("admin/adverts/edit/{id}", name="admin_adverts_edit", requirements={"id"="\d+"}, methods={"GET","POST"})
      * @Security("is_granted('MANAGE_ADVERT', advert)")
      */
     public function edit(Request $request,Advertisement $advert): Response
@@ -104,7 +106,7 @@ class AdvertController extends AbstractController
     }
 
     /**
-     * @Route("/delete/{id}", name="admin_adverts_delete", requirements={"id"="\d+"})
+     * @Route("admin/adverts/delete/{id}", name="admin_adverts_delete", requirements={"id"="\d+"})
      * @Security("is_granted('MANAGE_ADVERT', advert)")
      */
     public function delete(Request $request,Advertisement $advert): Response

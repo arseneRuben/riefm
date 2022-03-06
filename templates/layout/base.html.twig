@@ -8,50 +8,158 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		
         {% block stylesheets %}
-        	{# {{encore_entry_link_tags('main')}} #}
+        	 {# {{encore_entry_link_tags('main')}} #}
            <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+           <link rel="preconnect" href="{{ asset('https://fonts.gstatic.com') }}" />
+           <link href="{{ asset('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap') }}" rel="stylesheet" />
+           <link href="{{ asset('assets/lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet" />
+           <!-- Libraries Stylesheet -->
+   
 
-         <link href="{{ asset('https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css') }}" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-           <link href="{{ asset('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css') }}" rel="stylesheet"> 
-         <link href="{{ asset('assets/css/main.css') }}" rel="stylesheet">    
-           
+           <!-- Customized Bootstrap Stylesheet -->
+            <link href="{{ asset('assets/css/news.css') }}" rel="stylesheet" />
+            <link href="{{ asset('https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css') }}" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+            <link href="{{ asset('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css') }}" rel="stylesheet" /> 
+            <link href="{{ asset('assets/css/main.css') }}" rel="stylesheet" />    
+          
         {% endblock %}
 
     
     </head>
 
     <body class="is-preload homepage">
+
          {{ include('layout/partials/flash_messages.html.twig') }}
         <div id="page-wrapper">
           {% block header %}
              <!-- Header -->
 				  {% include 'layout/partials/nav.html.twig' %}
+           <!-- Breaking News Start -->
+         
+    <!-- Breaking News End -->
            {% endblock %}
-             
+        <div class="container-fluid">
+         
+            <div class="row">
              {% block body %}
-             <main class="container">
-                <!-- Banner -->
-                   {% include 'layout/partials/banner.html.twig' %}
-            </main>
-            {% endblock %}
-           
+             
+             {% endblock %}
+            </div>
+          
+        </div>   
          {% block footer %}
              <!-- Header -->
 				  {% include 'layout/partials/footer.html.twig' %}
            {% endblock %}
+           
         </div>
 
             {% block javascripts %}
               <script src="{{asset('assets/js/jquery.min.js')}}"></script>
               <script src="{{asset('assets/js/jquery.dropotron.min.js')}}"></script>
               <script src="{{asset('assets/js/browser.min.js')}}"></script>
+             
+               <script src="{{asset('assets/lib/easing/easing.min.js')}}"></script>
+               <script src="{{asset('assets/lib/owlcarousel/owl.carousel.min.js')}}"></script>
               <script src="{{asset('https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js')}}"></script>
               <script src="{{asset('assets/js/breakpoints.min')}}.js"></script>
               <script src="{{asset('assets/js/util.js')}}"></script>
               <script src="{{asset('assets/js/main.js')}}"></script>
+              <script src="{{asset('assets/js/news.js')}}"></script>
 
              <!-- Global site tag (gtag.js) - Google Analytics -->
               <script async src="https://www.googletagmanager.com/gtag/js?id=UA-208211930-1"></script>
+                <script>
+                      
+                       var item_id, postData, email, nickname, parentId;
+                      window.onload=() => {
+                              // On met un ecouteur d̀evenement sur tous les boutton repondre
+                        document.querySelectorAll("[data-reply]").forEach(element => {
+                              element.addEventListener("click", function(e){  
+                              e.preventDefault();
+                              itemId=this.getAttribute('item-id') ;
+                              parentId = this.getAttribute('data-id') ;
+                              document.querySelector("#comment_parent").value = this.dataset.id; 
+                              getfocus();
+                              
+                             
+                          });
+                        });
+ 
+                        // console.log( document.getElementById("comment_content"));
+                         document.getElementById("comment_submit").addEventListener("click", function(e){  
+                              e.preventDefault();
+                              content = document.getElementById("comment_content").value;
+                             
+                              rgpd = document.getElementById("comment_rgpd").value;
+                              email = document.getElementById("comment_email").value;
+                              nickname = document.getElementById("comment_nickname").value;
+                             
+                              
+                                 if(document.URL.split('/')[3]=="podcast"){
+                                  postData = {
+                                      "rgpd":rgpd,
+                                      "content":content,
+                                      "item_id":itemId,
+                                      "parent_id" : parentId,
+                                      "type":1,
+                                      "email":email,
+                                      "nick_name":nickname
+                                    };
+                                          
+                                   $.ajax({
+                                      type: "POST",
+                                      url: "{{ path('create_comment') }}",
+                                      data: postData,
+                                      datatype: "json",
+                                      success: function (data) {
+                                        window.location.reload();
+                                      },
+                                      error: function (e) {
+                                        console.log(postData);
+                                        console.log(e.message);
+                                       
+                                      }
+                                    });
+                                }
+                              
+                             
+                             
+                                if(document.URL.split('/')[3]=="adverts"){
+                                     postData = {
+                                      "rgpd":rgpd,
+                                      "content":content,
+                                      "item_id":itemId,
+                                      "parent_id" : parentId,
+                                      "type":2,
+                                      "email":email,
+                                      "nick_name":nickname
+                                    };
+                                          
+                                   $.ajax({
+                                      type: "POST",
+                                      url: "{{ path('create_comment') }}",
+                                      data: postData,
+                                      datatype: "json",
+                                      success: function (data) {
+                                        window.location.reload();
+                                      },
+                                      error: function (e) {
+                                        console.log(postData);
+                                        console.log(e.message);
+                                       
+                                      }
+                                    });
+                                }
+                         });
+                      }
+
+                      
+                      function getfocus() {
+                         // document.getElementById("comment_form_name").focus();
+                         document.getElementById("comment_content").focus();
+                      }
+              </script>
               <script>
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}
@@ -59,7 +167,11 @@
 
                 gtag('config', 'UA-208211930-1');
               </script>
-
+              
+						 
+           
+            
+             
 
        
            {% endblock %}

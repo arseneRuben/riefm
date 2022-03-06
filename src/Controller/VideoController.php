@@ -24,20 +24,25 @@ class VideoController extends AbstractController
     {
         $this->em = $em;
     }
+  
+   
+      
+
+	 
 
     #[Route('/video', name: 'app_videos')]
-    public function index( PaginatorInterface $paginator,Request $request, VideoRepository $repo): Response
+    public function index(UserRepository $usRepo, PaginatorInterface $paginator,Request $request, VideoRepository $repo): Response
     {
-      
+        $users  = $usRepo->findAll();
         $allPrograms  = $repo->findAll();
-        $videos = $paginator->paginate($allPrograms,$request->query->get('page', 1),4);
+        $videos = $paginator->paginate($allPrograms,$request->query->get('page', 1),12);
         $videos->setCustomParameters([
             'position' => 'centered',
             'size' => 'large',
             'rounded' => true,
         ]);
 
-        return $this->render('video/index.html.twig', ['pagination' => $videos]);
+        return $this->render('video/index.html.twig', ['pagination' => $videos,'users' => $users]);
     }
 
       /**

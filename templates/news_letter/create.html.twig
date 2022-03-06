@@ -1,0 +1,18 @@
+
+{% extends 'layout/base.html.twig' %}
+
+{% block title 'new news'  %}
+
+{% block body %}
+<div class="row">
+ 	<div class="col-md-6 mx-auto">
+ 		<article>
+			<h1>  Create news</h1>
+			{{include('partials/_form.html.twig',{'submitButtonText':'Create newsletter', 'returnRoute':'app_news_letter'} )}}
+
+		</article>
+		
+	</div>
+</div>
+
+{% endblock %}

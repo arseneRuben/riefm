@@ -71,7 +71,7 @@ class RegistrationController extends AbstractController
                 'main' // firewall name in security.yaml
             );*/
             $this->addFlash('warning', 'A confirmation email is sent to you. Kindly confirm it.');
-            $user->setIsVerified(true);
+          
             $em->persist($user);
             return $this->redirectToRoute('app_login');
         }

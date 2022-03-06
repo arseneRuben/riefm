@@ -1,0 +1,18 @@
+
+{% extends 'layout/base.html.twig' %}
+
+{% block title 'new verse'  %}
+
+{% block body %}
+<div class="row">
+ 	<div class="col-md-6 mx-auto">
+ 		<article>
+			<h1>  Create Verse</h1>
+			{{include('partials/_form.html.twig',{'submitButtonText':'Create verse', 'returnRoute':'admin_verses_create'} )}}
+
+		</article>
+		
+	</div>
+</div>
+
+{% endblock %}

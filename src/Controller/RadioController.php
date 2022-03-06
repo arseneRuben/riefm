@@ -30,10 +30,12 @@ class RadioController extends AbstractController
        
       
 
-       // $users  = $usRepo->findAll();
+	  //$users  = $usRepo->findAll();
         $podCasts  = $pdRepo->findNLatest(4);
         $videos  = $vdRepo->findNLatest(4);
-       /*dd($podCasts );
+       
+       /*
+       dd($podCasts );
         foreach( $users as $user ) {
             if($user->getFirstName()=='emmanuel') $user->addRole('ROLE_ADMIN');
              if($user->getFirstName()=='arsene') $user->addRole('ROLE_ADMIN');

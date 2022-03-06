@@ -1,0 +1,109 @@
+{% extends 'layout/base.html.twig' %}
+
+
+{% block body %}
+  
+    
+
+
+
+    <div  class="col-md-1 mt-4" >
+			</div>
+			<section class="row col-md-9  bg-light.bg-gradient mx-auto mt-4">
+				<article  class="advert p-3 col-md-8   rounded shadow mx-auto">
+				
+                 <!-- News Detail Start -->
+                      {% for advert in adverts %}
+                        <div class="position-relative mb-3">
+                            <div class="bg-white border border-top-0 p-4">
+                        
+                                <div class="mb-3">
+                                    <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2"
+                                        href="{{path('app_category')}}">{{advert.category.name}}</a>
+                                    <a class="text-body" href="">Jan 01, 2045</a>
+                                </div>
+                                
+                                <a  href="{{path('app_adverts_show', {id: advert.id})}}"><h3 class="text-uppercase font-weight-bold mb-3">{{advert.title}}</h3></a>
+                                <img class="img-fluid w-50 float-left mr-4 mb-2" src="{{ (advert.imageName ? vich_uploader_asset(advert) : asset('uploads/adverts/placeholder.jpg'))| imagine_filter('advert_filter_square_medium') }}">
+                                <p>{{advert.content |slice(0, 60)| raw }} <a  class="text-uppercase" href="{{path('app_adverts_show', {id: advert.id})}}">......</a> </p>
+                            
+                            
+                            </div>
+                            <div class="d-flex justify-content-between bg-white border border-top-0 p-4">
+                            <div class="d-flex align-items-center">
+                                    <img class="rounded-circle mr-2" src="{{ advert.author ?   advert.author.avatar(75):asset('images/user.jpg') }}}"   width="25" height="25" >
+                                    <span>{{advert.author.fullName}}</span> <span>&#8195;</span><span>&#8195;</span>
+                                    <span class="date"><span class="month">{{ "now"|date('F d, Y') }} </span></span>
+                                </div>
+                            <div class="text-center">
+                                                
+                                                <ul class="stats   list-inline justify-content-evenly">
+                                                    <li><a href="#" class="icon fa-comment">{{advert.comments|length}}</a></li>
+                                                    <li><a href="#" class="icon fa-heart">32</a></li>
+                                                    <li><a href="#" class="icon brands fa-twitter">64</a></li>
+                                                    <li><a href="#" class="icon brands fa-facebook-f">128</a></li>
+                                                </ul>
+                                </div>
+                            </div>
+                        </div>	
+                     {% endfor %}
+					    
+				</article>
+             
+				<article  class="comment p-3 col-md-4  rounded shadow mx-auto">
+					 <!-- Newsletter Start -->
+                    <div class="mb-3">
+                        <div class="section-title mb-0">
+                            <h4 class="m-0 text-uppercase font-weight-bold text-center">Newsletter</h4>
+                        </div>
+                        <div class="bg-white text-center border border-top-0 p-3">
+                            <p>Choisir les tags auquels vous desirez vous abonner !</p>
+                            <div class="input-group mb-2" style="width: 100%;">
+                                {% if(app.user) %}
+									 <input type="text" class="form-control form-control-lg" placeholder="Your Email" value="{{app.user.email}}">			
+									{% else %}
+									<input type="text" class="form-control form-control-lg" placeholder="Your Email" >			
+							    {% endif %}
+                               
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary font-weight-bold px-3">Sign Up</button>
+                                </div>
+                            </div>
+                             <div class="bg-white border border-top-0 p-3">
+                             <h4 class="m-0 text-uppercase font-weight-bold">Tags</h4>
+                            <div class=" m-4 flex-wrap m-n1">
+                                <ul class="list-group">
+                                {% for cat in categories %}
+                                    <li class="list-group-item  text-left">
+                                        <input class="form-check-input " type="checkbox" value="{{cat.id}}" aria-label="..." />
+                                        <label>{{cat.name}} </label>
+                                    </li>
+                                  {% endfor %}
+                                     
+                                </ul>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <!-- Newsletter End -->
+                      <!-- Ads Start -->
+                    <div class="mb-3">
+                        <div class="section-title mb-0">
+                            <h4 class="m-0 text-uppercase font-weight-bold">Advertisement</h4>
+                        </div>
+                        <div class="bg-white text-center border border-top-0 p-3">
+                            <a href=""><img class="img-fluid" src="{{asset('images/news-700x435-3.jpg')}}" alt=""></a>
+                        </div>
+                    </div>
+
+                  
+				</article> 
+			</section>
+			 <div  class="col-md-1 mt-4" >
+	        </div>
+     </div>
+  
+
+
+   
+{% endblock %}

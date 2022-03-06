@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Knp\Component\Pager\PaginatorInterface;
 use App\Entity\PodCast;
+use App\Entity\Comment;
 use App\Form\PodCastType;
 use App\Repository\PodcastRepository;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,18 +23,19 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 class PodCastController extends AbstractController
 {
     private $em;
-
     public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
     }
-
     /**
-     * @Route("podcast/{id}", name="app_podcasts_show", requirements={"id"="\d+"}, methods={"GET"})
+     * @Route("podcast/{id}", name="app_podcasts_show", requirements={"id"="\d+"}, methods={"GET","POST"})
      */
-    public function show(Podcast $podcast): Response
+    public function show(Podcast $podcast, Request $request): Response
     {
-    	  return $this->render('pod_cast/show.html.twig', compact("podcast"));
+    	  return $this->render('pod_cast/show.html.twig', [
+              'podcast' => $podcast,
+             
+          ]);
     }
 
      /**
@@ -79,7 +81,16 @@ class PodCastController extends AbstractController
                 // instead of its contents
                 $post->setFileName($newFilename);
                // $post->setAuthor($this->getUser());
-                //dd($post);
+               $comment = new Comment();
+               $comment->setAuthor($post->getAuthor());
+               $comment->setContent($post->getDescription());
+               $comment->setEmail($post->getAuthor()->getEmail());
+               $comment->setNickName($post->getAuthor()->getFirstName());
+               $comment->setRgpd(true);
+               $comment->setItem($post);
+               $post->addComment($comment);
+
+               $this->em->persist($comment);
             }
 
             $this->em->persist($post);
@@ -106,11 +117,9 @@ class PodCastController extends AbstractController
             $this->addFlash('danger', 'You need to have a verified account!');
             return $this->redirectToRoute('app_home');
         }
-       
         if($this->isCsrfTokenValid('podcasts_deletion'.$pod->getId(), $request->request->get('csrf_token') )){
             $this->em->remove($pod);
             $this->em->flush();
-
         }
          $this->addFlash('info', 'Podcast succesfully deleted');
         return $this->redirectToRoute('app_programs');

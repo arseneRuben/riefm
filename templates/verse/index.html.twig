@@ -1,0 +1,12 @@
+<div class="d-flex justify-content-between">
+											<div class="section-title border-right-0 mb-0" style="width: 135px;">
+												<h4 class="m-0 text-uppercase font-weight-bold">Il Est Ecrit</h4>
+											</div>
+											<div class="owl-carousel tranding-carousel position-relative d-inline-flex align-items-center bg-white border border-left-0"
+												style="width: calc(100% - 135px); padding-right: 100px;">
+                                                {% for verse in verses %}
+												<div class="text-truncate"><p class="text-secondary font-weight-semi-bold">{{verse.content}}({{verse.reference}})</p></div>
+												{% endfor %}	
+											</div>
+</div>
+					

@@ -11,7 +11,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Entity\Category;
 
 class PodCastType extends AbstractType
 {
@@ -52,6 +53,7 @@ class PodCastType extends AbstractType
             'constraints' => new Assert\NotBlank(),
             'trim' => true])
             ->add('program')
+            
             //->add('timeSpace')
         ;
     }

@@ -132,6 +132,11 @@ q:after {
     content: none;
 }
 
+.list-inline {
+    display:flex;  
+    list-style:none;
+}
+
 table {
     border-collapse: collapse;
     border-spacing: 0;
@@ -429,7 +434,7 @@ table {
 .container {
     margin: 0 auto;
     max-width: 100%;
-    width: 1400px;
+   
 }
 
 @media screen and (max-width: 1680px) {
@@ -1031,13 +1036,8 @@ table {
     .row.gtr-50.gtr-uniform>* {
         padding-top: 12.5px;
     }
-    .row {
-        margin-top: -25px;
-        margin-left: -25px;
-    }
-    .row>* {
-        padding: 25px 0 0 25px;
-    }
+   
+  
     .row.gtr-uniform {
         margin-top: -25px;
     }
@@ -1476,6 +1476,13 @@ footer {
     margin: 2.5em 0 0 0;
 }
 
+.info {
+    display: flex;    /* establish flex container */
+    justify-content: center;
+    align-items: center;
+      
+    flex-direction: column;  /* make main axis vertical */
+}
 
 /* Forms */
 
@@ -2089,7 +2096,7 @@ ul.menu li:first-child {
 
 #banner {
     position: relative;
-    padding: 4.5em;
+   
 }
 
 #banner h2 {

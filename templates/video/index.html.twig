@@ -7,22 +7,25 @@
 
 {% if  pagination|length > 0  %} 
 	<h1 class="mb-4 text-center text-muted" > {{ pluralize(pagination|length, 'Video' , 'Videos')  }}  </h1>
-		<div class="row">
+					<div class="row">
 						<div  class=" col-md-1 ">
 						</div>
 						<div  class="col-md-10" >
-						<div class="row">
-								{% for video in pagination|reverse %}
-												<div  class="col-md-3" >
-												<article  class="advert bg-white rounded shadow" >
-													<iframe class="m-2 text-center" width="90%"  src="{{video.url}}" title="{{video.title}}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-													</iframe>
-										
-												</article>
-										
+							{% for row in pagination|batch(4)|reverse %}
+								<div class="row">
+									{% for video in row %}
+										<div  class="col-md-3" >
+														<article  class="advert bg-white rounded shadow" >
+															<iframe class="m-2 text-center" width="90%"  src="{{video.url}}" title="{{video.title}}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+															</iframe>
+												
+														</article>
+												
+											</div>
+									{% endfor %}
 									</div>
-								{% endfor %}
-							</div>
+								</div>
+							{% endfor %}
                 		</div>
 						 
 						<div  class=" col-md-1 ">
@@ -30,18 +33,17 @@
 						
 					</div>
 					<br/>
-					 <div class=" row align-items-center">
-					 	<div  class=" col-md-4 ">
-						</div>
+					<div class=" row align-items-center">
+							<div  class=" col-md-4 ">
+							</div>
 							<div  class=" col-md-2 ">
 						
 								<h3><b>{{ knp_pagination_render(pagination) }}</b></h3>
 							</div>
-						<div  class=" col-md-6 ">
-						</div>
+							<div  class=" col-md-6 ">
+							</div>
 					</div>
-	</div>
-
+					</div>
 {% else   %}
 	<p class="mt-5 h1 text-center"> No video yet.   {% if is_granted('ROLE_ADMIN') %}  <a href="{{path('admin_videos_create')}}"> Be the first! </a>  {% endif %} </p>
 {% endif  %}

@@ -3,32 +3,27 @@
 namespace App\Entity;
 
 use App\Repository\PodCastRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\User;
+use App\Entity\Item;
 use App\Entity\Traits\HasUploadableField; 
-use App\Entity\Traits\TimeStampable;  
+use App\Entity\Traits\TimeStampable;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\File;
 /**
  * @ORM\Entity(repositoryClass=PodCastRepository::class)
- * @ORM\Table(name="podcasts")
  * @ORM\HasLifecycleCallbacks
+ * @ORM\Table(name="podcasts")
  * @Vich\Uploadable
  */
-class PodCast
+class PodCast extends Item
 {
     use HasUploadableField;
     use TimeStampable;
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
-    
-    
-
+   
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      * 
@@ -77,16 +72,15 @@ class PodCast
      */
     private $timeSpace;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="advertisements")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $author;
+   
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $title;
+
+   
+
+    public function __construct()
+    {
+        $this->comments = new ArrayCollection();
+    }
 
   
     public function getId(): ?int
@@ -94,17 +88,7 @@ class PodCast
         return $this->id;
     }
 
-    public function getAuthor(): ?User
-    {
-        return $this->author;
-    }
-
-    public function setAuthor(?User $author): self
-    {
-        $this->author = $author;
-
-        return $this;
-    }
+   
 
     public function getDescription(): ?string
     {
@@ -142,18 +126,7 @@ class PodCast
         return $this;
     }
 
-    public function getTitle(): ?string
-    {
-        return $this->title;
-    }
-
-    public function setTitle(string $title): self
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
+   
 
     public function getFileName(): ?string
     {
@@ -172,6 +145,36 @@ class PodCast
     public function getAudioFile(): ?File
     {
         return $this->audioFile;
+    }
+
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setItem($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getItem() === $this) {
+                $comment->setItem(null);
+            }
+        }
+
+        return $this;
     }
     
 }

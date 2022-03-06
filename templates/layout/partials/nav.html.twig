@@ -1,8 +1,8 @@
-<div id="header-wrapper" class="mb-1" >
+<div id="header-wrapper"  >
 					<header id="header" class="container">
 
 						<!-- Logo -->
-							<div id="logo" class="m-2 p-2">
+							<div id="logo" class="">
 								<a href="{{ path('app_home') }}">
 								<img class="img-fluid" src="{{asset('images/big_logo.gif')}}" alt="RIE" title="RIE" />
 								</a>
@@ -17,11 +17,11 @@
 									<li>
 										<a href="#">Menu</a>
 										<ul>
-											<li>		
-												<a href="{{ path('app_adverts') }}">Adverts</a>
+											<li>
+												<a href="{{ path('app_news_letter') }}">News</a>
 												{% if is_granted('ROLE_ADMIN') %}
 												<ul>
-													<li ><a  href="{{ path('admin_adverts_create') }}">new</a></li>
+													<li><a href="{{ path('admin_adverts_create') }}">New</a></li>				
 												</ul>
 												{% endif  %}
 											</li>
@@ -33,9 +33,18 @@
 												</ul>
 												{% endif  %}
 											</li>
+											<li>
+												<a href="{{ path('app_category') }}">Tags</a>
+												{% if is_granted('ROLE_ADMIN') %}
+												<ul>
+													<li><a href="{{ path('admin_category_create') }}">New</a></li>
+												</ul>
+												{% endif  %}
+											</li>
 											<li><a href="{{ path('app_policy') }}">Policy</a></li>
 											{% if is_granted('ROLE_ADMIN') %}
 											<li><a href="{{ path('admin_podcasts_create') }}">Podcast</a></li>
+											<li><a href="{{ path('admin_verses_create') }}">Verse</a></li>
 											{% endif  %}
 											<li>
 												<a href="{{ path('app_videos') }}">Meditations</a>
@@ -45,6 +54,7 @@
 												</ul>
 												{% endif  %}
 											</li>
+											
 										</ul>
 									</li>
 								{% if  app.user %} 
@@ -69,5 +79,24 @@
 									</figure>
 								</div>
 							</div>
+							<div class="container-fluid mt-5 mb-3 pt-3">
+							<div class="container">
+								<div class="row align-items-center">
+									<div class="col-12">
+								
+													  {{  verseService.index()|slice(95,verseService.index()|length)|raw }}
+
+
+									</div>
+								</div>
+							</div>
+							</div>
+
+
+
+							
+											
 					</header>
+					 
+					
 </div>
