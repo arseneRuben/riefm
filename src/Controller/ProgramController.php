@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,12 +12,12 @@ use App\Repository\ProgramRepository;
 use App\Repository\PodCastRepository;
 use App\Form\ProgramType;
 use App\Entity\Program;
-use App\Entity\Podcast; 
+use App\Entity\Podcast;
 use Knp\Component\Pager\PaginatorInterface;
 
 
 use Doctrine\ORM\EntityManagerInterface;
-
+use Symfony\Component\Serializer\SerializerInterface;
 
 class ProgramController extends AbstractController
 {
@@ -27,14 +27,38 @@ class ProgramController extends AbstractController
     {
         $this->em = $em;
     }
+
+    /**
+     * @Route("api/programs", name="api_programs", methods={"GET"})
+     */
+    public function apiIndex(ProgramRepository $repo,  SerializerInterface $serializer): JsonResponse
+    {
+        $allPrograms  = $repo->findAll();
+        $jsonPrograms = $serializer->serialize($allPrograms, 'json');
+        return new JsonResponse($jsonPrograms, Response::HTTP_OK, [], true);
+    }
+
+    /**
+     * @Route("api/programs/{id}", name="api_programs_id", requirements={"id"="\d+"}, methods={"GET"})
+     */
+    public function apiShow(Program $program, SerializerInterface $serializer): JsonResponse
+    {
+
+        if ($program) {
+            $jsonProgram = $serializer->serialize($program, 'json');
+            return new JsonResponse($jsonProgram, Response::HTTP_OK, ['accept' => 'json'], true);
+        }
+        return new JsonResponse(null, Response::HTTP_NOT_FOUND);
+    }
+
     /**
      * @Route("/programs", name="app_programs", requirements={"id"="\d+"}, methods={"GET"})
      */
-    public function index( PaginatorInterface $paginator,Request $request, ProgramRepository $repo): Response
+    public function index(PaginatorInterface $paginator, Request $request, ProgramRepository $repo): Response
     {
-      //  phpinfo();
+        //  phpinfo();
         $allPrograms  = $repo->findAll([], ['name' => 'DESC']);
-        $programs = $paginator->paginate($allPrograms,$request->query->get('page', 1),4);
+        $programs = $paginator->paginate($allPrograms, $request->query->get('page', 1), 4);
         $programs->setCustomParameters([
             'position' => 'centered',
             'size' => 'large',
@@ -44,18 +68,18 @@ class ProgramController extends AbstractController
         return $this->render('program/index.html.twig', ['pagination' => $programs]);
     }
 
-       /**
+    /**
      * @Route("/programs/{id}", name="app_programs_show", requirements={"id"="\d+"}, methods={"GET"})
      */
-    public function show(PodcastRepository $podcastRepository, PaginatorInterface $paginator, Request $request,Program $program): Response
+    public function show(PodcastRepository $podcastRepository, PaginatorInterface $paginator, Request $request, Program $program): Response
     {
         $em = $this->getDoctrine()->getManager();
-     
-        
-        $allPodCasts = $podcastRepository->findBy( array('program' => $program), array('createdAt' => 'DESC'));
-        $podCasts = $paginator->paginate($allPodCasts,$request->query->get('page', 1),4);
-       // $paginator->set('AppBundle:pagination:twitter_bootstrap_v3_pagination.html.twig');
-      //  $paginator->setSortableTemplate('AppBundle:pagination:twitter_bootstrap_v3_sortable_link.html.twig');
+
+
+        $allPodCasts = $podcastRepository->findBy(array('program' => $program), array('createdAt' => 'DESC'));
+        $podCasts = $paginator->paginate($allPodCasts, $request->query->get('page', 1), 4);
+        // $paginator->set('AppBundle:pagination:twitter_bootstrap_v3_pagination.html.twig');
+        //  $paginator->setSortableTemplate('AppBundle:pagination:twitter_bootstrap_v3_sortable_link.html.twig');
         $podCasts->setCustomParameters([
             'position' => 'centered',
             'size' => 'large',
@@ -63,25 +87,25 @@ class ProgramController extends AbstractController
         ]);
 
 
-    	  return $this->render('program/show.html.twig', ['pagination' => $podCasts,  'program'=> $program ]);
+        return $this->render('program/show.html.twig', ['pagination' => $podCasts,  'program' => $program]);
     }
 
     /**
      * @Route("/admin/programs/delete/{id}", name="admin_programs_delete", requirements={"id"="\d+"})
      * @Security("is_granted('MANAGE_PROGRAM', program)")
      */
-    public function delete(Request $request,Program $program): Response
+    public function delete(Request $request, Program $program): Response
     {
-        if($this->isCsrfTokenValid('programs_deletion'.$program->getId(), $request->request->get('crsf_token') )){
+        if ($this->isCsrfTokenValid('programs_deletion' . $program->getId(), $request->request->get('crsf_token'))) {
             $this->em->remove($program);
             $this->em->flush();
         }
-         $this->addFlash('info', 'Program succesfully deleted');
+        $this->addFlash('info', 'Program succesfully deleted');
         return $this->redirectToRoute('app_programs');
     }
 
-   
-    
+
+
 
 
     /**
@@ -90,47 +114,46 @@ class ProgramController extends AbstractController
      */
     public function create(Request $request): Response
     {
-       
+
         $pin = new Program();
-    	$form = $this->createForm(ProgramType::class, $pin);
-        
-        
-    	$form->handleRequest($request);
-    	
-    	if($form->isSubmitted() && $form->isValid())
-    	{
+        $form = $this->createForm(ProgramType::class, $pin);
+
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->em->persist($pin);
             $this->em->flush();
             $this->addFlash('success', 'Program succesfully created');
             return $this->redirectToRoute('app_programs'); // Apres une requete de type post, il est interessant de rediriger l̀utilisateur
-    	}
+        }
 
-    	 return $this->render('program/create.html.twig'
-    	 	, ['form'=>$form->createView()]);
+        return $this->render(
+            'program/create.html.twig',
+            ['form' => $form->createView()]
+        );
     }
 
     /**
      * @Route("/admin/programs/edit/{id}", name="admin_programs_edit", requirements={"id"="\d+"})
      * @Security("is_granted('MANAGE_PROGRAM', program)")
      */
-    public function edit(Request $request,Program $program): Response
+    public function edit(Request $request, Program $program): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $form = $this->createForm(ProgramType::class, $program);
         $form->handleRequest($request);
-       
-        if($form->isSubmitted() && $form->isValid())
-        {
-           
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
             $this->em->flush();
             $this->addFlash('success', 'Program succesfully updated');
 
             return $this->redirectToRoute('app_programs');
         }
-        return $this->render('program/edit.html.twig'	, [
-            'program'=>$program,
-            'form'=>$form->createView()
+        return $this->render('program/edit.html.twig', [
+            'program' => $program,
+            'form' => $form->createView()
         ]);
     }
-
 }

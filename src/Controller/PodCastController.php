@@ -32,40 +32,39 @@ class PodCastController extends AbstractController
      */
     public function show(Podcast $podcast, Request $request): Response
     {
-    	  return $this->render('pod_cast/show.html.twig', [
-              'podcast' => $podcast,
-             
-          ]);
+        return $this->render('pod_cast/show.html.twig', [
+            'podcast' => $podcast,
+
+        ]);
     }
 
-     /**
+    /**
      * @Route("admin/podcast/new",name= "admin_podcasts_create", methods={"GET","POST"})
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function create(Request $request , SluggerInterface $slugger, UserRepository $userRepository): Response
+    public function create(Request $request, SluggerInterface $slugger, UserRepository $userRepository): Response
     {
-        if(!$this->getUser()){
+        if (!$this->getUser()) {
             $this->addFlash('danger', 'You need to log in first!');
             return $this->redirectToRoute('app_login');
         }
-        if(!$this->getUser()->isVerified()){
+        if (!$this->getUser()->isVerified()) {
             $this->addFlash('danger', 'You need to have a verified account!');
             return $this->redirectToRoute('app_home');
         }
-        $post= new PodCast();
-    	$form = $this->createForm(PodCastType::class, $post);
-    	$form->handleRequest($request);
-    	if($form->isSubmitted() && $form->isValid())
-    	{
-             /** @var UploadedFile $audioFile */
+        $post = new PodCast();
+        $form = $this->createForm(PodCastType::class, $post);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var UploadedFile $audioFile */
             $audioFile = $form->get('audioFile')->getData();
-             // this condition is needed because the 'audioFile' field is not required
+            // this condition is needed because the 'audioFile' field is not required
             // so the Audio file must be processed only when a file is uploaded
             if ($audioFile) {
                 $originalFilename = pathinfo($audioFile->getClientOriginalName(), PATHINFO_FILENAME);
                 // this is needed to safely include the file name as part of the URL
                 $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$audioFile->guessExtension();
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $audioFile->guessExtension();
 
                 // Move the file to the directory where brochures are stored
                 try {
@@ -80,72 +79,71 @@ class PodCastController extends AbstractController
                 // updates the 'brochureFilename' property to store the PDF file name
                 // instead of its contents
                 $post->setFileName($newFilename);
-               // $post->setAuthor($this->getUser());
-               $comment = new Comment();
-               $comment->setAuthor($post->getAuthor());
-               $comment->setContent($post->getDescription());
-               $comment->setEmail($post->getAuthor()->getEmail());
-               $comment->setNickName($post->getAuthor()->getFirstName());
-               $comment->setRgpd(true);
-               $comment->setItem($post);
-               $post->addComment($comment);
+                // $post->setAuthor($this->getUser());
+                $comment = new Comment();
+                $comment->setAuthor($post->getAuthor());
+                $comment->setContent($post->getDescription());
+                $comment->setEmail($post->getAuthor()->getEmail());
+                $comment->setNickName($post->getAuthor()->getFirstName());
+                $comment->setRgpd(true);
+                $comment->setItem($post);
+                $post->addComment($comment);
 
-               $this->em->persist($comment);
+                $this->em->persist($comment);
             }
 
             $this->em->persist($post);
             $this->em->flush();
             $this->addFlash('success', 'Podcast succesfully created');
             return $this->redirectToRoute('app_programs'); // Apres une requete de type post, il est interessant de rediriger l̀utilisateur
-    	}
+        }
 
-    	 return $this->render('pod_cast/create.html.twig'
-    	 	, ['form'=>$form->createView()]);
+        return $this->render(
+            'pod_cast/create.html.twig',
+            ['form' => $form->createView()]
+        );
     }
 
-     /**
+    /**
      * @Route("admin/podcast/delete/{id}", name="admin_podcasts_delete", requirements={"id"="\d+"})
      * @Security("is_granted('MANAGE_PODCAST', pod)")
      */
-    public function delete(Request $request,PodCast $pod): Response
+    public function delete(Request $request, PodCast $pod): Response
     {
-        if(!$this->getUser()){
+        if (!$this->getUser()) {
             $this->addFlash('danger', 'You need to log in first!');
             return $this->redirectToRoute('app_login');
         }
-        if(!$this->getUser()->isVerified()){
+        if (!$this->getUser()->isVerified()) {
             $this->addFlash('danger', 'You need to have a verified account!');
             return $this->redirectToRoute('app_home');
         }
-        if($this->isCsrfTokenValid('podcasts_deletion'.$pod->getId(), $request->request->get('csrf_token') )){
+        if ($this->isCsrfTokenValid('podcasts_deletion' . $pod->getId(), $request->request->get('csrf_token'))) {
             $this->em->remove($pod);
             $this->em->flush();
         }
-         $this->addFlash('info', 'Podcast succesfully deleted');
+        $this->addFlash('info', 'Podcast succesfully deleted');
         return $this->redirectToRoute('app_programs');
     }
-     /**
-    * @Route("/admin/podcasts/edit/{id}", name="admin_podcasts_edit", requirements={"id"="\d+"})
-    */
-   public function edit(Request $request,PodCast $p): Response
-   {
-      // $this->denyAccessUnlessGranted('ROLE_ADMIN');
-       $form = $this->createForm(PodCastType::class, $p);
-       $form->handleRequest($request);
-      
-       if($form->isSubmitted() && $form->isValid())
-       {
-          
-           $this->em->flush();
-           $this->addFlash('success', 'Podcast succesfully updated');
+    /**
+     * @Route("/admin/podcasts/edit/{id}", name="admin_podcasts_edit", requirements={"id"="\d+"})
+     */
+    public function edit(Request $request, PodCast $p): Response
+    {
+        // $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $form = $this->createForm(PodCastType::class, $p);
+        $form->handleRequest($request);
 
-           return $this->redirectToRoute('app_programs_show', ['id'=>$p->getProgram()->getId()]);
-       }
-       return $this->render('pod_cast/edit.html.twig'	, [
-           'podcast'=>$p,
-           'form'=>$form->createView()
-       ]);
-   }
+        if ($form->isSubmitted() && $form->isValid()) {
 
+            $this->em->flush();
+            $this->addFlash('success', 'Podcast succesfully updated');
 
+            return $this->redirectToRoute('app_programs_show', ['id' => $p->getProgram()->getId()]);
+        }
+        return $this->render('pod_cast/edit.html.twig', [
+            'podcast' => $p,
+            'form' => $form->createView()
+        ]);
+    }
 }
