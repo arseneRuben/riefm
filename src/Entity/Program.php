@@ -10,6 +10,7 @@ use App\Entity\Traits\TimeStampable;
 use App\Entity\Traits\HasUploadableField;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
@@ -26,6 +27,7 @@ class Program
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"getPodCasts"})
      */
     private $id;
 
@@ -34,7 +36,7 @@ class Program
      * 
      * @Vich\UploadableField(mapping="program_image", fileNameProperty="imageName")
      * @Assert\Image(maxSize="8M")
-     * 
+     * @Groups({"getPodCasts"})
      * @var File|null
      */
     private $imageFile;
@@ -44,6 +46,7 @@ class Program
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
      * @Assert\Length(min=3)
+     * @Groups({"getPodCasts"})
      */
     private $name;
 
@@ -51,6 +54,7 @@ class Program
      * @ORM\Column(type="text")
      * @Assert\NotBlank
      * @Assert\Length(min=10)
+     * @Groups({"getPodCasts"})
      */
     private $description;
 
@@ -59,20 +63,19 @@ class Program
      */
     private $interactive;
 
-    
-  
+
+
     public function __construct()
     {
-        
     }
 
-    
+
     public function __tostring()
     {
         return $this->name;
     }
 
-    
+
 
     public function getId(): ?int
     {
@@ -114,6 +117,4 @@ class Program
 
         return $this;
     }
-
-   
 }

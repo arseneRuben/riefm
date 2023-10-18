@@ -2,13 +2,13 @@
 #    path: /
 #    controller: App\Controller\DefaultController::index
 facebook_login:
-    path: /login/check-facebook
+  path: /login/check-facebook
 
 github_login:
-    path: /login/check-github
+  path: /login/check-github
 
 google_login:
-    path: /login/check-google
+  path: /login/check-google
 
 hwi_oauth_redirect:
   resource: "@HWIOAuthBundle/Resources/config/routing/redirect.xml"
@@ -28,3 +28,5 @@ auth0_login:
 auth0_logout:
   path: /auth0/logout
 
+api_login_check:
+  path: /api/login_check

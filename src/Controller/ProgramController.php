@@ -41,15 +41,22 @@ class ProgramController extends AbstractController
     /**
      * @Route("api/programs/{id}", name="api_programs_id", requirements={"id"="\d+"}, methods={"GET"})
      */
-    public function apiShow(Program $program, SerializerInterface $serializer): JsonResponse
+    public function apiShow(Program $program, SerializerInterface $serializer, PodcastRepository $podcastRepository): JsonResponse
     {
-
         if ($program) {
-            $jsonProgram = $serializer->serialize($program, 'json');
-            return new JsonResponse($jsonProgram, Response::HTTP_OK, ['accept' => 'json'], true);
+            $allPodCasts = $podcastRepository->findBy(array('program' => $program), array('createdAt' => 'DESC'));
+            $jsonAllProgram = $serializer->serialize($allPodCasts, 'json',  ['groups' => 'getPodCasts']);
+            return new JsonResponse(
+                $jsonAllProgram,
+                Response::HTTP_OK,
+                ['accept' => 'json'],
+                true
+            );
         }
         return new JsonResponse(null, Response::HTTP_NOT_FOUND);
     }
+
+
 
     /**
      * @Route("/programs", name="app_programs", requirements={"id"="\d+"}, methods={"GET"})

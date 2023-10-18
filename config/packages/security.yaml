@@ -3,7 +3,7 @@ security:
     enable_authenticator_manager: true
     encoders:
         App\Entity\User: auto
- 
+
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         # used to reload user from session & other features (e.g. switch_user)
@@ -15,6 +15,18 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+        login:
+            pattern: ^/api/login
+            stateless: true
+            json_login:
+                check_path: /api/login_check
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+        api:
+            pattern: ^/api
+            stateless: true
+            jwt: ~
+
         main:
             lazy: true
             #anonymous: true
@@ -31,27 +43,24 @@ security:
                 # where to redirect after logout
                 target: app_home
             remember_me:
-                secret:   '%kernel.secret%'
+                secret: "%kernel.secret%"
                 lifetime: 604800 # 1 week in seconds
-                path:     /
-            
-            
+                path: /
+
             #custom_authenticator: App\Security\AppAuthenticator
-            
-        
+
             #anonymous: ~
             oauth:
                 resource_owners:
-                    facebook:           "/login/check-facebook"
-                    google:             "/login/check-google"
-                    github:             "/login/check-github"
-                login_path:        /login
-                use_forward:       false
-                failure_path:      /login
+                    facebook: "/login/check-facebook"
+                    google: "/login/check-google"
+                    github: "/login/check-github"
+                login_path: /login
+                use_forward: false
+                failure_path: /login
 
                 oauth_user_provider:
                     service: oauth_aware_user_provider
-            
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
@@ -66,4 +75,17 @@ security:
         - { path: ^/connect, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/account, roles: ROLE_USER }
         - { path: ^/admin, roles: ROLE_ADMIN }
-        
+        - { path: ^/api/login, roles: PUBLIC_ACCESS }
+        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
+when@test:
+    security:
+        password_hashers:
+        # By default, password hashers are resource intensive and take time. This is
+        # important to generate secure password hashes. In tests however, secure hashes
+        # are not important, waste resources and increase test times. The following
+        # reduces the work factor to the lowest possible values.
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+            algorithm: auto
+            cost: 4 # Lowest possible value for bcrypt
+            time_cost: 3 # Lowest possible value for argon
+            memory_cost: 10 # Lowest possible value for argon

@@ -2,21 +2,25 @@
 
 namespace App\Entity\Traits;
 
-trait TimeStampable 
+use Symfony\Component\Serializer\Annotation\Groups;
+
+trait TimeStampable
 {
-      /**
+    /**
      * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
+     * @Groups({"getPodCasts"})
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
+     * @Groups({"getPodCasts"})
      */
     private $updatedAt;
 
 
 
-     public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;
     }
@@ -41,18 +45,15 @@ trait TimeStampable
     }
 
     /**
-    *@ORM\PrePersist
-    *@ORM\PreUpdate
-    */
+     *@ORM\PrePersist
+     *@ORM\PreUpdate
+     */
     public function updateTimestamp()
-     {
-        if($this->getCreatedAt() == null) 
-        {
+    {
+        if ($this->getCreatedAt() == null) {
             $this->setCreatedAt(new \DateTimeImmutable);
         }
-        
-        $this->setUpdatedAt(new \DateTime);
 
+        $this->setUpdatedAt(new \DateTime);
     }
 }
-

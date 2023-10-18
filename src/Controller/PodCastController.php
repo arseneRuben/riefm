@@ -18,7 +18,8 @@ use App\Repository\UserRepository;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class PodCastController extends AbstractController
 {
@@ -27,10 +28,40 @@ class PodCastController extends AbstractController
     {
         $this->em = $em;
     }
+
+
+
+    /**
+     * @Route("api/podcasts/{id}", name="api_podcasts_id", requirements={"id"="\d+"}, methods={"GET"})
+     */
+    public function apiShow(Podcast $podcast, SerializerInterface $serializer): JsonResponse
+    {
+        if ($podcast) {
+            $jsonPodcast = $serializer->serialize($podcast, 'json',  ['groups' => 'getPodCasts']);
+            return new JsonResponse(
+                $jsonPodcast,
+                Response::HTTP_OK,
+                ['accept' => 'json'],
+                true
+            );
+        }
+        return new JsonResponse(null, Response::HTTP_NOT_FOUND);
+    }
+    /** 
+     * @Route("api/podcasts/{id}", name="api_del_podcasts", requirements={"id"="\d+"}, methods={"DELETE"})
+     */
+    public function apiDelete(Podcast $podcast, EntityManagerInterface $em): JsonResponse
+    {
+        $em->remove($podcast);
+        $em->flush();
+
+        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
+    }
+
     /**
      * @Route("podcast/{id}", name="app_podcasts_show", requirements={"id"="\d+"}, methods={"GET","POST"})
      */
-    public function show(Podcast $podcast, Request $request): Response
+    public function show(Podcast $podcast): Response
     {
         return $this->render('pod_cast/show.html.twig', [
             'podcast' => $podcast,

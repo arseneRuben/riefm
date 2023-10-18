@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Entity;
+
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\ItemRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -9,26 +10,27 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Entity\PodCast;
 use App\Entity\Advertisement;
 use App\Entity\User;
-use App\Entity\Traits\TimeStampable;  
-use App\Entity\NewsLetter;  
+use App\Entity\Traits\TimeStampable;
+use App\Entity\NewsLetter;
+
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass=ItemRepository::class)
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
  * @ORM\DiscriminatorMap({"newsletter" = "NewsLetter","advert" = "Advertisement","podcast" = "PodCast"})
  */
- 
+
 abstract class Item
 {
-    
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
     protected $id;
-    
-       /**
+
+    /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
      * @Assert\Length(min=3)
@@ -125,5 +127,4 @@ abstract class Item
 
         return $this;
     }
-
 }

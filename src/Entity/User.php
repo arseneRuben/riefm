@@ -12,6 +12,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 use App\Entity\Traits\HasUploadableField;
 use App\Entity\Traits\TimeStampable;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -40,6 +42,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      * @Assert\Email()
+     * @Groups({"getPodCasts"})
      */
     private $email;
 
@@ -93,11 +96,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\NotBlank
+     * @Groups({"getPodCasts"})
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"getPodCasts"})
      */
     private $lastName;
 
@@ -131,102 +136,117 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $categories;
 
-    
 
- 
+
+
 
 
     public function __construct()
     {
-        $this->advertisements = new ArrayCollection();
-         // guarantee every user at least has ROLE_USER
-         $this->setRoles(['ROLE_USER', 'ROLE_ADMIN']);
-         $this->videos = new ArrayCollection();
-         $this->enquiries = new ArrayCollection();
-         $this->temoignages = new ArrayCollection();
-         $this->comments = new ArrayCollection();
-        
-         $this->categories = new ArrayCollection();
+        // guarantee every user at least has ROLE_USER
+        $this->setRoles(['ROLE_USER', 'ROLE_ADMIN']);
+        $this->videos = new ArrayCollection();
+        $this->enquiries = new ArrayCollection();
+        $this->temoignages = new ArrayCollection();
+        $this->comments = new ArrayCollection();
+
+        $this->categories = new ArrayCollection();
     }
 
-    public function setGithubId($githubId) {
+    public function setGithubId($githubId)
+    {
         $this->github_id = $githubId;
 
         return $this;
     }
 
-    public function getGithubId() {
+    public function getGithubId()
+    {
         return $this->github_id;
     }
 
-    public function setGithubAccessToken($githubAccessToken) {
+    public function setGithubAccessToken($githubAccessToken)
+    {
         $this->github_access_token = $githubAccessToken;
 
         return $this;
     }
 
-    public function getGithubAccessToken() {
+    public function getGithubAccessToken()
+    {
         return $this->github_access_token;
     }
 
-    public function setFacebookId($facebookID) {
+    public function setFacebookId($facebookID)
+    {
         $this->facebook_id = $facebookID;
 
         return $this;
     }
 
-    public function getFacebookId() {
+    public function getFacebookId()
+    {
         return $this->facebook_id;
     }
 
-    public function setFacebookAccessToken($facebookAccessToken) {
+    public function setFacebookAccessToken($facebookAccessToken)
+    {
         $this->facebook_access_token = $facebookAccessToken;
 
         return $this;
     }
 
-    public function getFacebookAccessToken() {
+    public function getFacebookAccessToken()
+    {
         return $this->facebook_access_token;
     }
 
-    public function setGoogleplusId($googlePlusId) {
+    public function setGoogleplusId($googlePlusId)
+    {
         $this->googleplus_id = $googlePlusId;
 
         return $this;
     }
 
-    public function getGoogleplusId() {
+    public function getGoogleplusId()
+    {
         return $this->googleplus_id;
     }
 
-    public function setGoogleplusAccessToken($googleplusAccessToken) {
+    public function setGoogleplusAccessToken($googleplusAccessToken)
+    {
         $this->googleplus_access_token = $googleplusAccessToken;
 
         return $this;
     }
 
-    public function getGoogleplusAccessToken() {
+    public function getGoogleplusAccessToken()
+    {
         return $this->googleplus_access_token;
     }
 
 
-    public function setStackexchangeId($stackExchangeId) {
+    public function setStackexchangeId($stackExchangeId)
+    {
         $this->stackexchange_id = $stackExchangeId;
 
         return $this;
     }
 
-    public function getStackexchangeId() {
+    public function getStackexchangeId()
+    {
         return $this->stackexchange_id;
     }
 
-    public function setStackexchangeAccessToken($stackExchangeAccessToken) {
+    public function setStackexchangeAccessToken($stackExchangeAccessToken)
+    {
         $this->stackexchange_access_token = $stackExchangeAccessToken;
 
         return $this;
     }
 
-    public function getStackexchangeAccessToken() {
+    public function getStackexchangeAccessToken()
+    {
         return $this->stackexchange_access_token;
     }
 
@@ -271,7 +291,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-       
+
 
         return array_unique($roles);
     }
@@ -325,35 +345,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    /**
-     * @return Collection|Advertisement[]
-     */
-    public function getAdvertisements(): Collection
-    {
-        return $this->advertisements;
-    }
 
-    public function addAdvertisement(Advertisement $advertisement): self
-    {
-        if (!$this->advertisements->contains($advertisement)) {
-            $this->advertisements[] = $advertisement;
-            $advertisement->setAuthor($this);
-        }
 
-        return $this;
-    }
-
-    public function removeAdvertisement(Advertisement $advertisement): self
-    {
-        if ($this->advertisements->removeElement($advertisement)) {
-            // set the owning side to null (unless already changed)
-            if ($advertisement->getAuthor() === $this) {
-                $advertisement->setAuthor(null);
-            }
-        }
-
-        return $this;
-    }
 
     public function getFirstName(): ?string
     {
@@ -381,16 +374,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getAvatar(int $size = 50): ?string
     {
-        return "https://www.gravatar.com/avatar/". md5(strtolower(trim($this->getEmail())))."/?s=".$size;
+        return "https://www.gravatar.com/avatar/" . md5(strtolower(trim($this->getEmail()))) . "/?s=" . $size;
     }
 
-    public function getFullName (): ?string
+    public function getFullName(): ?string
     {
-        return $this->firstName . ' ' . $this->lastName ;
+        return $this->firstName . ' ' . $this->lastName;
     }
 
-    public function __toString() {
-        $username = ( is_null($this->getFullName())) ? "" : $this->getFullName();
+    public function __toString()
+    {
+        $username = (is_null($this->getFullName())) ? "" : $this->getFullName();
         return $username;
     }
 
@@ -583,9 +577,4 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->isVerified;
     }
-
-   
-
-   
-  
 }

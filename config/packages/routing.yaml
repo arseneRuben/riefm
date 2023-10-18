@@ -10,8 +10,5 @@ when@prod:
     framework:
         router:
             strict_requirements: null
-
-
-
 #facebook_login:
-    #path: /login/check-facebook
+#path: /login/check-facebook

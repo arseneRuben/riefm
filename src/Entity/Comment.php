@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Traits\TimeStampable;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=CommentRepository::class)
@@ -24,7 +25,7 @@ class Comment
      */
     private $id;
 
-     /**
+    /**
      * @ORM\Column(type="string", length=180, unique=false)
      * @Assert\Email()
      */
@@ -37,13 +38,14 @@ class Comment
 
     /**
      * @ORM\Column(type="text")
+     * @Groups({"getPodCasts"})
      */
     private $content;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $active=false;
+    private $active = false;
 
 
     /**
@@ -53,20 +55,23 @@ class Comment
      */
     private $rgpd;
 
-  
+
 
     /**
      * @ORM\ManyToOne(targetEntity=Comment::class, inversedBy="replies")
+     * @Groups({"getPodCasts"})
      */
     private   $parent;
 
     /**
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="parent")
+     * @Groups({"getPodCasts"})
      */
     private $replies;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="comments")
+     * @Groups({"getPodCasts"})
      * @ORM\JoinColumn(nullable=true)
      */
     private $Author;
@@ -74,6 +79,7 @@ class Comment
     /**
      * @ORM\ManyToOne(targetEntity=Item::class, inversedBy="comments")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"getPodCasts"})
      */
     private $item;
 
@@ -137,7 +143,7 @@ class Comment
     }
 
 
-   
+
     public function getRgpd(): ?bool
     {
         return $this->rgpd;
