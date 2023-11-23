@@ -1,112 +1,103 @@
-
 {% extends 'layout/base.html.twig' %}
-
 {% block name program.name %}
-
 {% block body %}
-	<div  class="row ">
-		<h2  class=" text-break text-center"> Toutes les editions </h2>
-		 </div>
-	<div class="row mb-5">
-		<div  class=" col-md-2 ">
-		</div>
-		<div  class=" col-md-3 ">
-
-			<article  class="program p-3  bg-white rounded shadow" >
-					<div  class="mw-100  rounded-top overflow-hidden" >
-						<img src="{{ (program.imageName ? vich_uploader_asset(program) : asset('uploads/programs/program_default.PNG'))| imagine_filter('advert_filter_square_medium') }}" alt="{{ program.name }}" class="w-100">
-							
-					</div>
-						<h1  class="h5  pt-1">  <a href="{{path('app_programs_show', {id: program.id})}}" class=" text-muted text-decoration-none text-secondary" >  {{program.name}} </a> </h1> 
-						 {#
-						<p  class="pd-2 pb-2 text-muted" >  Submitted at <time datetime= "{{program.createdAt|date('Y-m-d H:m:s')}}">{{program.createdAt|date('d-m-Y')}} </time> by user </p>
-						 <p  class="pd-2 pb-2 text-muted" >  or  {{program.createdAt|ago}} by  AUTHOR NAME</p>
-						  <p  class="pd-2 pb-2 text-muted" > 
-								{% if  program.interactive  %} 
-									<label><input type=checkbox checked name=cheese > Intectactif</label>
-								{% endif  %}
-							</p> #}
-				
-				<p  class="m-5 text-break  "> {{program.description}} </p>
-				{% if is_granted('ROLE_ADMIN') %}
-				
-					<a class="btn btn-warning btn-sm" href="{{path('admin_programs_edit', {id: program.id})}}"> Edit </a> |
-					<a class="btn btn-danger btn-sm" href="del"  onclick= "event.preventDefault() ; confirm('Are you sure ?') && document.getElementById('js-programs-delete-form').submit();"> Delete</a>
-				
-				<form id="js-programs-delete-form" action="{{path('admin_programs_delete', {id: program.id})}}" method="post" style="display: none;">
-					<input type="hidden" name="{{ csrf_token('programs_deletion' ~ program.id ) }}" id="">
-					<input type="hidden" name="_method" value="DELETE">
-
-				</form> |
-				{% endif %}
-				 <a href="{{path('app_programs')}}" class=" text-muted text-decoration-none text-secondary btn-sm btn btn-primary" >  Go back!</a> 
-				<div class=" ">			
+    <div class="row ">
+        <h2 class=" text-break text-center">
+            Toutes les editions 
+        </h2>
+    </div>
+    <div class="row mb-5">
+        <div class=" col-md-2 "></div>
+        <div class={{ is_granted('ROLE_ADMIN') ? " col-md-3 " : " col-md-2 " }}>
+            <article class="program p-3  bg-white rounded shadow">
+                <div class="mw-100  rounded-top overflow-hidden">
+                    <img src="{{ (program.imageName ? vich_uploader_asset(program) : asset('uploads/programs/program_default.PNG'))| imagine_filter('advert_filter_square_medium') }}" alt="{{ program.name }}" class="w-100"/>
 				</div>
-			</article>
- 		</div>
-		 <div  class="col-md-6 ">
-		 	<table>
-				{#<tr>
-					 sorting of properties based on query components 
-					
-					
-					<th{% if pagination.isSorted(['p.title']) %} class="sorted"{% endif %}>
-						{{ knp_pagination_sortable(pagination, 'Release', ['p.title']) }}
-					</th>
-					<th{% if pagination.isSorted('p.createdAt') %} class="sorted"{% endif %}>
-						{{ knp_pagination_sortable(pagination, 'createdAt', 'p.createdAt') }}
-					</th>
-					<th>
-						File
-					</th>
-				</tr>#}
+				<h1 class="h5  pt-1">
+				<a href="{{ path('app_programs_show', {id: program.id}) }}" class=" text-muted text-decoration-none text-secondary">
+					{{ program.name }}
+				</a>
+			</h1>
+		   
+			<p class="m-5 text-break  ">
+				{{ program.description }}
+			</p>
+			{% if is_granted('ROLE_ADMIN') %}
+				<a class="btn btn-warning btn-sm" href="{{ path('admin_programs_edit', {id: program.id}) }}">
+					Edit 
+				</a>				
+				<a class="btn btn-danger btn-sm" href="del" onclick="event.preventDefault() ; confirm('Are you sure ?') && document.getElementById('js-programs-delete-form').submit();">
+					Delete
+				</a>
+		
+                <form id="js-programs-delete-form" action="{{ path('admin_programs_delete', {id: program.id}) }}" method="post" style="display: none;">
+                    <input type="hidden" name="{{ csrf_token('programs_deletion' ~ program.id ) }}" id="">
+                    <input type="hidden" name="_method" value="DELETE">
+				</form>
+                                |
+                                				
+             {% endif %}
+            <a href="{{ path('app_programs') }}" class="  btn-sm btn btn-primary">
+                                Go back!
+            </a>
+       
+				
+            </article>
+        </div>
+        <div class="col-md-6  ">
+                        <ul class="list-group">
+                            {% for article in pagination %}
+                                <li class="list-group-item d-flex justify-content-between m-1">
+                                    <div class="image-parent">
+                                        <a href="{{ path('app_podcasts_show', {id: article.id}) }}">
+												<i class='fas fa-film mr-4' style='font-size:48px;color:blue'></i>
 
-				{# table body #}
-				{% for article in pagination %}
-					<tr {% if loop.index is odd %}class="color"{% endif %}>
-						<td><a href="{{path('app_podcasts_show', {id: article.id})}}">{{ article.title}}</a></td>
-						
-						<td>{{ article.createdAt | date('Y-m-d') }}</td>
-						<td>
-							<audio controls autoplay muted  src="{{asset('uploads/podcasts/'~article.fileName)}}" type="audio/mp3" controls="controls">
-								Your browser does not support the audio element.
-							</audio>
-
-						</td>
-						
-							{% if is_granted('ROLE_ADMIN') %}
-							<td>	
-									<a class="btn btn-danger btn-sm" href="del"  onclick= "event.preventDefault() ; confirm('Are you sure ?') && document.getElementById('js-podcasts-delete-form-{{ article.id }}').submit();">  <i class="fa fa-trash m-1" aria-hidden="true"></i> </a>
-										<form id="js-podcasts-delete-form-{{article.id}}" action="{{path('admin_podcasts_delete', {id: article.id})}}" method="post" style="display: none;">
-										
-											<input type="hidden" name="csrf_token" value ="{{ csrf_token('podcasts_deletion' ~ article.id ) }}" id="">
-											<input type="hidden" name="_method" value="DELETE">
-										
-										</form> |
-								
-							</td>
-							{% endif %}
-
-					</tr>
-				{% endfor %}
-			</table>
-		</div>
-		<div  class=" col-md-1 ">
-		</div>
-{# display navigation #}
-<div class="row navigation mx-auto">
-    <div  class=" col-md-4 ">
-						</div>
-							<div  class=" col-md-2 ">
-						
-								<h3><b>{{ knp_pagination_render(pagination) }}</b></h3>
-							</div>
-						<div  class=" col-md-6 ">
-						</div>
-</div>
-		 </div>
-		 
-		 
-
- </div>
+                                        </a>
+                                    </div>
+                                    {{ article.title }}
+                                    <div class="m-1">
+                                        {{ article.createdAt | date('Y-m-d') }}
+                                    </div>
+                                    <div>
+                                        <audio controls muted src="{{ asset('uploads/podcasts/'~article.fileName) }}" type="audio/mp3" controls="controls">
+                                            Your browser does not support the audio element.
+                                            							
+                                        </audio>
+                                    </div>
+									{% if is_granted('ROLE_ADMIN') %}
+										<div>
+											<a class="btn btn-danger btn-sm" href="del" onclick="event.preventDefault() ; confirm('Are you sure ?') && document.getElementById('js-podcasts-delete-form-{{ article.id }}').submit();">
+												<i class="fa fa-trash m-1" aria-hidden="true"></i>
+											</a>
+											<form id="js-podcasts-delete-form-{{ article.id }}" action="{{ path('admin_podcasts_delete', {id: article.id}) }}" method="post" style="display: none;">
+												<input type="hidden" name="csrf_token" value="{{ csrf_token('podcasts_deletion' ~ article.id ) }}" id="">
+													<input type="hidden" name="_method" value="DELETE"></form>
+												
+																						
+																					
+											</form>
+										</div>
+									
+									{% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+        </div>
+                  
+                    <div class=" col-md-1 "></div>
+                            {# display navigation #}
+        <div class="row navigation mx-auto">
+                                <div class=" col-md-4 "></div>
+                                <div class=" col-md-2 ">
+                                    <h3>
+                                        <b>
+                                            {{ knp_pagination_render(pagination) }}
+                                        </b>
+                                    </h3>
+                                </div>
+                                <div class=" col-md-6 "></div>
+        </div>
+        
+    </div>
 {% endblock %}
+                

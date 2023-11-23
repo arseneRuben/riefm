@@ -81,31 +81,7 @@
 				<div  class="col-md-3" >
 					<div class="clearfix content">
 							<div class="text-muted"><h2>Latest Podcasts/Meditations</h2></div>
-							{% for pd in podCasts %}
-								<div class="clearfix single_content">
-
-									<div class="clearfix post_detail">
-										<h3><a href="{{path('app_podcasts_show', {id: pd.id})}}">{{pd.title}} </a></h3>
-										<div class="clearfix post_excerpt mw-100  rounded-top overflow-hidden">
-											<a href="{{path('app_podcasts_show', {id: pd.id})}}">
-												<img src="{{ (pd.imageName ? vich_uploader_asset(pd) : asset('{pd.program.imageName}'))| imagine_filter('podcast_filter_square_small') }}" alt="{{ pd.title }}" class="img-fluid img-thumbnail">
-											 </a>
-										</div>
-										<div class="clearfix post-meta">
-											<p><span><i class="fa fa-user"></i> {{pd.author}}</span> 
-												<span><i class="fa fa-clock-o"></i> 
-													<time datetime= "{{pd.createdAt|date('Y-m-d H:m:s')}}">{{pd.createdAt|date('d-m-Y')}} </time>
-												</span> {# <span><i class="fa fa-comment"></i> 4 comments</span> #} 
-												<span><i class="fa fa-folder"></i> {{pd.program}}</span> 
-											</p>
-										</div>
-										<div class="clearfix post-meta">
-										</div>
-										
-									
-									</div>
-								</div>
-							{% endfor %}	
+						
 							{% for video in videos %}
 								<div class="clearfix single_content">
 									<div class="clearfix post_detail">	
