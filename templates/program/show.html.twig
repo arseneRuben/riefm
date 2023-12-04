@@ -1,5 +1,9 @@
 {% extends 'layout/base.html.twig' %}
 {% block name program.name %}
+{% block stylesheets %}
+	{{parent()}}
+	<link href="{{ asset('assets/css/media.css') }}" rel="stylesheet" />
+{% endblock %}
 {% block body %}
     <div class="row ">
         <h2 class=" text-break text-center">
@@ -58,8 +62,8 @@
                                     <div class="m-1">
                                         {{ article.createdAt | date('Y-m-d') }}
                                     </div>
-                                    <div>
-                                        <audio controls muted src="{{ asset('uploads/podcasts/'~article.fileName) }}" type="audio/mp3" controls="controls">
+                                    <div  class="m-1">
+                                        <audio controls  src="{{ asset('uploads/podcasts/'~article.fileName) }}" type="audio/mp3" controls="controls">
                                             Your browser does not support the audio element.
                                             							
                                         </audio>
@@ -99,5 +103,6 @@
         </div>
         
     </div>
+	
 {% endblock %}
                 

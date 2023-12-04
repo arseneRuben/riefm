@@ -1,107 +1,116 @@
 {% extends 'layout/base.html.twig' %}
-
 {% block title podcast.title %}
-
-{% block body %}
-			<div  class="col-md-1 mt-4" >
-			</div>
-			<section class="row col-md-9  bg-light.bg-gradient mx-auto mt-4">
-				<article  class="advert p-3 col-md-4   rounded shadow mx-auto">
-						<div  class="mw-100  rounded-top overflow-hidden mx-auto"  >
-							<img src="{{ (podcast.imageName ? vich_uploader_asset(podcast) : asset('{podcast.program.imageName}'))| imagine_filter('podcast_filter_square_small') }}" alt="{{ podcast.title }}" class="w-100 ">
-							<h1  class="h5  pt-1">  <a href="{{path('app_podcasts_show', {id: podcast.id})}}" class=" text-muted text-decoration-none text-secondary" >  {{podcast.title}} </a> </h1> 
-
-							<p  class=" text-break text-center"> 
-								<audio controls autoplay muted  src="{{asset('uploads/podcasts/'~podcast.fileName)}}" type="audio/mp3" controls="controls">
-											Your browser does not support the audio element.
-								</audio>	
-							</p>
-							<div class="d-flex justify-content-between  border border-top-0 ">
-							<p  class="pd-2 pb-2 text-muted" >  Submitted at <time datetime= "{{podcast.createdAt|date('Y-m-d H:m:s')}}">{{podcast.createdAt|date('d-m-Y')}} </time> </p>
-                          
-                                <img class="rounded-circle mr-2" src="{{ podcast.author ?   podcast.author.avatar(75):asset('images/user.jpg') }}" width="45" height="45" alt="">
-                                <span> {{podcast.author.fullName}} </span>
-                            </div>
-                            
-                       		
-							<ul class="list-inline justify-content-around">
-								{% if is_granted('ROLE_ADMIN') %}
-								<li><a href="{{path('admin_podcasts_edit', {id: podcast.id})}}" class=" text-muted text-decoration-none text-secondary btn btn-sm btn-warning" > <i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></li> 
-								<li><a class="btn btn-sm btn-danger" href="del"  onclick= "event.preventDefault() ; confirm('Are you sure ?') && document.getElementById('js-podcasts-delete-form').submit();"> <i class="fa fa-trash m-1" aria-hidden="true"></i> </a></li>
-									<form id="js-podcasts-delete-form" action="{{path('admin_podcasts_delete', {id: podcast.id})}}" method="post" style="display: none;">
-									
-										<input type="hidden" name="csrf_token" value="{{ csrf_token('podcasts_deletion' ~ podcast.id ) }}" id="">
-										<input type="hidden" name="_method" value="DELETE">
-									
-									</form> 
-								{% endif %}
-								<li><a href="{{path('app_programs_show', {id: podcast.program.id})}}" class=" text-muted text-decoration-none text-secondary btn btn-sm btn-info" >  Go back!</a> </li>
-								<li><a href="#" class=" text-muted text-decoration-none text-secondary btn btn-sm btn-outline-primary" item-id="{{podcast.id}}" data-reply> Comment
-</a> </li>
-
-							</ul>
-							<div class="text-center">
-											<span class="date"><span class="month">{{ "now"|date('F d, Y') }} <span>y</span></span></span>
-											<ul class="stats  mb-40 list-inline justify-content-evenly">
-												<li><a href="#" class="icon fa-comment">{{podcast.comments|length}}</a></li>
-												<li><a href="#" class="icon fa-heart"></a></li>
-												<li><a href="#" class="icon brands fa-twitter"></a></li>
-												<li><a href="#" class="icon brands fa-facebook-f">1</a></li>
-											</ul>
-							</div>
-					   </div>
-					    
-				</article>
-				<article  class="comment p-3 col-md-8  rounded shadow mx-auto">
-					<div class="card xs2 sm3">
-						<div class="col-xs2 col-sm3">
-							<h4 class="text-center m-0 text-uppercase font-weight-bold"> Leave your comments</h4>
-						</div>
-						<div class="col-xs2 row col-sm3 p-3">
-								<!-- Comment List Start -->
-							<div class="col-md-12">
-								<section class="justify-content-sm-evenly">
-										<div class="bg-white border border-top-0 p-4">
-										{% for comment in podcast.comments %}
-											{% if comment.parent == null %}
-											<div class="media mb-4 row">
-												<div class=" col-2">
-													<img src="{{ comment.author ?   comment.author.avatar(75):asset('images/user.jpg') }}" alt=" {{comment.nickname}}" avatar style="width: 45px;" class="shadow rounded-circle img-fluid mr-3 mt-1" >
-													
-													<h6> {{comment.author ? comment.author.firstName:comment.nickname}}  </h6>
-												</div>
-												<div class="media-body col-8 col-sm-7">
-													<p> {{comment.content|raw}}|<small><i>{{comment.createdAt|date("d/m/Y H:i")}} </i></small></p>
-													{% for reply in comment.replies %}
-													<div  class="ml-10 row">
-														<div class=" col-3">
-															<img src="{{ reply.author ?   reply.author.avatar(75):asset('images/user.jpg') }}" alt=" {{reply.nickname}}" avatar style="width: 45px;" class="shadow rounded-circle img-fluid mr-3 mt-1" >
-														
-															<h6>{{reply.author ? reply.author.firstName:reply.nickname}}  </h6>
-														</div>
-														<div class="media-body  col-md-9 col-sm-9">
-															<p> {{reply.content|raw}}|	<small><i>{{reply.createdAt|date("d/m/Y H:i")}} </i></small></p>
-														</div>
-													</div>
-													{% endfor %}
-												</div>	
-												<div class="media-body  col-md-2 col-sm-3">
-													<button class="btn btn-sm btn-outline-primary"  item-id="{{podcast.id}}"  data-id="{{comment.id}}" href="#add-comment"   data-reply>Reply</button>	
-												</div>		
-											</div>
-											{% endif %}
-										{% endfor %}
-										</div>
-								</section>
-							</div>
-							
-						</div>
-					</div>
-				</article> 
-			</section>
-			 <div  class="col-md-1 mt-4" >
-			  {% set interactive = true %}
-			</div>
- 
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('assets/css/media.css') }}" rel="stylesheet" />
 {% endblock %}
-
+{% block body %}
+   
+    
+         {% set interactive = true %}
+    
+    <div class="music-player row">
+                                <div class="player-main">
+                                    <div class="main-current">
+                                        <div class="current-keyvisual">
+                                            <img src="{{ (podcast.imageName ? vich_uploader_asset(podcast) : asset('{podcast.program.imageName}'))| imagine_filter('podcast_filter_square_small') }}" alt="{{ podcast.title }}" />
+                                        </div>
+                                        <div class="current-info">
+                                            <h1>
+												{{ podcast.title }}
+                                            </h1>
+											<h3>
+												{{ podcast.author }}
+                                            </h3>
+                                            <p>
+                                                Submitted at 
+												<time datetime="{{ podcast.createdAt|date('Y-m-d H:m:s') }}">
+													{{ podcast.createdAt|date('d-m-Y') }}
+												</time>
+                                            </p>
+                                        </div>
+                                    </div>
+                                   
+									<ul class="list-inline justify-content-around">
+										<li class="main-control">
+											<audio controls autoplay  src="{{ asset('uploads/podcasts/'~podcast.fileName) }}" type="audio/mp3" controls="controls">
+												Your browser does not support the audio element.							
+											</audio>
+										</li>
+											{% if is_granted('ROLE_ADMIN') %}
+											<li>
+												<a href="{{ path('admin_podcasts_edit', {id: podcast.id}) }}" class=" text-muted text-decoration-none text-secondary btn btn-sm btn-warning">
+													<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+												</a>
+											</li>
+											<li>
+												<a class="btn btn-sm btn-danger" href="del" onclick="event.preventDefault() ; confirm('Are you sure ?') && document.getElementById('js-podcasts-delete-form').submit();">
+													<i class="fa fa-trash m-1" aria-hidden="true"></i>
+												</a>
+											</li>
+											<form id="js-podcasts-delete-form" action="{{ path('admin_podcasts_delete', {id: podcast.id}) }}" method="post" style="display: none;">
+												<input type="hidden" name="csrf_token" value="{{ csrf_token('podcasts_deletion' ~ podcast.id ) }}" id="">
+													<input type="hidden" name="_method" value="DELETE">
+											</form>
+											{% endif %}
+											<li>
+													<a href="{{ path('app_programs_show', {id: podcast.program.id}) }}" class=" text-muted text-decoration-none text-secondary btn btn-sm btn-info">
+														Go back!
+													</a>
+											</li>
+											<li>
+													<a href="#" class=" text-muted text-decoration-none text-secondary btn btn-sm btn-outline-primary" item-id="{{ podcast.id }}" data-reply>
+														Comment
+														
+													</a>
+											</li>
+								</ul>
+								<div class="text-center">
+												<span class="date">
+													<span class="month">
+														{{ "now"|date('F d, Y') }}
+														<span>
+															y
+														</span>
+													</span>
+												</span>
+												<ul class="stats  mb-40 list-inline justify-content-evenly">
+													<li>
+														<a href="#" class="icon fa-comment">
+															{{ podcast.comments|length }}
+														</a>
+													</li>
+													<li>
+														<a href="#" class="icon fa-heart"></a>
+													</li>
+													<li>
+														<a href="#" class="icon brands fa-twitter"></a>
+													</li>
+													<li>
+														<a href="#" class="icon brands fa-facebook-f">
+															1
+														</a>
+													</li>
+												</ul>
+								</div>
+                                </div>
+								
+                                <ul class="player-list">
+								{% for comment in podcast.comments %}
+                                    <li>
+                                        <img class="list-cover" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/329679/music-player-freebie-a1.png" />
+                                        <div class="list-info">
+                                            <div class="info-title">
+											{{ comment.content}}
+                                            </div>
+                                            <div class="info-artist">
+											{{ comment.nickname}}
+                                            </div>
+                                        </div>
+                                    </li>
+								{% endfor %}
+                                 
+                                </ul>
+    </div>
+{% endblock %}
+                        
