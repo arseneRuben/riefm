@@ -40,7 +40,7 @@ class CommentController extends AbstractController
     }
 
      /**
-     * @Route("/admin/comment/create", name="create_comment")
+     * @Route("/admin/comment/create", name="create_comment", methods={"POST"})
      */
     public function createAction(Request $request): Response
     {
@@ -64,11 +64,13 @@ class CommentController extends AbstractController
                 $comment->updateTimestamp();
                 $comment->setItem($item);
                 $comment->setContent($content);
-                $comment->setEmail($email);
-                $comment->setNickName($nick_name);
+               
                 $comment->setRgpd(true);
                 if($this->getUser()){
                     $comment->setAuthor($this->getUser());
+                } else 
+                {
+                    $comment->setAuthor($this->em->getRepository(User::class)->findOneBy(['email'=>'unknown@gmail.com']));
                 }
 
                 $parentId = $request->request->get("parent_id");

@@ -25,16 +25,7 @@ class Comment
      */
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=180, unique=false)
-     * @Assert\Email()
-     */
-    private $email;
-    /**
-     * @ORM\Column(type="string", length=180, unique=false)
-     
-     */
-    private $nickname;
+ 
 
     /**
      * @ORM\Column(type="text")

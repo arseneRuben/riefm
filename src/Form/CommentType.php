@@ -70,7 +70,11 @@ class CommentType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Comment::class,
-            'attr' => ['id' => 'comment_form']
+            'attr' => ['id' => 'comment_form'],
+            'action' => 'create_comment', // Set the action attribute
+            'method' => 'POST', // Define the method (GET/POST)
         ]);
     }
+
+
 }
