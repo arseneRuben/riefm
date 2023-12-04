@@ -74,7 +74,7 @@ class Comment
      * @Groups({"getPodCasts"})
      * @ORM\JoinColumn(nullable=true)
      */
-    private $Author;
+    private $author;
 
     /**
      * @ORM\ManyToOne(targetEntity=Item::class, inversedBy="comments")

@@ -76,7 +76,7 @@
 												</span>
 												<ul class="stats  mb-40 list-inline justify-content-evenly">
 													<li>
-														<a href="#" class="icon fa-comment">
+														<a href="#footer" class="icon fa-comment">
 															{{ podcast.comments|length }}
 														</a>
 													</li>
@@ -98,7 +98,7 @@
                                 <ul class="player-list">
 								{% for comment in podcast.comments %}
                                     <li>
-                                        <img class="list-cover" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/329679/music-player-freebie-a1.png" />
+                                        <img class="list-cover" src={{ comment.author.avatar(75)}} />
                                         <div class="list-info">
                                             <div class="info-title">
 											{{ comment.content}}

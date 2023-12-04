@@ -79,8 +79,9 @@ class CommentController extends AbstractController
                     $this->em->persist($parent);
                 }
                 //$comment->setParent($parent ?? null);
+                $item->addComment($comment);
                 $this->em->persist($comment);
-            
+                $this->em->persist($item);
                 $this->em->flush();
                 $request->getSession()->getFlashBag()->add('success', 'Your comment has been saved!');
                 if($type ==1){
